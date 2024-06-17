@@ -1,4 +1,4 @@
-const restServer = "https://www.friendzone.best/rest"
+const restServer = "https://www.prospectbounty.com/rest"
 
 //given a problem_description return all the dates and corrective actions for it
 export async function signupAPI(data) {

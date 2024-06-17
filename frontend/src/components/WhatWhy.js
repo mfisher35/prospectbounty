@@ -84,7 +84,7 @@ class WhatWhy extends React.Component {
         </div> <br/><br/><br/>
       </div> 
       <div style={{textAlign:'left',width:'100%',paddingBottom:'30px'}}>
-      <span style={{fontSize:'30px',fontWeight:'600'}}> Why Friend Zone? </span> <br/> <br/>
+      <span style={{fontSize:'30px',fontWeight:'600'}}> Why Prospect Bounty? </span> <br/> <br/>
        <span style={{color: '#686868',fontSize: '20px',fontWeight:'400',lineHeight:'30.7px'}}>
 	    {this.state.whyText}
        </span>  

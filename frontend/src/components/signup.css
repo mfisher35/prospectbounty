@@ -1,6 +1,7 @@
 #sudiv {
   /*background: linear-gradient(135deg, #6db3f2, #1e69de); /* Elegant blue gradient */
-  background: linear-gradient(135deg, #198754, #000000);
+  /*background: linear-gradient(135deg, #198754, #000000);*/
+  background: linear-gradient(135deg, #dfbc82, #000000);
 
   color: #ffffff; /* White text color for better readability */
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Default font */
