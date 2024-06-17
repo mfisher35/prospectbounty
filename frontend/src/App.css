@@ -1,0 +1,224 @@
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: local('PlusJakartaSans-Regular'), url(./assets/fonts/PlusJakartaSans-Regular.ttf) format('truetype');
+  /* other formats include: 'woff2', 'truetype, 'opentype',
+                            'embedded-opentype', and 'svg' */
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: local('Lato-Regular'), url(./assets/fonts/Lato-Regular.ttf) format('truetype');
+  /* other formats include: 'woff2', 'truetype, 'opentype',
+                            'embedded-opentype', and 'svg' */
+}
+
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+body {
+  margin:0;
+  padding:0;
+  background-color:#FBFBFB;
+}
+
+
+.video-container {
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+#BGI {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color:#424242;
+  object-fit: contain;
+  z-index: 0;
+  filter:brightness(60%);
+  border-radius:0px 0px 16px 16px;
+}
+
+/* Just styling the content of the div, the *magic* in the previous rules */
+.video-container .caption {
+  z-index: 1;
+  position: relative;
+  text-align: center;
+  color: white;
+  padding: 15px;
+  width: 100%;
+  font-family: Helvetica;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 120%;
+}
+
+.header-menu {
+ color: var(--back-ground-content-background-second, rgba(255, 255, 255, 0.60));
+
+/* Button/Medium */
+font-family: Helvetica;
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+display: inline-flex;
+padding: 16px 24px;
+justify-content: center;
+align-items: center;
+height:20px;
+gap: 40px;
+border-radius: 64px;
+border: 2px solid grey;
+background: #000;
+box-shadow: 0px 4px 20px 0px rgba(255, 255, 255, 0.25) inset;
+}
+
+.download-button {
+color: #FFF;
+
+/* Button/Normal */
+font-family: Helvetica;
+font-size: 18px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+display: inline-flex;
+padding: 9.5px 20px;
+justify-content: center;
+align-items: center;
+gap: 8px;
+border-radius: 40px;
+border: 2px solid var(--back-ground-content-background-primary, #FFF);
+background: rgba(0, 0, 0, 0.20);
+cursor:pointer;
+}
+
+.download-button:hover {
+color: #000;
+font-family: Helvetica;
+font-size: 18px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+display: inline-flex;
+padding: 9.5px 20px;
+justify-content: center;
+align-items: center;
+gap: 8px;
+border-radius: 40px;
+border: 2px solid var(--back-ground-content-background-primary, #FFF);
+background-color: #FFF;
+cursor:pointer;
+}
+
+
+.scroll-down-text {
+color: var(--back-ground-content-background-second, rgba(255, 255, 255, 0.60));
+font-family: Helvetica;
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: 30.7px; /* 191.875% */
+letter-spacing: 11.2px;
+height:100%;
+width:100%;
+padding:0px;
+}
+
+.whybox {
+display: flex;
+width: 625px;
+padding: 35px;
+flex-direction: column;
+align-items: flex-start;
+gap: 24px;
+flex-shrink: 0;
+border-radius: 24px;
+border: 2px solid #EBEBEB;
+background: #FFF;
+text-align:left;
+flex:10
+}
+
+.whyboxmobile {
+display: block;
+padding: 15px;
+width:'100px';
+margin-bottom:'10px';
+flex-shrink: 0;
+border-radius: 24px;
+border: 2px solid #EBEBEB;
+background: #FFF;
+text-align:left;
+}
+
+
+h1 {
+font-family:Helvetica;
+}
+
+#howcontainer {
+  width: 100%;
+  height: 1500px;
+  position: relative;
+}
+#howunder,
+#howover {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+#howover {
+  z-index: 10;
+}
+
+#strokered {
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: red;
+  font-size:50px;
+  text-decoration: underline;
+  text-decoration-color: red;
+
+}
+
+#stroke {
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+}
+
+#shadow {
+text-shadow: 1px 1px 2px #505050;
+}
+
+.cool-list {
+    list-style: none; /* Removes default bullets */
+    padding: 0;
+}
+.cool-list li {
+    padding: 30px; /* Adds space before text */
+    position: relative; /* Needed for absolute positioning of the pseudo-element */
+    font-size: 22pt;
+    font-weight: bold;
+}
+.cool-list div{
+    display:flex;
+    flex-direction:row;
+}
+.cool-list img{
+    height:70px;
+    width:70px;
+    margin-right:30px;
+}
+.cool-list li:hover {
+    color: #56d156; /* Changes text color on hover */
+    text-shadow: 1px 1px 2px gray; /* Adds a shadow effect on hover */
+}
+#shadow10 {
+box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}

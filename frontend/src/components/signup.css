@@ -1,0 +1,61 @@
+#sudiv {
+  /*background: linear-gradient(135deg, #6db3f2, #1e69de); /* Elegant blue gradient */
+  background: linear-gradient(135deg, #198754, #000000);
+
+  color: #ffffff; /* White text color for better readability */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Default font */
+}
+
+.container {
+  margin-top: 50px;
+  color: #ffffff; /* Ensures text inside the container is also white */
+}
+
+.text-uppercase {
+  letter-spacing: 1px;
+}
+
+.text-shadow {
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* More pronounced shadow for better visibility */
+}
+
+.form-shadow {
+  background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white background */
+  box-shadow: 0px 8px 15px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.custom-input {
+  background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent inputs */
+  border-radius: 5px;
+  border: none;
+  box-shadow: none;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.custom-input:focus {
+  background-color: #ffffff; /* Fully opaque white on focus */
+}
+
+.custom-button {
+  background-color: #0056b3;
+  border: none;
+  padding: 12px 0;
+  font-size: 18px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  transition: background-color 0.25s;
+}
+
+.custom-button:hover {
+  background-color: #003a88;
+}
+
+#suh2 {
+  font-family: 'Montserrat', sans-serif; /* Special font for the title */
+  font-weight: 700; /* Bold font weight for better visibility */
+}
+
+#errtext {
+text-shadow: 1px 1px 2px white;
+}

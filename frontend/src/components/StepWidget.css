@@ -1,0 +1,89 @@
+/* Google Fonts Import */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+.widget-container {
+  width: 100%;
+  max-width: 700px; /* Adjust based on your design requirements */
+  margin: auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.header h1, .header h2 {
+  text-align: center;
+}
+
+.content-layout {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.content-layout .content {
+  flex: 1;
+  padding: 0 20px; /* Spacing around text */
+}
+
+.step-image {
+  width: 150px; /* Adjust size as necessary */
+  height: auto;
+  flex-shrink: 0; /* Prevents resizing */
+}
+
+.progress-indicators {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.circle {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ccc;
+  margin: 0 5px;
+}
+
+.circle.filled {
+  background-color: #007bff; /* Highlight color for current or completed steps */
+}
+
+/* Navigation Footer */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+#circbutton {
+  padding: 10px;
+  border-radius: 50%;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  width: 48px;  /* Ensures a square button for the circular effect */
+  height: 48px; /* Matching width for circle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#circbutton:hover {
+  background-color: #0056b3;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+}
+
+#circbutton:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  box-shadow: none;
+}
