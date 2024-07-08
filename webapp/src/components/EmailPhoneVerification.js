@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import EmailImg from '../assets/email.png';
-import { signInWithPhoneNumber, sendEmailVerification, RecaptchaVerifier } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPhoneNumber, sendEmailVerification, RecaptchaVerifier } from "firebase/auth";
+import { doc, getDoc, setDoc, getFirestore } from "firebase/firestore";
+import Logo  from '../assets/logofull.png';
 
 const cleanError = (error) => {
     let result = error;
@@ -43,7 +45,7 @@ const Button = styled.button`
   }
 `;
 
-const EmailPhoneVerification = ({ name, user, auth, storage, db, onLogin, phone }) => {
+const EmailPhoneVerification = ({ name, user, auth, storage, db, onLogin, userData, email, password }) => {
   const [emailVerified, setEmailVerified] = useState(user.emailVerified);
   const [initialEmailSent, setInitialEmailSent] = useState(false);
   const [phoneVerificationCode, setPhoneVerificationCode] = useState('');
@@ -53,12 +55,12 @@ const EmailPhoneVerification = ({ name, user, auth, storage, db, onLogin, phone 
   const [error, setError]  = useState("");
 
   useEffect(() => {
-    window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+    try {window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
       'size': 'invisible',
       'callback': (response) => {
         // reCAPTCHA solved, allow signInWithPhoneNumber.
       }
-    });
+    });} catch(e) {}
   }, []);
 
   useEffect(() => {
@@ -85,24 +87,27 @@ const EmailPhoneVerification = ({ name, user, auth, storage, db, onLogin, phone 
   };
 
   if (emailVerified && phoneVerified) {
-    onLogin(user,auth,db, storage,true,{name:name,phone:phone});
+    onLogin(user,auth,db, storage);
   }
 
 
 const verifyPhone = () => {
     const appVerifier = window.recaptchaVerifier;
     try{
-    signInWithPhoneNumber(auth,"+16505551234", appVerifier).then((confirmationResult) => {
+    signInWithPhoneNumber(auth,`+1${userData['phone']}`, appVerifier).then((confirmationResult) => {
         setPhoneConfirmationResult(confirmationResult);
       })
     }
      catch(error) { setError(cleanError(error.message))}
     }
 
-const handleVerifyCode = ()  => {
+const handleVerifyCode = async ()  => {
+        let newUserData = userData;
         phoneConfirmationResult.confirm(userPhoneCode)
-          .then((result) => {
-            //const user = result.user;
+          .then(async (result) => {
+            newUserData['phoneVerified'] = true;
+            let creds = await signInWithEmailAndPassword(auth,email, password);
+            await setDoc(doc(db, "userData", user['uid']), newUserData);
             setPhoneVerified(true);
           })
           .catch((error) => {
@@ -112,12 +117,13 @@ const handleVerifyCode = ()  => {
   }
 
   return (
-    <Container>
+    <Container style={{padding:'40px'}}>
+      <center> <img src={Logo} width="300px" /></center> <br/><br/>
       {!emailVerified && <>  <center> <img src={EmailImg} width="180px" /> </center> <br/><br/>
            <Message> Please Check Your E-Mail And Click The Link To Verify Your Account </Message>
         <center> <Button onClick={sendVerificationEmail}>Resend Verification Email</Button> </center> </> }
-      {emailVerified && <div style={{backgroundColor:'#dedede' ,padding:'50px'}}>  <center>✅ ✉️  E-Mail Verified. </center> </div> }
-      {phoneConfirmationResult && (<div style={{backgroundColor:'#dedede' ,padding:'20px',marginTop:'30px',width:"100%"}}>
+      {emailVerified && <div style={{borderRadius:'15px',backgroundColor:'#dedede' ,padding:'50px'}}>  <center>✅ ✉️  E-Mail Verified. </center> </div> }
+      {phoneConfirmationResult && (<div style={{borderRadius:'15px',backgroundColor:'#dedede' ,padding:'20px',marginTop:'30px',width:"100%"}}>
         <center> <span> Phone Verification Code: </span><br/>
         <input type="text" value={userPhoneCode} onChange={e=>{setUserPhoneCode(e.target.value)}}/> <br/><br/>
         <Button onClick={handleVerifyCode}> Submit </Button> </center>

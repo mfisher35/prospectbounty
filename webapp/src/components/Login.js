@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Logo from '../assets/logofull.png';
 import Spinner from 'react-bootstrap/Spinner';
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { doc, getDoc, setDoc, getFirestore } from "firebase/firestore";
 import { sendEmailVerification, getAuth, linkWithPhoneNumber, signInWithPhoneNumber, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import EmailPhoneVerification from './EmailPhoneVerification';
 import { getStorage, ref, uploadBytes } from "firebase/storage";
@@ -98,31 +98,36 @@ const Login = ({onLogin}) => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [page, setPage] = useState("home");
+  const [userData, setUserData] = useState(null);
+
+  const tosLink = "https://prospectbounty.com/legal/terms.html";
 
   const handleLogin = async (e) => {
     e.preventDefault();
-   
-const tosLink = "https://prospectbounty.com/legal/terms.html";
- try {
-      setLoggingIn(true);
-      setError(null);
-      let creds = await signInWithEmailAndPassword(auth,email, password);
-      setUser(creds['user']);
-      setLoggingIn(false);
-    } catch (error) {
-      setError(error.message);
-      setLoggingIn(false);
-    }
-  };
+    try {
+         setLoggingIn(true);
+         setError(null);
+         let creds = await signInWithEmailAndPassword(auth,email, password);
+         setUser(creds['user']);
+         setLoggingIn(false);
+         let userInfo = await getDoc(doc(db, "userData", creds['user']['uid']));
+         setUserData(userInfo.data());
+         console.log('userInfo',userInfo.data());
+       } catch (error) {
+         setError(error.message);
+         setLoggingIn(false);
+       }
+  }
+
   const cleanError = (error) => {
-    let result = error;
-    let cleans = ["Firebase",":","(","auth",")","."];
-    let spaces = ["/","-"]
-    for (let i=0; i< cleans.length;i++)
-      result = result.replaceAll(cleans[i],"");
-    for (let i=0; i< spaces.length;i++)
-      result = result.replaceAll(spaces[i]," ");
-    return result;
+     let result = error;
+     let cleans = ["Firebase",":","(","auth",")","."];
+     let spaces = ["/","-"]
+     for (let i=0; i< cleans.length;i++)
+        result = result.replaceAll(cleans[i],"");
+     for (let i=0; i< spaces.length;i++)
+        result = result.replaceAll(spaces[i]," ");
+     return result;
   }
   const handleRegistering = async (e) => {
     e.preventDefault();
@@ -145,6 +150,9 @@ const tosLink = "https://prospectbounty.com/legal/terms.html";
       await createUserWithEmailAndPassword(auth, email, password)
       let creds = await signInWithEmailAndPassword(auth,email, password);
       await sendEmailVerification(auth.currentUser);
+      let newUserData = {name:name,phone:phone,phoneVerified:false};
+      await setDoc(doc(db, "userData", creds['user']['uid']), newUserData);
+      setUserData(newUserData);
       setUser(creds['user']);
     } catch (error) {
       setError(error.message);
@@ -160,11 +168,15 @@ const tosLink = "https://prospectbounty.com/legal/terms.html";
       setError(error.message);
     }
   };
-  if (user && (!user.emailVerified || !user.phoneVerified)) {
-    return <EmailPhoneVerification name={name} user={user} auth={auth} storage={storage} db={db} onLogin={onLogin} phone={phone}/>;
+  
+  if(userData)
+    if (user && (!user.emailVerified || !userData['phoneVerified'])) {
+      return <EmailPhoneVerification name={name} user={user} auth={auth} storage={storage} db={db} onLogin={onLogin} email={email} password={password} userData={userData}/>;
   }
-  if (user && user.emailVerified){
-    onLogin(user,auth,db,storage)
+
+  if(userData)
+    if (user && user.emailVerified && userData['phoneVerified']){
+      onLogin(user,auth,db,storage)
   }
   return (
     <Container>

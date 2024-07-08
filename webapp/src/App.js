@@ -5,6 +5,7 @@ import { signOut } from "firebase/auth";
 import Logo  from './assets/logofull.png';
 import Logosm  from './assets/logowhite.png';
 import { doc, setDoc, getDoc } from "firebase/firestore"; 
+import styled, { createGlobalStyle } from 'styled-components';
  
 const GlobalStyle = createGlobalStyle`
   body {
@@ -40,16 +41,12 @@ class App extends React.Component {
     this.setState({page:page})
   }
 
-  onLogin = async (user,auth,db, storage,firstLogin=false,userData={}) => {
-    if(firstLogin){
-      await setDoc(doc(db, "userData", user['uid']), userData);
-    }
-    const surveyRef = doc(db, 'surveyResults', user['uid']);
-            const docSnap = await getDoc(surveyRef);
-            if (docSnap.exists()) {
-                this.setState({storedResponses:docSnap.data()});
-            } 
-    this.setState({user:user, auth:auth, db:db, storage:storage})
+  onLogin = async (user,auth,db, storage) => {
+     let userDataSnap = await getDoc(doc(db, 'userData', user['uid']));
+     let userData = userDataSnap.data();
+     console.log('userData1',userData);
+     if(userData['phoneVerified'])
+       this.setState({user:user, auth:auth, db:db, storage:storage, userData:userData})
   }
 
   logout = () => {
@@ -80,7 +77,7 @@ class App extends React.Component {
       </ul>
     </div>
        <div style={{width:'100vw',height:'100vh',marginTop:'25px'}}>
-       <center>  <Questionnaire user={this.state.user} auth={this.state.auth} db={this.state.db} storage={this.state.storage}  mobile={this.state.mobile} storedResponses={this.state.storedResponses}/> </center>
+       <center>  <div> Hi </div> {/*user={this.state.user} auth={this.state.auth} db={this.state.db} storage={this.state.storage}  mobile={this.state.mobile} userData={this.state.userData}*/} </center>
        </div> 
      </div>)}
     </div>
