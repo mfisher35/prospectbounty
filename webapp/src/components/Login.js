@@ -112,7 +112,6 @@ const Login = ({onLogin}) => {
          setLoggingIn(false);
          let userInfo = await getDoc(doc(db, "userData", creds['user']['uid']));
          setUserData(userInfo.data());
-         console.log('userInfo',userInfo.data());
        } catch (error) {
          setError(error.message);
          setLoggingIn(false);
@@ -146,7 +145,6 @@ const Login = ({onLogin}) => {
       if(phone.length < 10)
         throw new Error('Phone Number Must Be 10 Digits!');
       setError(null);
-      console.log(auth,email,password);
       await createUserWithEmailAndPassword(auth, email, password)
       let creds = await signInWithEmailAndPassword(auth,email, password);
       await sendEmailVerification(auth.currentUser);
