@@ -90,6 +90,7 @@ const ErrorMessage = styled.p`
 const Login = ({onLogin}) => {
   const [accepted, setAccepted] = useState(false);
   const [registering, setRegistering] = useState(false);
+  const [role, setRole] = useState(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
@@ -195,7 +196,9 @@ const Login = ({onLogin}) => {
           onChange={(e) => phoneTextChange(e.target.value)}
           required
         />
-
+         <div style={{display:'inline-block',zoom:1,textAlign:'center'}}> <b>Choose Role: </b> <br/>  <span style={{marginLeft:'10px'}}> <input type="radio" checked={role=="poster"} onClick={e=>{setRole("poster")}}/> {"Bounty Poster"} </span> 
+         <span style={{marginLeft:'15px'}}>  <input type="radio" checked={role=="hunter"} onClick={e=>{setRole("hunter")}}/> Bounty Hunter </span> </div><br/>
+        
        </> )}
 
         <Input
