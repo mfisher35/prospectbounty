@@ -1,9 +1,6 @@
 import React from 'react';
 import './App.css';
-import { Fade } from "react-awesome-reveal";
-import {Questionnaire} from './components/Questionnaire';
 import Login from './components/Login';
-import styled, { createGlobalStyle } from 'styled-components';
 import { signOut } from "firebase/auth";
 import Logo  from './assets/logofull.png';
 import Logosm  from './assets/logowhite.png';
