@@ -4,28 +4,32 @@ import Logosm  from '../assets/logowhite.png';
 import { doc, setDoc, getDoc } from "firebase/firestore"; 
 import HunterInit from './HunterInit';
 import styled from 'styled-components';
+import BountyList from './BountyList';
+import MyBounties from './MyBounties';
 
 const HunterHome = ({user, auth, db, storage, mobile, userData, setUserData}) => {
-  //const [userData, setUserData] = useState(null);
+  const [screen, setScreen] = useState("bountylist");
 
 
 
   const cleanError = (error) => {
   }
   console.log('www',userData)
+
   return (
     <div style={{fontFamily:'Plus Jakarta Sans',fontSize:'12pt'}}>
-       <div className="sidebar" style={{width:mobile ? "100px" : "250px"}}>
-      <center> <img src={mobile ? Logosm : Logo} width={mobile ? '50px' : '200px'} /> </center>
+       {userData['closeContacts'] && (<div className="sidebar" style={{width:mobile ? "100px" : "250px"}}>
+      <center> <img src={mobile ? Logosm : Logo} width={mobile ? '50px' : '200px'}/> </center>
       <ul>
-        <li>Home</li>
-        <li>Matches</li>
-        <li><a href="#event">Event Planner</a></li>
+        <li onClick={e=>setScreen("bountylist")}>Bounty List</li>
+        <li onClick={e=>setScreen("mybounties")}>My Bounties</li>
       </ul>
-    </div>
+    </div>)}
        <div style={{width:'100vw',height:'100vh',marginTop:'25px'}}>
          <center> 
            {!userData['closeContacts'] && <HunterInit user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} setUserData={setUserData}/>}
+           {(userData['closeContacts'] && screen == "bountylist") && <BountyList user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} />}
+           {(userData['closeContacts'] && screen == "mybounties") && <MyBounties user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} />}
          </center>
        </div></div> 
   );
