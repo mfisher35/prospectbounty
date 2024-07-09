@@ -6,6 +6,8 @@ import Logo  from './assets/logofull.png';
 import Logosm  from './assets/logowhite.png';
 import { doc, setDoc, getDoc } from "firebase/firestore"; 
 import styled, { createGlobalStyle } from 'styled-components';
+import HunterHome from './components/HunterHome';
+import PosterHome from './components/PosterHome';
  
 const GlobalStyle = createGlobalStyle`
   body {
@@ -49,6 +51,9 @@ class App extends React.Component {
        this.setState({user:user, auth:auth, db:db, storage:storage, userData:userData})
   }
 
+  setUserData = (userData) => {
+     this.setState({'userData' : userData})
+  }
   logout = () => {
     signOut(this.state['auth']).then(function() {
       this.setState({user:null})
@@ -59,27 +64,20 @@ class App extends React.Component {
  
   }
 
+  getRole = () => {
+    if(this.state.userData)
+      return this.state.userData['role']
+    return null;
+  }
 
   render() {
     return (<div style={{width:"100%"}}>
       {this.state['user'] == null && <Login onLogin={this.onLogin} logout={this.logout}/>}
       <GlobalStyle/>
-      {this.state['user'] && 
-      (
-
-      <div style={{fontFamily:'Plus Jakarta Sans',fontSize:'12pt'}}>
-       <div className="sidebar" style={{width:this.state.mobile ? "100px" : "250px"}}>
-      <center> <img src={this.state.mobile ? Logosm : Logo} width={this.state.mobile ? '50px' : '200px'} /> </center>
-      <ul>
-        <li>Home</li>
-        <li>Matches</li>
-        <li><a href="#event">Event Planner</a></li>
-      </ul>
-    </div>
-       <div style={{width:'100vw',height:'100vh',marginTop:'25px'}}>
-       <center>  <div> Hi </div> {/*user={this.state.user} auth={this.state.auth} db={this.state.db} storage={this.state.storage}  mobile={this.state.mobile} userData={this.state.userData}*/} </center>
-       </div> 
-     </div>)}
+      {this.getRole() == 'hunter'  && (
+        <HunterHome user={this.state.user} auth={this.state.auth} db={this.state.db} storage={this.state.storage}  mobile={this.state.mobile} userData={this.state.userData} setUserData={this.setUserData}/> )}
+      {this.getRole() == 'poster' && ( <PosterHome user={this.state.user} auth={this.state.auth} db={this.state.db} storage={this.state.storage}  mobile={this.state.mobile} userData={this.state.userData} setUserData={this.setUserData}/> )}
+ 
     </div>
     )
   }
