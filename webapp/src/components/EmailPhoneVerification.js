@@ -124,7 +124,7 @@ const handleVerifyCode = async ()  => {
         <center> <Button onClick={sendVerificationEmail}>Resend Verification Email</Button> </center> </> }
       {emailVerified && <div style={{borderRadius:'15px',backgroundColor:'#dedede' ,padding:'50px'}}>  <center>✅ ✉️  E-Mail Verified. </center> </div> }
       {phoneConfirmationResult && (<div style={{borderRadius:'15px',backgroundColor:'#dedede' ,padding:'20px',marginTop:'30px',width:"100%"}}>
-        <center> <span>Just Sent Via SMS </span> <br/> <span> Phone Verification Code: </span><br/>
+        <center> <span> SMS Code Sent To: {userData['phone']}</span> <br/> <span> Enter Phone Verification Code: </span><br/>
         <input type="text" value={userPhoneCode} onChange={e=>{setUserPhoneCode(e.target.value)}}/> <br/><br/>
         <Button onClick={handleVerifyCode}> Submit </Button> </center>
        </div>)}

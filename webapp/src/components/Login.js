@@ -149,7 +149,7 @@ const Login = ({onLogin}) => {
       await createUserWithEmailAndPassword(auth, email, password)
       let creds = await signInWithEmailAndPassword(auth,email, password);
       await sendEmailVerification(auth.currentUser);
-      let newUserData = {name:name,phone:phone,phoneVerified:false};
+      let newUserData = {role:role,name:name,phone:phone,phoneVerified:false};
       await setDoc(doc(db, "userData", creds['user']['uid']), newUserData);
       setUserData(newUserData);
       setUser(creds['user']);
@@ -182,6 +182,7 @@ const Login = ({onLogin}) => {
       <div style={{marginBottom:'30px',marginTop:'50px'}}> <center> <img src={Logo} width='290px'/> </center></div>
       <Form onSubmit={registering ? handleRegister : handleLogin}>
         <h2>{registering ? "Register" : "Login"}</h2>
+       <div style={{margin:'10px'}}></div>
 {registering &&  (<><Input
           type="text"
           placeholder="First Name / Nickname"
