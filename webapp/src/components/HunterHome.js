@@ -5,7 +5,6 @@ import { doc, setDoc, getDoc } from "firebase/firestore";
 import HunterInit from './HunterInit';
 import styled from 'styled-components';
 import BountyList from './BountyList';
-import MyBounties from './MyBounties';
 
 const HunterHome = ({user, auth, db, storage, mobile, userData, setUserData}) => {
   const [screen, setScreen] = useState("bountylist");
@@ -23,14 +22,14 @@ const HunterHome = ({user, auth, db, storage, mobile, userData, setUserData}) =>
       <ul>
         <li onClick={e=>setScreen("bountylist")}>Bounty List</li>
         <li onClick={e=>setScreen("mybounties")}>My Bounties</li>
+        <li onClick={e=>console.log(screen)}> someting </li>
       </ul>
     </div>)}
        <div style={{marginTop:'25px',marginLeft : mobile ? "100px" : "250px"}}>
          <center>  <img src={Logo} width="500px" /> 
           
            {!userData['closeContacts'] && <HunterInit user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} setUserData={setUserData}/>}
-           {(userData['closeContacts'] && screen == "bountylist") && <BountyList user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} />}
-           {(userData['closeContacts'] && screen == "mybounties") && <MyBounties user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} />}
+           {userData['closeContacts'] && <BountyList key={'blist'+screen} user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} type={screen=="bountylist" ? 'all' : 'assignedToMe'}/>}
          </center>
        </div></div> 
   );

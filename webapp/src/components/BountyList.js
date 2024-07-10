@@ -6,18 +6,19 @@ import AddContactsWidget from "./AddContactsWidget";
 import {collection, getDocs, doc, setDoc, getDoc } from "firebase/firestore"; 
 import Logo  from '../assets/logofull.png';
 
-const BountyList = ({user, auth, db, storage, mobile, userData}) => {
+const BountyList = ({user, auth, db, storage, mobile, userData, type}) => {
    const [bountyList, setBountyList] = useState([]);
 
    useEffect(() => {
    let myList = []
-
+   console.log(type);
    getDocs(collection(db, "bountyList")).then((querySnapshot)=>{
      querySnapshot.forEach((doc)=>{
        let docData = doc.data();
        if(docData['id'] != 0)
-        if( (userData['role'] == 'hunter' || (docData['posterId'] == user['uiid'])))
-         myList.push(docData);
+        if( (userData['role'] == 'hunter' || (docData['posterId'] == user['uid'])))
+         if(type == "all" || (type=="assignedToMe" && docData['hunterId']==user['uid']))
+           myList.push(docData);
      })
     setBountyList(myList);
    })
@@ -31,7 +32,7 @@ const BountyList = ({user, auth, db, storage, mobile, userData}) => {
   return (
     <div style={{padding:"30px 100px"}}>
       <center> 
-       <h2> Bounty List </h2> </center>
+       <h2> Bounty List ({type == "all" ? "All" : "Assigned To Me"}) </h2> </center>
        <br/><br/>
        {bountyList.map((item,ix)=><div className="card" key={`bounty-${ix}`} onClick={e=>onSubmit()}>
           <h4> {` ${ix+1}) ${item['bountyName']}`} </h4>
