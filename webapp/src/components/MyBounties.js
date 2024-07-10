@@ -14,7 +14,6 @@ const MyBounties = ({user, auth, db, storage, mobile, userData}) => {
   }
 
   return (
-   <div style={{marginLeft: mobile ? "100px" : "250px"}}> <img src={Logo} width="500px"/>
     <div style={{padding:"30px 100px"}}>
       <center> 
        <h2> My Bounties </h2> </center>
@@ -23,7 +22,6 @@ const MyBounties = ({user, auth, db, storage, mobile, userData}) => {
           <h4> Example Bounty 1 </h4>
        </div>
     </div>
-   </div>
   );
 };
 

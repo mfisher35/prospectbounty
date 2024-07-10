@@ -11,10 +11,12 @@ const BountyList = ({user, auth, db, storage, mobile, userData}) => {
 
    useEffect(() => {
    let myList = []
+
    getDocs(collection(db, "bountyList")).then((querySnapshot)=>{
      querySnapshot.forEach((doc)=>{
        let docData = doc.data();
        if(docData['id'] != 0)
+        if( (userData['role'] == 'hunter' || (docData['posterId'] == user['uiid'])))
          myList.push(docData);
      })
     setBountyList(myList);
@@ -27,16 +29,16 @@ const BountyList = ({user, auth, db, storage, mobile, userData}) => {
   }
 
   return (
-   <div style={{marginLeft: mobile ? "100px" : "250px"}}> <img src={Logo} width="500px"/>
     <div style={{padding:"30px 100px"}}>
       <center> 
-       <h2> Bounty Hunter Set Up </h2> </center>
+       <h2> Bounty List </h2> </center>
        <br/><br/>
-       <div className="card" onClick={e=>onSubmit()}>
-          <h4> Example Bounty 1 </h4>
-       </div>
+       {bountyList.map((item,ix)=><div className="card" key={`bounty-${ix}`} onClick={e=>onSubmit()}>
+          <h4> {` ${ix+1}) ${item['bountyName']}`} </h4>
+          <h5> {` Reward: $${item['amount']}`} </h5>
+          <h6> {`$${item['description']}`} </h6>
+       </div>)}
     </div>
-   </div>
   );
 };
 

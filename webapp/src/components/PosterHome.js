@@ -3,9 +3,9 @@ import Logo  from '../assets/logofull.png';
 import Logosm  from '../assets/logowhite.png';
 import { doc, setDoc, getDoc } from "firebase/firestore"; 
 import styled from 'styled-components';
-import PosterInit from './PosterInit';
+import PosterBounties from './PosterBounties';
 import { collection, query, where, getDocs } from "firebase/firestore";
-
+import BountyList from './BountyList';
 
 const PosterHome = ({user, auth, db, storage, mobile, userData, setUserData}) => {
   //const [userData, setUserData] = useState(null);
@@ -17,7 +17,7 @@ const PosterHome = ({user, auth, db, storage, mobile, userData, setUserData}) =>
 
    useEffect(() => {
    let myList = []
-   const q = query(collection(db, "bountyList"), where("poster", "==", user.uid));
+   const q = query(collection(db, "bountyList"), where("posterId", "==", user.uid));
 
    getDocs(q).then((querySnapshot)=>{
      querySnapshot.forEach((doc)=>{
@@ -33,13 +33,14 @@ const PosterHome = ({user, auth, db, storage, mobile, userData, setUserData}) =>
        <div className="sidebar" style={{width:mobile ? "100px" : "250px"}}>
       <center> <img src={mobile ? Logosm : Logo} width={mobile ? '50px' : '200px'} /> </center>
       <ul>
-        <li>Home</li>
-        <li>My Bounties</li>
+        <li onClick={e=>setScreen("home")}>Home</li>
+        <li onClick={e=>setScreen("mybounties")}> My Bounties</li>
       </ul>
     </div>
-       <div style={{width:'100vw',height:'100vh',marginLeft:mobile ? '50px' : '200px', marginTop:'25px'}}>
+       <div style={{marginLeft:mobile ? '100px' : '250px', marginTop:'25px'}}>
        <center>  <img src={Logo} width="500px" /> 
-           {(myBounties?.length ==0) && <PosterInit user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} setUserData={setUserData}/>}
+           {(screen=="home") && <PosterBounties user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} setUserData={setUserData}/>}
+   {(screen=="mybounties" && myBounties?.length !=0) && <></>}
        </center>
        </div> 
     </div>
