@@ -18,7 +18,7 @@ const PosterBounties = ({user, auth, db, storage, mobile, userData, setUserData}
      <BountyList user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} setUserData={setUserData} />
     <div style={{marginTop:'30px',backgroundColor:'#ffffff',width:'fit-content',padding:'30px',borderRadius:'8px'}}>
       <h4> Add A Bounty </h4>
-      <AddBountyWidget user={user} auth={auth} db={db} userData={userData} bounties={bounties} setBounties={setBounties}/>
+      <AddBountyWidget user={user} auth={auth} db={db} userData={userData} bounties={bounties} setBounties={setBounties} mobile={mobile}/>
     </div>
    </>
   );

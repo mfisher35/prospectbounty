@@ -22,11 +22,10 @@ const HunterHome = ({user, auth, db, storage, mobile, userData, setUserData}) =>
       <ul>
         <li onClick={e=>setScreen("bountylist")}>Bounty List</li>
         <li onClick={e=>setScreen("mybounties")}>My Bounties</li>
-        <li onClick={e=>console.log(screen)}> someting </li>
       </ul>
     </div>)}
        <div style={{marginTop:'25px',marginLeft : mobile ? "100px" : "250px"}}>
-         <center>  <img src={Logo} width="500px" /> 
+         <center>  <img src={Logo} width={mobile ? "250px" : "500px"} /> 
           
            {!userData['closeContacts'] && <HunterInit user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} setUserData={setUserData}/>}
            {userData['closeContacts'] && <BountyList key={'blist'+screen} user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} type={screen=="bountylist" ? 'all' : 'assignedToMe'}/>}

@@ -38,7 +38,7 @@ const PosterHome = ({user, auth, db, storage, mobile, userData, setUserData}) =>
       </ul>
     </div>
        <div style={{marginLeft:mobile ? '100px' : '250px', marginTop:'25px'}}>
-       <center>  <img src={Logo} width="500px" /> 
+       <center>  <img src={Logo} width={mobile ? "250px" : "500px"} /> 
            {(screen=="home") && <PosterBounties user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} setUserData={setUserData}/>}
    {(screen=="mybounties" && myBounties?.length !=0) && <></>}
        </center>
