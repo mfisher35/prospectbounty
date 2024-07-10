@@ -46,7 +46,6 @@ class App extends React.Component {
   onLogin = async (user,auth,db, storage) => {
      let userDataSnap = await getDoc(doc(db, 'userData', user['uid']));
      let userData = userDataSnap.data();
-     console.log('userData1',userData);
      if(userData['phoneVerified'])
        this.setState({user:user, auth:auth, db:db, storage:storage, userData:userData})
   }

@@ -145,6 +145,8 @@ const Login = ({onLogin}) => {
     try {
       if(phone.length < 10)
         throw new Error('Phone Number Must Be 10 Digits!');
+      if(role == null || role=="")
+        throw new Error('Please Choose a Role!');
       setError(null);
       await createUserWithEmailAndPassword(auth, email, password)
       let creds = await signInWithEmailAndPassword(auth,email, password);

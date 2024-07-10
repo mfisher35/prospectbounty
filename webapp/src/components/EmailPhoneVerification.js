@@ -53,14 +53,17 @@ const EmailPhoneVerification = ({ name, user, auth, storage, db, onLogin, userDa
   const [phoneConfirmationResult, setPhoneConfirmationResult] = useState(null);
   const [userPhoneCode, setUserPhoneCode] = useState("");
   const [error, setError]  = useState("");
-
+  const [captchaInit, setCaptchaInit] = useState(false)
   useEffect(() => {
-    try {window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+    try {
+       if(!captchaInit){
+         setCaptchaInit(true);
+         window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
       'size': 'invisible',
       'callback': (response) => {
         // reCAPTCHA solved, allow signInWithPhoneNumber.
       }
-    });} catch(e) {console.log(e)}
+    });}} catch(e) {console.log(e)}
   }, []);
 
   useEffect(() => {
