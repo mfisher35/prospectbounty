@@ -32,7 +32,7 @@ const BountyList = ({user, auth, db, storage, mobile, userData, type}) => {
   return (
     <div style={{padding:"30px 100px"}}>
       <center> 
-       <h2> Bounty List ({type == "all" ? "All" : "Assigned To Me"}) </h2> </center>
+       <h2> Bounty List ({type == "all" ? "All" : "My Bounties"}) </h2> </center>
        <br/><br/>
        {bountyList.map((item,ix)=><div className="card" key={`bounty-${ix}`} onClick={e=>onSubmit()}>
           <h4> {` ${ix+1}) ${item['bountyName']}`} </h4>
