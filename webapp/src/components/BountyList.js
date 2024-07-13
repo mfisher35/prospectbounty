@@ -17,7 +17,7 @@ const BountyList = ({user, auth, db, storage, mobile, userData, type}) => {
        let docData = doc.data();
        if(docData['id'] != 0)
         if( (userData['role'] == 'hunter' || (docData['posterId'] == user['uid'])))
-         if(type == "all" || (type=="assignedToMe" && docData['hunterId']==user['uid']))
+         if(type == "all" || (type=="assignedToMe" && docData['hunterId']==user['uid']) || (docData['posterId'] == user['uid']))
            myList.push(docData);
      })
     setBountyList(myList);

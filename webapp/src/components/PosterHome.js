@@ -34,13 +34,11 @@ const PosterHome = ({user, auth, db, storage, mobile, userData, setUserData}) =>
       <center> <img src={mobile ? Logosm : Logo} width={mobile ? '50px' : '200px'} /> </center>
       <ul>
         <li onClick={e=>setScreen("home")}>Home</li>
-        <li onClick={e=>setScreen("mybounties")}> My Bounties</li>
       </ul>
     </div>
        <div style={{marginLeft:mobile ? '100px' : '250px', marginTop:'25px'}}>
        <center>  <img src={Logo} width={mobile ? "250px" : "500px"} /> 
            {(screen=="home") && <PosterBounties user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} setUserData={setUserData}/>}
-   {(screen=="mybounties" && myBounties?.length !=0) && <></>}
        </center>
        </div> 
     </div>

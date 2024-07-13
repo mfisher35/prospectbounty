@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../App.css';
 import styled from 'styled-components';
 import Button from 'react-bootstrap/Button'
-import { doc, getDoc, setDoc, getFirestore } from "firebase/firestore";
+import { doc, getDoc, collection, setDoc, addDoc, getFirestore } from "firebase/firestore";
 import Checkmark from '../assets/checkmark.png'
 
 const AddBountyWidget = ({user, auth, db, userData, bounties, setBounties, mobile}) => {
@@ -14,8 +14,8 @@ const AddBountyWidget = ({user, auth, db, userData, bounties, setBounties, mobil
 
   const addBounty = async () => {
 
-   await setDoc(doc(db, "bountyList", user['uid']), addBountyData);
-
+   addBountyData['posterId'] = user['uid'];
+   await addDoc(collection(db, "bountyList"), addBountyData);
    let lbounties = [...bounties];
    lbounties.push(addBountyData);
    setBounties(lbounties);
@@ -57,7 +57,7 @@ const AddBountyWidget = ({user, auth, db, userData, bounties, setBounties, mobil
        {page=="description" && <div><br/> 
            <input placeholder="Bounty Name" value={addBountyData['bountyName']} onChange={e=>changeBountyData('bountyName',e.target.value)} type="text" size="25"/> <br/><br/>
            Enter an Overview of Your Bounty <br/><br/>
-           <textarea rows="10" cols={mobile ? "30" : "60"} placeholder="Brief Background of Your Offering and Target" value={addBountyData['description']} onChange={e=>changeBountyData('description',e.target.value)} type="text" size="500"/> <br/><br/>
+           <textarea rows="10" cols="30" placeholder="Brief Background of Your Offering and Target" value={addBountyData['description']} onChange={e=>changeBountyData('description',e.target.value)} type="text" size="500"/> <br/><br/>
            <Button onClick={e=>setPage("details")}> Continue </Button> </div>}
        {page=="details" && <div>
          <input type="radio" checked={addBountyType=="specific"} onClick={e=>setAddBountyType("specific")}/> Specific Person 
@@ -79,7 +79,7 @@ const AddBountyWidget = ({user, auth, db, userData, bounties, setBounties, mobil
          <center><Button variant="primary" onClick={e=>setPage("payment")}> Continue </Button> </center>
         </div>}
        {(page=="details" && addBountyType=="broad") && <div>
-         <textarea rows="10" cols={mobile ? "30":"60"} placeholder="Please Add More Details About the Target Audience" type="text" value={addBountyData['targetDescr']} onChange={e=>changeBountyData('targetDescr',e.target.value)}/><span style={{marginRight:'10px'}}/> <br/>
+         <textarea rows="10" cols="30" placeholder="Please Add More Details About the Target Audience" type="text" value={addBountyData['targetDescr']} onChange={e=>changeBountyData('targetDescr',e.target.value)}/><span style={{marginRight:'10px'}}/> <br/>
          <center><Button variant="primary" onClick={e=>setPage("payment")}> Continue </Button> </center>
         </div>}
        {page=="payment" && <div>
