@@ -1,25 +1,47 @@
 import React, { useState } from 'react';
+
 import '../App.css';
 import styled from 'styled-components';
 import Button from 'react-bootstrap/Button'
-import { doc, getDoc, collection, setDoc, addDoc, getFirestore } from "firebase/firestore";
+import { where, query, doc, getDocs, getDoc, collection, setDoc, addDoc, getFirestore } from "firebase/firestore";
 import Checkmark from '../assets/checkmark.png'
-
-const AddBountyWidget = ({user, auth, db, userData, bounties, setBounties, mobile}) => {
+import HomeIcon from '@mui/icons-material/Home';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import AddIcon from '@mui/icons-material/Add';
+const AddBountyWidget = ({user, auth, db, userData, bounties, setBounties, mobile, setAddingBounty}) => {
   const currentDate = new Date().toDateString();
 
   const [page, setPage] = useState('home')
   const [addBountyType, setAddBountyType] = useState(null);
   const [addBountyData, setAddBountyData] = useState({posterId:user.uid, posterName : userData['name'], postDate: currentDate});
 
+
+
   const addBounty = async () => {
 
    addBountyData['posterId'] = user['uid'];
+   addBountyData['createDate'] = (new Date()).toISOString()
    await addDoc(collection(db, "bountyList"), addBountyData);
    let lbounties = [...bounties];
    lbounties.push(addBountyData);
    setBounties(lbounties);
    clearBounty();
+  }
+  
+   const goToDescription = async () => {    
+     setAddingBounty(true);
+     const bountiesRef = collection(db, "bountyList");
+     const q = query(bountiesRef, where("posterId", "==", user.uid));
+     let description = "";
+     let querySnapshot = await getDocs(q);
+     if (!querySnapshot.empty) {
+          querySnapshot.forEach(doc => {
+             let docData = doc.data();
+            description = docData['description']
+          });
+     }
+     setAddBountyData({description});
+     setPage("description")
   }
 
   const clearBounty = () => {
@@ -49,17 +71,14 @@ const AddBountyWidget = ({user, auth, db, userData, bounties, setBounties, mobil
 
   return (
     <div style={{width:mobile ? '200px':'500px'}}>
-       {/*bounties.length > 0 && 
-         bounties.map((item,index) => (<> <span style={{padding:'10px',borderRadius:'15px',backgroundColor:'#d4d2c1'}}> {unroll(item)} </span><div style={{marginBottom:'30px'}}/></>))*/
-       }
-
-       {page=="home" && <Button primary onClick={e=>setPage("description")}> + Add Bounty </Button>}
+       {page=="home" && <Button primary onClick={e=>goToDescription()}> + Add Bounty </Button>}
        {page=="description" && <div><br/> 
            <input placeholder="Bounty Name" value={addBountyData['bountyName']} onChange={e=>changeBountyData('bountyName',e.target.value)} type="text" size="25"/> <br/><br/>
-           Enter an Overview of Your Bounty <br/><br/>
-           <textarea rows="10" cols="30" placeholder="Brief Background of Your Offering and Target" value={addBountyData['description']} onChange={e=>changeBountyData('description',e.target.value)} type="text" size="500"/> <br/><br/>
+           Enter Description of Your Product/Service: <br/><br/>
+           <textarea rows="10" cols="30" placeholder="Brief Background of You, Your Service/Offering" value={addBountyData['description']} onChange={e=>changeBountyData('description',e.target.value)} type="text" size="500"/> <br/><br/>
            <Button onClick={e=>setPage("details")}> Continue </Button> </div>}
        {page=="details" && <div>
+         <h5> Bounty Target Info </h5>
          <input type="radio" checked={addBountyType=="specific"} onClick={e=>setAddBountyType("specific")}/> Specific Person 
          <span style={{marginRight:'10px'}}> </span> 
          <input type="radio" checked={addBountyType=="broad"} onClick={e=>setAddBountyType("broad")}/> Broad Target 
@@ -90,7 +109,9 @@ const AddBountyWidget = ({user, auth, db, userData, bounties, setBounties, mobil
     </div>}
      {page=="finished" && <div>
        <img src={Checkmark} width="150px"/> <br/> <br/>
-         <span> Bounty Submitted! </span>
+         <span> Bounty Submitted! </span> <br/><br/>
+         <Button onClick={e=>{goToDescription()}}> <AddIcon fontSize="small" style={{marginBottom:'3px',marginRight:'2px'}} /> Add Another Bounty </Button> <br/><br/> 
+         <Button onClick={e=>{setPage("home");setAddingBounty(false);}}>  <FormatListBulletedIcon style={{marginBottom:'3px',marginRight:'2px'}} fontSize="small"/>  Back To Bounty List  </Button>
     </div>}
    
     </div>

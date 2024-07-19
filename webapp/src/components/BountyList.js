@@ -20,6 +20,7 @@ const BountyList = ({user, auth, db, storage, mobile, userData, type}) => {
          if(type == "all" || (type=="assignedToMe" && docData['hunterId']==user['uid']) || (docData['posterId'] == user['uid']))
            myList.push(docData);
      })
+    myList.sort((a,b) => a > b);
     setBountyList(myList);
    })
   }, []);
@@ -36,8 +37,12 @@ const BountyList = ({user, auth, db, storage, mobile, userData, type}) => {
        <br/><br/>
        {bountyList.map((item,ix)=><div className="card" key={`bounty-${ix}`} onClick={e=>onSubmit()}>
           <h4> {` ${ix+1}) ${item['bountyName']}`} </h4>
+
+          {item['linkedin'] ? (<h6> <a href={item['linkedin']}> LinkedIn Link </a> </h6>) : <></>}
           <h5> {` Reward: $${item['amount']}`} </h5>
-          <h6> {`$${item['description']}`} </h6>
+
+          {item['company'] ? (<h6> <u> Company</u>:  {item['company']} </h6>) : <></>}
+          <h6> {`${item['description']}`} </h6>
        </div>)}
     </div>
   );
