@@ -1,25 +1,48 @@
-const restServer = "https://www.friendzone.best/rest"
+const restServer = "https://payments-zjssq4bgza-uc.a.run.app"
 
-//given a problem_description return all the dates and corrective actions for it
-export async function signupAPI(data) {
-  console.log('a');
-  let url = `${restServer}/submit-form`
-  //url+= "?n="+n.toString()
-  //url+= "&acn="+acn.toString()
+//create a stripe customer object with the given customer data {name,email}
+export async function createCustomerAPI(user,customerData) {
+  let token = await user.getIdToken();
+  let url = `${restServer}`
+  let data = {'reqType': 'createCustomer', 'customerData':customerData};
 
   return await fetch(url, {
       body: JSON.stringify(data),
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        //'x-access-token' : token,
+        'Authorization' : token,
       }
     }).then(res => res.json()).catch(function(error) {
 
-       console.log('b');
        console.log(error.toString());
     }).then(res => { 
          console.log(res);
          return res
     });
 }
+
+//create a stripe setup intent for adding a new credit card with given customerId 
+export async function createSetupIntentAPI(user,custId) {
+  let token = await user.getIdToken();
+  let url = `${restServer}`
+  let data = {'reqType': 'createSI', 'customerId':custId};
+
+  return await fetch(url, {
+      body: JSON.stringify(data),
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization' : token,
+      }
+    }).then(res => res.json()).catch(function(error) {
+
+       console.log(error.toString());
+    }).then(res => { 
+         console.log(res);
+         return res
+    });
+}
+
+
+

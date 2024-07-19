@@ -30,6 +30,7 @@ class App extends React.Component {
     super(props);
     this.state = {mobile:window.innerWidth <= 768,page:'main', user:null, storedResponses:{}};
     this.pageChanged = this.pageChanged.bind(this);
+    this.setUserData = this.setUserData.bind(this);
   }
 
   componentDidMount() {
@@ -44,10 +45,13 @@ class App extends React.Component {
   }
 
   onLogin = async (user,auth,db, storage) => {
+
      let userDataSnap = await getDoc(doc(db, 'userData', user['uid']));
      let userData = userDataSnap.data();
+     let stripe = Stripe('pk_test_51OdzI1Alm1HQFLjrcSvj9WILA3ZFY4iXYlGweR4VV8f8UI6aFgDOKHHVOMulInw0eW58XEIJ95xjUG1Za9MeMeQp00HyjV5P2w');
+
      if(userData['phoneVerified'])
-       this.setState({user:user, auth:auth, db:db, storage:storage, userData:userData})
+       this.setState({user, auth, db, storage, userData, stripe:stripe})
   }
 
   setUserData = (userData) => {
@@ -75,7 +79,7 @@ class App extends React.Component {
       <GlobalStyle/>
       {this.getRole() == 'hunter'  && (
         <HunterHome user={this.state.user} auth={this.state.auth} db={this.state.db} storage={this.state.storage}  mobile={this.state.mobile} userData={this.state.userData} setUserData={this.setUserData}/> )}
-      {this.getRole() == 'poster' && ( <PosterHome user={this.state.user} auth={this.state.auth} db={this.state.db} storage={this.state.storage}  mobile={this.state.mobile} userData={this.state.userData} setUserData={this.setUserData}/> )}
+      {this.getRole() == 'poster' && ( <PosterHome user={this.state.user} auth={this.state.auth} db={this.state.db} storage={this.state.storage}  mobile={this.state.mobile} userData={this.state.userData} setUserData={this.setUserData} stripe={this.state.stripe}/> )}
  
     </div>
     )

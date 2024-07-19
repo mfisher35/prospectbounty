@@ -6,8 +6,9 @@ import styled from 'styled-components';
 import PosterBounties from './PosterBounties';
 import { collection, query, where, getDocs } from "firebase/firestore";
 import BountyList from './BountyList';
+import PaymentMethods from './PaymentMethods';
 
-const PosterHome = ({user, auth, db, storage, mobile, userData, setUserData}) => {
+const PosterHome = ({user, auth, db, storage, mobile, userData, setUserData, stripe}) => {
   //const [userData, setUserData] = useState(null);
   const [screen, setScreen] = useState("home");
   const [myBounties, setMyBounties] = useState(null);
@@ -34,11 +35,13 @@ const PosterHome = ({user, auth, db, storage, mobile, userData, setUserData}) =>
       <center> <img src={mobile ? Logosm : Logo} width={mobile ? '50px' : '200px'} /> </center>
       <ul>
         <li onClick={e=>setScreen("home")}>Home</li>
+        <li onClick={e=>setScreen("paymentMethods")}>Payment Methods</li>
       </ul>
     </div>
        <div style={{marginLeft:mobile ? '100px' : '250px', marginTop:'25px'}}>
        <center>  <img src={Logo} width={mobile ? "250px" : "500px"} /> 
            {(screen=="home") && <PosterBounties user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} setUserData={setUserData}/>}
+           {(screen=="paymentMethods") && <PaymentMethods user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} setUserData={setUserData} stripe={stripe}/>}
        </center>
        </div> 
     </div>

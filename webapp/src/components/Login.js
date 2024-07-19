@@ -97,6 +97,7 @@ const Login = ({onLogin}) => {
   const [loggingIn, setLoggingIn] = useState(null);
   const [user, setUser] = useState(null);
   const [name, setName] = useState("");
+  const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [page, setPage] = useState("home");
   const [userData, setUserData] = useState(null);
@@ -151,7 +152,7 @@ const Login = ({onLogin}) => {
       await createUserWithEmailAndPassword(auth, email, password)
       let creds = await signInWithEmailAndPassword(auth,email, password);
       await sendEmailVerification(auth.currentUser);
-      let newUserData = {role:role,name:name,phone:phone,phoneVerified:false};
+      let newUserData = {role,name,fullName,phone,phoneVerified:false};
       await setDoc(doc(db, "userData", creds['user']['uid']), newUserData);
       setUserData(newUserData);
       setUser(creds['user']);
@@ -172,7 +173,7 @@ const Login = ({onLogin}) => {
   
   if(userData)
     if (user && (!user.emailVerified || !userData['phoneVerified'])) {
-      return <EmailPhoneVerification name={name} user={user} auth={auth} storage={storage} db={db} onLogin={onLogin} email={email} password={password} userData={userData}/>;
+      return <EmailPhoneVerification name={name} fullName={fullName} user={user} auth={auth} storage={storage} db={db} onLogin={onLogin} email={email} password={password} userData={userData}/>;
   }
 
   if(userData)
@@ -187,9 +188,16 @@ const Login = ({onLogin}) => {
        <div style={{margin:'10px'}}></div>
 {registering &&  (<><Input
           type="text"
-          placeholder="First Name / Nickname"
+          placeholder="First Name / Nickname (Public)"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          required
+        />
+        <Input
+          type="text"
+          placeholder="Full Name (Private)"
+          value={fullName}
+          onChange={(e) => setFullName(e.target.value)}
           required
         />
         <Input

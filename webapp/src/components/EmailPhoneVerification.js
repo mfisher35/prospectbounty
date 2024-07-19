@@ -4,6 +4,7 @@ import EmailImg from '../assets/email.png';
 import { signInWithEmailAndPassword, signInWithPhoneNumber, sendEmailVerification, RecaptchaVerifier } from "firebase/auth";
 import { doc, getDoc, setDoc, getFirestore } from "firebase/firestore";
 import Logo  from '../assets/logofull.png';
+import {createCustomerAPI} from './APIHelpers';
 
 const cleanError = (error) => {
     let result = error;
@@ -45,7 +46,7 @@ const Button = styled.button`
   }
 `;
 
-const EmailPhoneVerification = ({ name, user, auth, storage, db, onLogin, userData, email, password }) => {
+const EmailPhoneVerification = ({ user, auth, storage, db, onLogin, userData, email, password }) => {
   const [emailVerified, setEmailVerified] = useState(user.emailVerified);
   const [initialEmailSent, setInitialEmailSent] = useState(false);
   const [phoneVerificationCode, setPhoneVerificationCode] = useState('');
@@ -110,6 +111,8 @@ const handleVerifyCode = async ()  => {
           .then(async (result) => {
             newUserData['phoneVerified'] = true;
             let creds = await signInWithEmailAndPassword(auth,email, password);
+            let customer = await createCustomerAPI(user,{name: newUserData['fullName'], email: user.email})
+            newUserData['custId'] = customer['id'];
             await setDoc(doc(db, "userData", user['uid']), newUserData);
             setPhoneVerified(true);
           })
