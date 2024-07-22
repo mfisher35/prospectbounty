@@ -8,14 +8,14 @@ import Checkmark from '../assets/checkmark.png'
 import HomeIcon from '@mui/icons-material/Home';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import AddIcon from '@mui/icons-material/Add';
-const AddBountyWidget = ({user, auth, db, userData, bounties, setBounties, mobile, setAddingBounty}) => {
+import Payment from './Payment';
+const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBounties, mobile, setAddingBounty, stripe}) => {
   const currentDate = new Date().toDateString();
 
   const [page, setPage] = useState('home')
   const [addBountyType, setAddBountyType] = useState(null);
-  const [addBountyData, setAddBountyData] = useState({posterId:user.uid, posterName : userData['name'], postDate: currentDate});
-
-
+  const [addBountyData, setAddBountyData] = useState({posterId:user.uid, posterName :userData['name'], postDate: currentDate});
+  const [paymentError, setPaymentError] = useState("");
 
   const addBounty = async () => {
 
@@ -42,6 +42,21 @@ const AddBountyWidget = ({user, auth, db, userData, bounties, setBounties, mobil
      }
      setAddBountyData({description});
      setPage("description")
+  }
+  const startPayment = () => {
+
+  }
+  const onPaymentSuccess = () => {
+    console.log('payment success');
+    try{
+       addBounty();
+       setPage('finished')
+    }
+    catch(e) {console.log(e);}
+  }
+
+  const onPaymentFail = (error) => {
+    setPaymentError(error);
   }
 
   const clearBounty = () => {
@@ -102,11 +117,10 @@ const AddBountyWidget = ({user, auth, db, userData, bounties, setBounties, mobil
          <center><Button variant="primary" onClick={e=>setPage("payment")}> Continue </Button> </center>
         </div>}
        {page=="payment" && <div>
-         $ <input type="text" placeholder="Bounty Amount" type="text" value={addBountyData['amount']} onChange={e=>changeBountyData('amount',e.target.value)}/><span style={{marginRight:'10px'}}/> <br/>
-         <div style={{width:mobile ? "300px": '500px',height:'300px',backgroundColor:'gray'}}> CC PAYMENT GOES HERE TBD </div> 
-         <div style={{marginBottom:'15px'}}> <span style={{fontSize:'10pt'}}> The Card Will Be Charged And The Money Will Be Held In Escrow </span></div>
-         <center> <Button variant="primary" onClick={e=>addBounty()}>  Submit Bounty </Button> </center>
-    </div>}
+         
+            <Payment userData={userData} user={user} auth={auth} setUserData={setUserData} stripe={stripe} onPaymentSuccess={onPaymentSuccess} onPaymentFail={onPaymentFail}/>
+ 
+    </div>} 
      {page=="finished" && <div>
        <img src={Checkmark} width="150px"/> <br/> <br/>
          <span> Bounty Submitted! </span> <br/><br/>

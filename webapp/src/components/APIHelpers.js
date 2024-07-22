@@ -22,6 +22,50 @@ export async function createCustomerAPI(user,customerData) {
     });
 }
 
+//create a stripe payment intent for making a credit card payment, paymentData = {amount*100, currency, customer, email, paymentMethodId}
+export async function createPaymentIntentAPI(user,paymentData) {
+  let token = await user.getIdToken();
+  let url = `${restServer}`
+  let data = {'reqType': 'createPI', paymentData};
+
+  return await fetch(url, {
+      body: JSON.stringify(data),
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization' : token,
+      }
+    }).then(res => res.json()).catch(function(error) {
+
+       console.log(error.toString());
+    }).then(res => { 
+         console.log(res);
+         return res
+    });
+}
+
+//get setup intent data that belongs to the appropriate setupId
+export async function getSetupIntentAPI(user,setupId) {
+  let token = await user.getIdToken();
+  let url = `${restServer}`
+  let data = {'reqType': 'getSI', 'setupId':setupId};
+
+  return await fetch(url, {
+      body: JSON.stringify(data),
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization' : token,
+      }
+    }).then(res => res.json()).catch(function(error) {
+
+       console.log(error.toString());
+    }).then(res => { 
+         console.log(res);
+         return res
+    });
+}
+
 //create a stripe setup intent for adding a new credit card with given customerId 
 export async function createSetupIntentAPI(user,custId) {
   let token = await user.getIdToken();

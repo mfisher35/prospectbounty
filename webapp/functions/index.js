@@ -281,7 +281,7 @@ const createPaymentIntent = async(paymentData) => {
      customer: paymentData['customer'],
      receipt_email: paymentData['email'],
      payment_method : paymentData['paymentMethodId'],
-     description:"Electrical Vehicle Charging",
+     description:"Sales Prospecting",
      automatic_payment_methods: {
      enabled: true,
      },
