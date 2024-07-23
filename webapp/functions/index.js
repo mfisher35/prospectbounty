@@ -285,6 +285,7 @@ const createConnectedAccount = async(uid,hostData,ip) => {
    return account;
 }
 
+
 //hostData = {'stripeConnectedAccountId' : '', bankAccountToken : 'btok_...'}
 const updateBankConnectedAccount = async(hostData) => {
    const account = await stripe.accounts.update(
@@ -414,6 +415,64 @@ exports.payments = onRequest({ cors: true}, (req, res) => {
                 resultPromise = createBounty(bountyData);
             }
 
+            else {
+                // Handle the case where reqType is not supported
+                return Promise.reject(new Error('Invalid reqType'));
+            }
+
+            return resultPromise;
+        })
+        .then(result => {
+            res.status(200).send(result);
+        })
+        .catch(error => {
+            console.error(error);
+            res.status(403).send('Unauthorized');
+        });
+
+});
+ 
+
+
+const modifyBounty = async (uid,bountyData) =>{
+  let docRef = await db.collection("bountyList").doc(bountyData['bountyId'])
+  let doc = await docRef.get();
+  let docData = doc.data();
+  if(uid == docData['posterId']){
+     let result = await docRef.update(bountyData).get();
+     return {'result' : 'success'}
+  }
+  return {'error' : 'User Does Not Have Access!'}
+} 
+
+exports.manageBounties = onRequest({ cors: true}, (req, res) => {
+    const token = req.get('Authorization');
+    const reqType = req.body.reqType;
+    const ip = req.ip;
+
+    if (!token) {
+        return res.status(401).send('No token provided');
+    }
+
+    if (!reqType) {
+        return res.status(400).send('No reqType provided');
+    }
+
+    admin.auth().verifyIdToken(token)
+        .then((decodedToken) => {
+            let resultPromise;
+            if (reqType == 'DEPRassignBounty') {
+                 const bountyAssignData = req.body.bountyAssignData; 
+                 if (!bountyAssignData) 
+                  return res.status(400).send('No bountyAssign provided');
+               resultPromise = assignBounty(bountyAssignData);
+            }
+            else if (reqType == 'modifyBounty') {
+                const bountyData = req.body.bountyData; 
+                if (!customerId)
+                  return res.status(400).send('No bountyData provided');
+                resultPromise = modifyBounty(decodedToken.uid,bountyData);
+            }
             else {
                 // Handle the case where reqType is not supported
                 return Promise.reject(new Error('Invalid reqType'));
