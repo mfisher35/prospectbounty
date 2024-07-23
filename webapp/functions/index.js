@@ -49,23 +49,17 @@ const createPayout = async(payoutData) => {
 }*/
 
 const isDuplicatePayment= async (id) => {
-  logger.info('start dupe');
+  //logger.info('start dupe');
   let collectionRef = await db.collection('bountyList')
-  logger.info('collref');
-  logger.info(collectionRef);
   let snapshot = await collectionRef.where('paymentData.id', '==', id).get();
-  logger.info('dupe?');
-  logger.info(snapshot.empty);
   return !snapshot.empty
 }
 
 const createBounty = async (bountyData) => {
   //check that the payment was made and that it doesn't already exist
   const paymentIntent = await stripe.paymentIntents.retrieve(bountyData['paymentData']['id']);
-  logger.info('paymentIntent',paymentIntent);
   let isDuplicate = await isDuplicatePayment(bountyData['paymentData']['id']);
   if(paymentIntent['status'] == 'succeeded' && !isDuplicate){
-    logger.info('success');
     addDocument('bountyList',bountyData);
     return {'result' : 'success'};
   }
