@@ -9,6 +9,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import AddIcon from '@mui/icons-material/Add';
 import Payment from './Payment';
+import {createBountyAPI} from './APIHelpers';
 const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBounties, mobile, setAddingBounty, stripe}) => {
   const currentDate = new Date().toDateString();
 
@@ -17,15 +18,25 @@ const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBo
   const [addBountyData, setAddBountyData] = useState({posterId:user.uid, posterName :userData['name'], postDate: currentDate});
   const [paymentError, setPaymentError] = useState("");
 
-  const addBounty = async () => {
-
+  const addBounty = async (paymentData) => {
    addBountyData['posterId'] = user['uid'];
-   addBountyData['createDate'] = (new Date()).toISOString()
-   await addDoc(collection(db, "bountyList"), addBountyData);
-   let lbounties = [...bounties];
-   lbounties.push(addBountyData);
-   setBounties(lbounties);
-   clearBounty();
+   addBountyData['createDate'] = (new Date()).toISOString();
+   addBountyData['amount'] = paymentData['amount']/100.0;
+   addBountyData['paymentData'] = paymentData;
+   //let newBounty = await addDoc(collection(db, "bountyList"), addBountyData);
+   try {
+      let result = await createBountyAPI(user,addBountyData);
+      if(result['result'] == 'success'){
+        let lbounties = [...bounties];
+        lbounties.push(addBountyData);
+        setBounties(lbounties);
+        clearBounty();
+        return true;
+      }
+      else{ setPaymentError(result['error'])}
+   }
+   catch(e){setPaymentError(e.toString()); return false;}
+    return false;
   }
   
    const goToDescription = async () => {    
@@ -46,10 +57,10 @@ const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBo
   const startPayment = () => {
 
   }
-  const onPaymentSuccess = () => {
+  const onPaymentSuccess = async (paymentData) => {
     console.log('payment success');
     try{
-       addBounty();
+       if(await addBounty(paymentData))
        setPage('finished')
     }
     catch(e) {console.log(e);}

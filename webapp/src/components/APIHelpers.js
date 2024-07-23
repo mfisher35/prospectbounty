@@ -89,4 +89,26 @@ export async function createSetupIntentAPI(user,custId) {
 }
 
 
+//create a bountyData Object in the bounty list collection {amount, bountyName, description, company, email, fname, lname, linkedin, oistDate, posterId, posterName, paymentData} 
+export async function createBountyAPI(user,bountyData) {
+  let token = await user.getIdToken();
+  let url = `${restServer}`
+  let data = {'reqType': 'createBounty', bountyData};
+
+  return await fetch(url, {
+      body: JSON.stringify(data),
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization' : token,
+      }
+    }).then(res => res.json()).catch(function(error) {
+
+       console.log(error.toString());
+    }).then(res => { 
+         console.log(res);
+         return res
+    });
+}
+
 

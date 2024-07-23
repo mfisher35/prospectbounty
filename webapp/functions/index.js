@@ -48,6 +48,34 @@ const createPayout = async(payoutData) => {
     return payout;
 }*/
 
+const isDuplicatePayment= async (id) => {
+  logger.info('start dupe');
+  let collectionRef = await db.collection('bountyList')
+  logger.info('collref');
+  logger.info(collectionRef);
+  let snapshot = await collectionRef.where('paymentData.id', '==', id).get();
+  logger.info('dupe?');
+  logger.info(snapshot.empty);
+  return !snapshot.empty
+}
+
+const createBounty = async (bountyData) => {
+  //check that the payment was made and that it doesn't already exist
+  const paymentIntent = await stripe.paymentIntents.retrieve(bountyData['paymentData']['id']);
+  logger.info('paymentIntent',paymentIntent);
+  let isDuplicate = await isDuplicatePayment(bountyData['paymentData']['id']);
+  if(paymentIntent['status'] == 'succeeded' && !isDuplicate){
+    logger.info('success');
+    addDocument('bountyList',bountyData);
+    return {'result' : 'success'};
+  }
+
+  return {'error' : 'error: There was a problem with the provided Payment ID'}
+
+  
+}
+
+
 const getBalance = async(uid) => {
   let balance = 0;
   let pendingCredit = 0;
@@ -282,9 +310,7 @@ const createPaymentIntent = async(paymentData) => {
      receipt_email: paymentData['email'],
      payment_method : paymentData['paymentMethodId'],
      description:"Sales Prospecting",
-     automatic_payment_methods: {
-     enabled: true,
-     },
+     payment_method_types:["card"]
     });
     return paymentIntent;
  };
@@ -387,6 +413,13 @@ exports.payments = onRequest({ cors: true}, (req, res) => {
                   return res.status(400).send('No paymentData provided');
                 resultPromise = createPaymentIntent(paymentData);
             }
+            else if (reqType == 'createBounty') {
+                const bountyData = req.body.bountyData; 
+                if (!bountyData)
+                  return res.status(400).send('No bountyData provided');
+                resultPromise = createBounty(bountyData);
+            }
+
             else {
                 // Handle the case where reqType is not supported
                 return Promise.reject(new Error('Invalid reqType'));
