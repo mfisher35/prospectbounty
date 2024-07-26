@@ -7,7 +7,7 @@ import {limit, where, updateDoc, doc, collection, query, orderBy, onSnapshot, se
 import {getYearMonth} from './Helpers';
 import Logo  from '../assets/logofull.png';
 
-const Chat = ({user, auth, db, storage, mobile, userData, type, userId1, userId2 }) => {
+const Chat = ({user, auth, db, storage, mobile, userData, type, userId2, userName2}) => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const sortedIds = [userId1, userId2].sort();
@@ -43,6 +43,9 @@ const Chat = ({user, auth, db, storage, mobile, userData, type, userId1, userId2
         members : [user.uid,'test'],
         message,
         sender: user.uid,
+        senderName: userData['name'],
+        receiver: userId2,
+        receiverName: userName2,
         timestamp: serverTimestamp(),
       });
       setMessage('');
