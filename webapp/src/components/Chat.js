@@ -18,7 +18,7 @@ const Chat = ({user, auth, db, storage, mobile, userData, type, userId1, userId2
     const q = query(
       collection(db, 'chats', chatId, 'messages'),where("members", "array-contains", user.uid), orderBy('timestamp','desc'),limit(20)
     );
-
+    
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const messages = snapshot.docs.map(doc => doc.data()).reverse();
       console.log(messages);
@@ -27,6 +27,14 @@ const Chat = ({user, auth, db, storage, mobile, userData, type, userId1, userId2
 
     return () => unsubscribe();
   }, [chatId]);
+
+    const convertTimestamp = (timestamp)=> {
+     let dateLocal = timestamp.toDate();
+     let newDate = new Date(
+      dateLocal.getTime() - dateLocal.getTimezoneOffset() * 60 * 1000
+    );
+     return new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit', hour: '2-digit', minute: '2-digit'}).format(dateLocal)
+    }
 
   const sendMessage = async () => {
     console.log(messages.length);
@@ -42,19 +50,27 @@ const Chat = ({user, auth, db, storage, mobile, userData, type, userId1, userId2
   };
 
   return (
-    <div>
+       <div className="chat-container">
       <div id="messages">
         {messages.map((msg, index) => (
-          <p key={index}><strong>{msg.sender}:</strong> {msg.message}</p>
+          <div key={index} className="message">
+            <p style={{'marginBottom':'15px'}}>
+              <span style={{fontSize:'9pt'}}><b> {msg.sender == user.uid ? "Me  " : "Them  "}</b></span>
+              <span style={{fontSize:'8pt',fontColor:'#727479',marginLeft:'10px'}}> {convertTimestamp(msg.timestamp)}<br/></span>
+               {msg.message}
+            </p>
+          </div>
         ))}
       </div>
-      <input
-        type="text"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        placeholder="Type a message"
-      />
-      <button onClick={sendMessage}>Send</button>
+      <div className="input-container">
+        <input
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          placeholder="Type a message"
+        />
+        <button class="chatbutton" onClick={sendMessage}>Send</button>
+      </div>
     </div>
   );
 
