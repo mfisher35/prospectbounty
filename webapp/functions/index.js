@@ -433,7 +433,7 @@ exports.payments = onRequest({ cors: true}, (req, res) => {
 });
  
 
-
+//modify given bounty with an update, bountyData should include a 'bountyId'
 const modifyBounty = async (uid,bountyData) =>{
   let docRef = await db.collection("bountyList").doc(bountyData['bountyId'])
   let doc = await docRef.get();
@@ -469,7 +469,7 @@ exports.manageBounties = onRequest({ cors: true}, (req, res) => {
             }
             else if (reqType == 'modifyBounty') {
                 const bountyData = req.body.bountyData; 
-                if (!customerId)
+                if (!bountyData)
                   return res.status(400).send('No bountyData provided');
                 resultPromise = modifyBounty(decodedToken.uid,bountyData);
             }

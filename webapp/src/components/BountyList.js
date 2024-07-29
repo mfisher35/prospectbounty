@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import AddContactsWidget from "./AddContactsWidget";
 import {collection, getDocs, doc, setDoc, getDoc } from "firebase/firestore"; 
 import Logo  from '../assets/logofull.png';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 
 const BountyList = ({user, auth, db, storage, mobile, userData, type}) => {
    const [bountyList, setBountyList] = useState([]);
@@ -44,6 +45,7 @@ const BountyList = ({user, auth, db, storage, mobile, userData, type}) => {
 
           {item['company'] ? (<h6> <u> Company</u>:  {item['company']} </h6>) : <></>}
           <h6> {`${item['description']}`} </h6>
+          <div className="contact-button"> <ChatBubbleIcon style={{fontSize:'10pt',marginRight:'5px',color:'#607bd1'}}/> Contact </div>   
        </div>)}
     </div>
   );

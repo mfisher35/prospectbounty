@@ -371,3 +371,21 @@ label {
   margin: 0;
 }
 
+.contact-button {
+color:blue;
+cursor:pointer;
+border:1px solid #bbb;
+border-radius:10px;
+font-size:8pt;
+margin-left:auto;
+margin-right:0px;
+width:fit-content;
+padding:5px;
+
+   &:hover {
+     background-color:#ccc;
+   }
+}
+
+
+
