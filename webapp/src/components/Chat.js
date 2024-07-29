@@ -7,6 +7,7 @@ import {limit, where, updateDoc, doc, collection, query, orderBy, onSnapshot, se
 import {getYearMonth} from './Helpers';
 import Logo  from '../assets/logofull.png';
 import SendIcon from '@mui/icons-material/Send';
+import UserBountyAssignmentWidget from './UserBountyAssignmentWidget';
 
 const Chat = ({user, auth, db, storage, mobile, userData, userId2, userName2}) => {
   const [message, setMessage] = useState('');
@@ -55,8 +56,9 @@ const Chat = ({user, auth, db, storage, mobile, userData, userId2, userName2}) =
     }
   };
 
-  return (
-       <div className="chat-container" style={{marginTop:'20px'}}>
+  return ( <div style={{marginTop:'15px'}}>
+    <UserBountyAssignmentWidget/>
+       <div className="chat-container" style={{marginTop:'10px'}}>
        
       <div id="messages">
         {messages.map((msg, index) => (
@@ -79,6 +81,7 @@ const Chat = ({user, auth, db, storage, mobile, userData, userId2, userName2}) =
         <button class="chatbutton" onClick={sendMessage}> <SendIcon style={{fontSize:'13pt',marginBottom:'2px'}}/> Send</button>
       </div>
     </div>
+   </div>
   );
 
 }
