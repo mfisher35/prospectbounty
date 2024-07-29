@@ -19,7 +19,9 @@ const BountySearch = ({user, auth, db, storage, mobile, userData, type}) => {
   const changeCriteria = (i,cat,value)=>{
     let newCriteria = [... criteria];
     if(i > newCriteria.length){
-      if(newCriteria[i-2][0] !='')
+      if(newCriteria.length == 0)
+        newCriteria.push(['','']);
+      else if(newCriteria[i-2][0] !='')
         newCriteria.push(['','']);
     }
     else if(cat && value){
