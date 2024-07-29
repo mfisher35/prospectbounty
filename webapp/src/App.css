@@ -155,6 +155,15 @@ background: #FFF;
 text-align:left;
 }
 
+
+select {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  
+}
+
 input {
   margin-bottom: 1rem;
   padding: 0.5rem;
@@ -351,3 +360,14 @@ input[type="text"] {
   cursor: pointer;
   border-radius: 0;
 }
+
+.form-inline {
+  display: flex;
+  align-items: center;
+  
+}
+
+label {
+  margin: 0;
+}
+
