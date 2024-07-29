@@ -9,7 +9,7 @@ const AddContactsWidget = ({setContacts, contacts}) => {
   const [addContactType, setAddContactType] = useState(null);
   const [addFname, setAddFname] = useState("");
   const [addLname, setAddLname] = useState("");
-  const [addCompany, setAddCompany] = useState("");
+  const [addOrganization, setAddOrganization] = useState("");
   const [addLinkedIn, setAddLinkedIn] = useState("");
   const [addPosition, setAddPosition] = useState("");
 
@@ -20,7 +20,7 @@ const AddContactsWidget = ({setContacts, contacts}) => {
    if(addContactType == "person"){
      addContactData['fname'] = addFname;
      addContactData['lname'] = addLname;
-     addContactData['company'] = addCompany;
+     addContactData['organization'] = addOrganization;
      addContactData['position'] = addPosition;
    }
    let lcontacts = contacts;
@@ -34,7 +34,7 @@ const AddContactsWidget = ({setContacts, contacts}) => {
     setAddingContact(null);
     setAddFname("");
     setAddLname("");
-    setAddCompany("");
+    setAddOrganization("");
     setAddPosition("");
     setAddLinkedIn("");
   }
@@ -42,7 +42,7 @@ const AddContactsWidget = ({setContacts, contacts}) => {
   return (
     <div>
        {contacts.length > 0 && 
-         contacts.map((item,index) => (<> <span style={{padding:'10px',borderRadius:'15px',backgroundColor:'#d4d2c1'}}> {item['linkedin'] ? item['linkedin'] : item['fname'] + " - " + item['lname'] + " - " + item['position'] + " - " + item['company']} </span><div style={{marginBottom:'30px'}}/></>))
+         contacts.map((item,index) => (<> <span style={{padding:'10px',borderRadius:'15px',backgroundColor:'#d4d2c1'}}> {item['linkedin'] ? item['linkedin'] : item['fname'] + " - " + item['lname'] + " - " + item['position'] + " - " + item['organization']} </span><div style={{marginBottom:'30px'}}/></>))
        }
 
        {!addingContact && <Button primary onClick={e=>setAddingContact(true)}> + Add Contact </Button>}
@@ -58,7 +58,7 @@ const AddContactsWidget = ({setContacts, contacts}) => {
        {(addingContact && addContactType=="person") && <div>
          <input placeholder="First Name" value={addFname} onChange={e=>setAddFname(e.target.value)} type="text"/> <span style={{marginRight:'10px'}}/>
          <input placeholder="Last Name" type="text"  value={addLname} onChange={e=>setAddLname(e.target.value)} /> <span style={{marginRight:'10px'}}/>
-         <input placeholder="Company" type="text"  value={addCompany} onChange={e=>setAddCompany(e.target.value)}/> <span style={{marginRight:'10px'}}/>
+         <input placeholder="Organization" type="text"  value={addOrganization} onChange={e=>setAddOrganization(e.target.value)}/> <span style={{marginRight:'10px'}}/>
          <input placeholder="Position" type="text" value={addPosition} onChange={e=>setAddPosition(e.target.value)}/><span style={{marginRight:'10px'}}/> <br/>
          <center><Button variant="primary" onClick={e=>addContact()}> Add </Button> </center>
         </div>}

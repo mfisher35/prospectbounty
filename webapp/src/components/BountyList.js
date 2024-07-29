@@ -7,7 +7,7 @@ import {collection, getDocs, doc, setDoc, getDoc } from "firebase/firestore";
 import Logo  from '../assets/logofull.png';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 
-const BountyList = ({user, auth, db, storage, mobile, userData, type}) => {
+const BountyList = ({user, auth, db, storage, mobile, userData, type, onChat}) => {
    const [bountyList, setBountyList] = useState([]);
 
    useEffect(() => {
@@ -32,20 +32,21 @@ const BountyList = ({user, auth, db, storage, mobile, userData, type}) => {
     console.log(bountyList);
   }
 
+
   return (
     <div style={{padding:"30px 100px"}}>
       <center> 
        <h2> Bounty List ({type == "all" ? "All" : "My Bounties"}) </h2> </center>
        <br/><br/>
-       {bountyList.map((item,ix)=><div className="card" key={`bounty-${ix}`} onClick={e=>onSubmit()}>
+       {bountyList.map((item,ix)=><div className="card" key={`bounty-${ix}`}>
           <h4> {` ${ix+1}) ${item['bountyName']}`} </h4>
 
           {item['linkedin'] ? (<h6> <a href={item['linkedin']}> LinkedIn Link </a> </h6>) : <></>}
           <h5> {` Reward: $${item['amount']}`} </h5>
 
-          {item['company'] ? (<h6> <u> Company</u>:  {item['company']} </h6>) : <></>}
+          {item['organization'] ? (<h6> <u> Organization</u>:  {item['organization']} </h6>) : <></>}
           <h6> {`${item['description']}`} </h6>
-          <div className="contact-button"> <ChatBubbleIcon style={{fontSize:'10pt',marginRight:'5px',color:'#607bd1'}}/> Contact </div>   
+          <div className="contact-button" onClick={e=>onChat(bountyList[ix]['posterId'],bountyList[ix]['posterName'])} > <ChatBubbleIcon style={{fontSize:'10pt',marginRight:'5px',color:'#607bd1'}}/> Contact </div>   
        </div>)}
     </div>
   );

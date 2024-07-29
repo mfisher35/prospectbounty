@@ -113,7 +113,7 @@ const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBo
          <input size="22" placeholder="First Name" value={addBountyData['fname']} onChange={e=>changeBountyData('fname',e.target.value)} type="text"/> {mobile ? <br/> : <span style={{marginLeft:'5px'}}> </span>}
          <input size="22" placeholder="Last Name" value={addBountyData['lname']} onChange={e=>changeBountyData('lname',e.target.value)} type="text"/> {mobile ? <br/> : <span style={{marginLeft:'5px'}}> </span>}
 
-         <input size="22" placeholder="Company" type="text"  value={addBountyData['company']} onChange={e=>changeBountyData('company',e.target.value)}/> {mobile ? <br/> : <span style={{marginLeft:'5px'}}> </span>}
+         <input size="22" placeholder="Organization" type="text"  value={addBountyData['organization']} onChange={e=>changeBountyData('organization',e.target.value)}/> {mobile ? <br/> : <span style={{marginLeft:'5px'}}> </span>}
 
          <input size="22" placeholder="Position" type="text" value={addBountyData['position']} onChange={e=>changeBountyData('position',e.target.value)}/> {mobile ? <br/> : <span style={{marginLeft:'5px'}}> </span>}
  

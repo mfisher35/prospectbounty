@@ -90,7 +90,7 @@ export async function createSetupIntentAPI(user,custId) {
 }
 
 
-//create a bountyData Object in the bounty list collection {amount, bountyName, description, company, email, fname, lname, linkedin, oistDate, posterId, posterName, paymentData} 
+//create a bountyData Object in the bounty list collection {amount, bountyName, description, organization, email, fname, lname, linkedin, oistDate, posterId, posterName, paymentData} 
 export async function createBountyAPI(user,bountyData) {
   let token = await user.getIdToken();
   let url = `${paymentRestServer}`
@@ -112,7 +112,7 @@ export async function createBountyAPI(user,bountyData) {
     });
 }
 
-//create a bountyData Object in the bounty list collection {amount, bountyName, description, company, email, fname, lname, linkedin, oistDate, posterId, posterName, paymentData} 
+//create a bountyData Object in the bounty list collection {amount, bountyName, description, organization, email, fname, lname, linkedin, oistDate, posterId, posterName, paymentData} 
 export async function manageBountyAPI(user,bountyData) {
   let token = await user.getIdToken();
   let url = `${manageBountyRestServer}`

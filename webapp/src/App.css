@@ -13,10 +13,6 @@
 }
 
 
-::-webkit-scrollbar {
-    display: none;
-}
-
 body {
   margin:0;
   padding:0;
@@ -310,20 +306,20 @@ text-shadow: 1px 1px 2px #505050;
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 400px;
-  max-width: 90%;
+  width: 600px;
+  height: 550px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-y:scroll;
 }
 
 #messages {
   flex: 1;
   padding: 20px;
-  overflow-y: auto;
+  overflow-y: scroll;
   border-bottom: 1px solid #ddd;
+  height:500px;
 }
-
 .message {
   margin-bottom: 15px;
 }

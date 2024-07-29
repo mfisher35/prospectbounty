@@ -6,12 +6,13 @@ import AddContactsWidget from "./AddContactsWidget";
 import {limit, where, updateDoc, doc, collection, query, orderBy, onSnapshot, setDoc, addDoc, serverTimestamp } from "firebase/firestore";
 import {getYearMonth} from './Helpers';
 import Logo  from '../assets/logofull.png';
+import SendIcon from '@mui/icons-material/Send';
 
-const Chat = ({user, auth, db, storage, mobile, userData, type, userId2, userName2}) => {
+const Chat = ({user, auth, db, storage, mobile, userData, userId2, userName2}) => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
-  const sortedIds = [userId1, userId2].sort();
-  const chatId = 'aaa';//`${sortedIds[0]}-${sortedIds[1]}`;
+  const sortedIds = [user.uid, userId2].sort();
+  const chatId = `${sortedIds[0]}-${sortedIds[1]}`;
 
   useEffect(() => {
     console.log(chatId,user.uid);
@@ -29,6 +30,8 @@ const Chat = ({user, auth, db, storage, mobile, userData, type, userId2, userNam
   }, [chatId]);
 
     const convertTimestamp = (timestamp)=> {
+     if(!timestamp)
+       return "";
      let dateLocal = timestamp.toDate();
      let newDate = new Date(
       dateLocal.getTime() - dateLocal.getTimezoneOffset() * 60 * 1000
@@ -53,7 +56,8 @@ const Chat = ({user, auth, db, storage, mobile, userData, type, userId2, userNam
   };
 
   return (
-       <div className="chat-container">
+       <div className="chat-container" style={{marginTop:'20px'}}>
+       
       <div id="messages">
         {messages.map((msg, index) => (
           <div key={index} className="message">
@@ -72,7 +76,7 @@ const Chat = ({user, auth, db, storage, mobile, userData, type, userId2, userNam
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Type a message"
         />
-        <button class="chatbutton" onClick={sendMessage}>Send</button>
+        <button class="chatbutton" onClick={sendMessage}> <SendIcon style={{fontSize:'13pt',marginBottom:'2px'}}/> Send</button>
       </div>
     </div>
   );
