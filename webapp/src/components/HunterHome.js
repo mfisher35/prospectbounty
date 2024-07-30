@@ -40,7 +40,7 @@ const HunterHome = ({user, auth, db, storage, mobile, userData, setUserData}) =>
            {(!userData['closeContacts'] && screen == "bountylist") && <HunterInit user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} setUserData={setUserData}/>}
            {(userData['closeContacts'] && screen=="bountylist") && <BountyList key={'blist'+screen} user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} type={screen=="bountylist" ? 'all' : 'assignedToMe'} onChat={onChat}/>}
            {screen == "search" && <BountySearch/>}
-           {screen == "chat" && <Chat user={user} auth={auth} db={db} userData={userData} userId2={chatUID} userName2={chatName}/>}
+           {screen == "chat" && <Chat user={user} auth={auth} db={db} userData={userData} userId2={chatUID} username2={chatName}/>}
          </center>
        </div></div> 
   );

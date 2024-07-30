@@ -90,7 +90,7 @@ export async function createSetupIntentAPI(user,custId) {
 }
 
 
-//create a bountyData Object in the bounty list collection {amount, bountyName, description, organization, email, fname, lname, linkedin, oistDate, posterId, posterName, paymentData} 
+//create a bountyData Object in the bounty list collection {amount, bountyName, description, organization, email, fname, lname, linkedin, oistDate, posterId, posterUsername, paymentData} 
 export async function createBountyAPI(user,bountyData) {
   let token = await user.getIdToken();
   let url = `${paymentRestServer}`
@@ -112,7 +112,27 @@ export async function createBountyAPI(user,bountyData) {
     });
 }
 
-//create a bountyData Object in the bounty list collection {amount, bountyName, description, organization, email, fname, lname, linkedin, oistDate, posterId, posterName, paymentData} 
+//username check availability
+export async function usernameAvailableAPI(username) {
+  let url = `${manageBountyRestServer}`
+  let data = {'reqType': 'usernameAvailable', username};
+
+  return await fetch(url, {
+      body: JSON.stringify(data),
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    }).then(res => res.json()).catch(function(error) {
+
+       console.log(error.toString());
+    }).then(res => { 
+         return res['result'];
+    });
+}
+
+
+//create a bountyData Object in the bounty list collection {amount, bountyName, description, organization, email, fname, lname, linkedin, oistDate, posterId, posterUsername, paymentData} 
 export async function manageBountyAPI(user,bountyData) {
   let token = await user.getIdToken();
   let url = `${manageBountyRestServer}`

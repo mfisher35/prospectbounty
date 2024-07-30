@@ -15,11 +15,12 @@ const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBo
 
   const [page, setPage] = useState('home')
   const [addBountyType, setAddBountyType] = useState(null);
-  const [addBountyData, setAddBountyData] = useState({posterId:user.uid, posterName :userData['name'], postDate: currentDate});
+  const [addBountyData, setAddBountyData] = useState({posterId:user.uid, posterUsername :userData['username'], postDate: currentDate});
   const [paymentError, setPaymentError] = useState("");
 
   const addBounty = async (paymentData) => {
    addBountyData['posterId'] = user['uid'];
+   addBountyData['posterUsername'] = userData['username'];
    addBountyData['createDate'] = (new Date()).toISOString();
    addBountyData['amount'] = paymentData['amount']/100.0;
    addBountyData['paymentData'] = paymentData;

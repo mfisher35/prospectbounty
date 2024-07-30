@@ -433,6 +433,14 @@ exports.payments = onRequest({ cors: true}, (req, res) => {
 });
  
 
+//check if username is taken 
+const usernameAvailable = async (username) =>{
+  let collectionRef = await db.collection('userData')
+  let snapshot = await collectionRef.where('username', '==', username).get();
+  return {'result' : snapshot.empty};
+} 
+
+
 //modify given bounty with an update, bountyData should include a 'bountyId'
 const modifyBounty = async (uid,bountyData) =>{
   let docRef = await db.collection("bountyList").doc(bountyData['bountyId'])
@@ -450,6 +458,20 @@ exports.manageBounties = onRequest({ cors: true}, (req, res) => {
     const reqType = req.body.reqType;
     const ip = req.ip;
 
+    if (reqType == 'usernameAvailable') {
+         const username = req.body.username; 
+         if (!username) 
+            return res.status(400).send('No username provided');
+         return usernameAvailable(username).then(result => {
+            res.status(200).send(result);
+        })
+        .catch(error => {
+            console.error(error);
+            res.status(403).send('Unauthorized');
+        });
+    }
+
+
     if (!token) {
         return res.status(401).send('No token provided');
     }
@@ -461,11 +483,11 @@ exports.manageBounties = onRequest({ cors: true}, (req, res) => {
     admin.auth().verifyIdToken(token)
         .then((decodedToken) => {
             let resultPromise;
-            if (reqType == 'DEPRassignBounty') {
-                 const bountyAssignData = req.body.bountyAssignData; 
-                 if (!bountyAssignData) 
-                  return res.status(400).send('No bountyAssign provided');
-               resultPromise = assignBounty(bountyAssignData);
+            if (reqType == 'SOMETHING HERE') {
+                 const username = req.body.username; 
+                 if (!username) 
+                  return res.status(400).send('No username provided');
+               resultPromise = usernameAvailable(username);
             }
             else if (reqType == 'modifyBounty') {
                 const bountyData = req.body.bountyData; 

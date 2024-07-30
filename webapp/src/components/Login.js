@@ -4,10 +4,11 @@ import styled from 'styled-components';
 import Logo from '../assets/logofull.png';
 import Spinner from 'react-bootstrap/Spinner';
 import { initializeApp } from "firebase/app";
-import { doc, getDoc, setDoc, getFirestore } from "firebase/firestore";
+import { addDoc, collection, where, doc, getDoc, setDoc, getFirestore } from "firebase/firestore";
 import { sendEmailVerification, getAuth, linkWithPhoneNumber, signInWithPhoneNumber, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import EmailPhoneVerification from './EmailPhoneVerification';
 import { getStorage, ref, uploadBytes } from "firebase/storage";
+import {usernameAvailableAPI} from './APIHelpers';
 
 const tosLink = "https://prospectbounty.com/legal/terms.html";
 
@@ -96,7 +97,7 @@ const Login = ({onLogin}) => {
   const [error, setError] = useState(null);
   const [loggingIn, setLoggingIn] = useState(null);
   const [user, setUser] = useState(null);
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [page, setPage] = useState("home");
@@ -119,6 +120,7 @@ const Login = ({onLogin}) => {
          setLoggingIn(false);
        }
   }
+
 
   const cleanError = (error) => {
      let result = error;
@@ -148,11 +150,14 @@ const Login = ({onLogin}) => {
         throw new Error('Phone Number Must Be 10 Digits!');
       if(role == null || role=="")
         throw new Error('Please Choose a Role!');
+      let unameAvail = await usernameAvailableAPI(username);
+      if (!unameAvail)
+        throw new Error('Username is already taken!');
       setError(null);
       await createUserWithEmailAndPassword(auth, email, password)
       let creds = await signInWithEmailAndPassword(auth,email, password);
       await sendEmailVerification(auth.currentUser);
-      let newUserData = {role,name,fullName,phone,phoneVerified:false};
+      let newUserData = {role,username,fullName,phone,phoneVerified:false};
       await setDoc(doc(db, "userData", creds['user']['uid']), newUserData);
       setUserData(newUserData);
       setUser(creds['user']);
@@ -173,7 +178,7 @@ const Login = ({onLogin}) => {
   
   if(userData)
     if (user && (!user.emailVerified || !userData['phoneVerified'])) {
-      return <EmailPhoneVerification name={name} fullName={fullName} user={user} auth={auth} storage={storage} db={db} onLogin={onLogin} email={email} password={password} userData={userData}/>;
+      return <EmailPhoneVerification name={username} fullName={fullName} user={user} auth={auth} storage={storage} db={db} onLogin={onLogin} email={email} password={password} userData={userData}/>;
   }
 
   if(userData)
@@ -188,9 +193,9 @@ const Login = ({onLogin}) => {
        <div style={{margin:'10px'}}></div>
 {registering &&  (<><Input
           type="text"
-          placeholder="First Name / Nickname (Public)"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          placeholder="Username (Public)"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           required
         />
         <Input
