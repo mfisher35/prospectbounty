@@ -133,10 +133,10 @@ export async function usernameAvailableAPI(username) {
 
 
 //create a bountyData Object in the bounty list collection {amount, bountyName, description, organization, email, fname, lname, linkedin, oistDate, posterId, posterUsername, paymentData} 
-export async function manageBountyAPI(user,bountyData) {
+export async function modifyBountyAPI(user,bountyData) {
   let token = await user.getIdToken();
   let url = `${manageBountyRestServer}`
-  let data = {'reqType': 'manageBounty', bountyData};
+  let data = {'reqType': 'modifyBounty', bountyData};
 
   return await fetch(url, {
       body: JSON.stringify(data),

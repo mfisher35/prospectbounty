@@ -16,7 +16,7 @@ const BountyList = ({user, auth, db, storage, mobile, userData, type, onChat}) =
    getDocs(collection(db, "bountyList")).then((querySnapshot)=>{
      querySnapshot.forEach((doc)=>{
        let docData = doc.data();
-       docData['bountyId'] = doc.id;
+       docData['id'] = doc.id;
        if(docData['id'] != 0)
         if( (userData['role'] == 'hunter' || (docData['posterId'] == user['uid'])))
          if(type == "all" || (type=="assignedToMe" && docData['hunterId']==user['uid']) || (docData['posterId'] == user['uid']))

@@ -443,11 +443,11 @@ const usernameAvailable = async (username) =>{
 
 //modify given bounty with an update, bountyData should include a 'bountyId'
 const modifyBounty = async (uid,bountyData) =>{
-  let docRef = await db.collection("bountyList").doc(bountyData['bountyId'])
+  let docRef = await db.collection("bountyList").doc(bountyData['id'])
   let doc = await docRef.get();
   let docData = doc.data();
   if(uid == docData['posterId']){
-     let result = await docRef.update(bountyData).get();
+     let result = await docRef.update(bountyData);
      return {'result' : 'success'}
   }
   return {'error' : 'User Does Not Have Access!'}

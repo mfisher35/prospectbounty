@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import '../App.css';
 import styled from 'styled-components';
+import Spinner from 'react-bootstrap/Spinner';
 import Button from 'react-bootstrap/Button'
-import { where, query, doc, getDocs, getDoc, collection, setDoc, addDoc, getFirestore } from "firebase/firestore";
+import { deleteField, where, query, doc, getDocs, getDoc, collection, setDoc, addDoc, getFirestore } from "firebase/firestore";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import {modifyBountyAPI} from './APIHelpers';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 
 const UserBountyAssignmentWidget = ({user, auth, db, userData, otherId, otherUsername, setManagingUser,managingUser}) => {
    
   const [myBounties, setMyBounties] = useState([]);
+  const [modifying, setModifying] = useState(false);
   
   const onManageUser = async () => {
     let myList = []
@@ -18,7 +22,7 @@ const UserBountyAssignmentWidget = ({user, auth, db, userData, otherId, otherUse
     querySnapshot.forEach((doc)=>{
        let docData = doc.data();
        docData['id'] = doc.id;
-       if(!docData['hunterId'] || docData['hunterId'] == otherId)
+       if(!docData['hunterId'] || docData['hunterId'] == otherId || docData['hunterId'] == "none")
          myList.push(docData);
      });
     
@@ -27,7 +31,33 @@ const UserBountyAssignmentWidget = ({user, auth, db, userData, otherId, otherUse
     console.log(myList);
     setManagingUser(true);
   }
-  
+
+  const onUnAssign = async (bounty) => {
+     setModifying(true);
+     try {
+       bounty['hunterId'] = "none";
+       let resp = await modifyBountyAPI(user,bounty);
+       if(resp['result'] == 'success')
+         setMyBounties(myBounties.map(oldBounty=>{
+           return oldBounty['id'] == bounty['id'] ? bounty : oldBounty;
+       }))
+     } catch (e) {console.log(e)}
+     setModifying(false);
+  }
+
+  const onAssign = async (bounty) => {
+     setModifying(true);
+     try {
+       bounty['hunterId'] = otherId;
+       let resp = await modifyBountyAPI(user,bounty);
+       if(resp['result'] == 'success')
+         setMyBounties(myBounties.map(oldBounty=>{
+           return oldBounty['id'] == bounty['id'] ? bounty : oldBounty;
+       }))
+     } catch (e) {console.log(e)}
+     setModifying(false);
+  }
+
   return (
     <div style={{cursor:'pointer'}}>
        <h4>  <b><i> {otherUsername}</i> </b>  </h4>
@@ -38,18 +68,18 @@ const UserBountyAssignmentWidget = ({user, auth, db, userData, otherId, otherUse
           {myBounties.map(bounty=>(
              <div style={{border:'1px solid black',width:'fit-content',padding:'10px',borderRadius:'10px'}}>
                 
-               
+             {bounty['hunterId'] == otherId && <> <HowToRegIcon/> <br/> </>}
              <span>   {bounty['bountyName']} </span> <br/>
              <span style={{fontSize:'10pt',color:'#595959'}}>   {bounty['targetDescr']}</span> <br/>
 
-             <div className="assignment-user">
+             {modifying ? <Spinner variant="primary"/> : <div className="assignment-user">
                  {
                  bounty['hunterId'] == otherId ? 
-                   <PersonRemoveIcon fontSize="sm"/> 
+                 <div onClick={e=>onUnAssign(bounty)}>  <PersonRemoveIcon fontSize="sm"/>  <span style={{fontSize:'10pt'}}>{'Unassign'}  </span> </div>
                  : 
-                 <>   <PersonAddIcon fontSize="sm"/> <span style={{fontSize:'10pt'}}>{'Assign'}  </span> </>
+                 <div onClick={e=>onAssign(bounty)} >   <PersonAddIcon fontSize="sm"/> <span style={{fontSize:'10pt'}}>{'Assign'}  </span> </div>
                  }
-              </div>
+              </div>}
              </div> 
              
            ))} 
