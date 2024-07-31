@@ -46,7 +46,7 @@ const BountyList = ({user, auth, db, storage, mobile, userData, type, onChat}) =
 
           {item['organization'] ? (<h6> <u> Organization</u>:  {item['organization']} </h6>) : <></>}
           <h6> {`${item['description']}`} </h6>
-          <div className="contact-button" onClick={e=>onChat(bountyList[ix]['posterId'],bountyList[ix]['posterUsername'])} > <ChatBubbleIcon style={{fontSize:'10pt',marginRight:'5px',color:'#607bd1'}}/> Contact </div>   
+          {userData['role'] != "poster" && <div className="contact-button" onClick={e=>onChat(bountyList[ix]['posterId'],bountyList[ix]['posterUsername'])} > <ChatBubbleIcon style={{fontSize:'10pt',marginRight:'5px',color:'#607bd1'}}/> Contact </div>   }
        </div>)}
     </div>
   );

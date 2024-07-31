@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PersonIcon from '@mui/icons-material/Person';
 import Logo  from '../assets/logofull.png';
 import Logosm  from '../assets/logowhite.png';
 import { doc, setDoc, getDoc } from "firebase/firestore"; 
@@ -34,6 +35,14 @@ const HunterHome = ({user, auth, db, storage, mobile, userData, setUserData}) =>
         <li onClick={e=>setScreen("search")}>Search</li>
         <li onClick={e=>setScreen("chat")}>Chat</li>
       </ul>
+      <center>
+        <div style={{color:'#ccc',fontSize:'8pt',marginTop:'60px'}}> 
+           <PersonIcon fontSize="sm"/> {userData['username']} <br/> 
+           {userData['role'].toUpperCase()}
+        </div>
+
+       </center>
+
     </div>)}
        <div style={{marginTop:'25px',marginLeft : mobile ? "100px" : "250px"}}>
          <center>  <img src={Logo} width={mobile ? "250px" : "500px"} /> 

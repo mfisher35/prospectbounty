@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import '../App.css';
 import styled from 'styled-components';
@@ -10,7 +11,7 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import AddIcon from '@mui/icons-material/Add';
 import Payment from './Payment';
 import {createBountyAPI} from './APIHelpers';
-const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBounties, mobile, setAddingBounty, stripe}) => {
+const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBounties, mobile, setAddingBounty, stripe, onBack}) => {
   const currentDate = new Date().toDateString();
 
   const [page, setPage] = useState('home')
@@ -98,6 +99,8 @@ const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBo
 
   return (
     <div style={{width:mobile ? '200px':'500px'}}>
+
+    {page != "home" && <div style={{width:'fit-content',backgroundColor:'#ddd',borderRadius:'20px',border:'1px solid #ccc'}} onClick={e=>{setPage("home"); onBack()}}> <ArrowBackIcon/> </div> }
        {page=="home" && <Button primary onClick={e=>goToDescription()}> + Add Bounty </Button>}
        {page=="description" && <div><br/> 
            <input placeholder="Bounty Name" value={addBountyData['bountyName']} onChange={e=>changeBountyData('bountyName',e.target.value)} type="text" size="25"/> <br/><br/>

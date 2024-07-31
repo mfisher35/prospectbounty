@@ -195,7 +195,7 @@ const Login = ({onLogin}) => {
           type="text"
           placeholder="Username (Public)"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(e) => setUsername(e.target.value.toLowerCase())}
           required
         />
         <Input

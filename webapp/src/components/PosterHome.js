@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PersonIcon from '@mui/icons-material/Person';
 import Logo  from '../assets/logofull.png';
 import Logosm  from '../assets/logowhite.png';
 import { doc, setDoc, getDoc } from "firebase/firestore"; 
@@ -32,11 +33,20 @@ const PosterHome = ({user, auth, db, storage, mobile, userData, setUserData, str
   return (
     <div style={{fontFamily:'Plus Jakarta Sans',fontSize:'12pt'}}>
        <div className="sidebar" style={{width:mobile ? "100px" : "250px"}}>
-      <center> <img src={mobile ? Logosm : Logo} width={mobile ? '50px' : '200px'} /> </center>
+      <center> 
+        <img src={mobile ? Logosm : Logo} width={mobile ? '50px' : '200px'} /> 
+     </center>
       <ul>
         <li onClick={e=>setScreen("home")}>Home</li>
-        <li onClick={e=>setScreen("chat")}>Chat</li>
+        <li onClick={async (e)=>{await setScreen("home"); setScreen("chat")}}>Chat</li>
       </ul>
+      <center>
+        <div style={{color:'#ccc',fontSize:'8pt',marginTop:'60px'}}> 
+           <PersonIcon fontSize="sm"/> {userData['username']} <br/> 
+           {userData['role'].toUpperCase()}
+        </div>
+
+       </center>
     </div>
        <div style={{marginLeft:mobile ? '100px' : '250px', marginTop:'25px'}}>
        <center>  <img src={Logo} width={mobile ? "250px" : "500px"} /> 

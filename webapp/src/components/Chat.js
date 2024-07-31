@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Button from 'react-bootstrap/Button'
 import '../App.css';
 import styled from 'styled-components';
@@ -10,13 +10,16 @@ import SendIcon from '@mui/icons-material/Send';
 import UserBountyAssignmentWidget from './UserBountyAssignmentWidget';
 import PersonIcon from '@mui/icons-material/Person';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import Spinner from 'react-bootstrap/Spinner';
 
 const Chat = ({user, auth, db, storage, mobile, userData, userId2, username2}) => {
+  const chatContainerRef = useRef(null);
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
-  const [otherId, setOtherId] = useState(null);
-  const [otherUsername, setOtherUsername] = useState(null);
- 
+  const [otherId, setOtherId] = useState(userId2);
+  const [otherUsername, setOtherUsername] = useState(username2);
+  const [sending, setSending] = useState(false);
+
   //get all messages incoming
   const startSubscribe = () => {
      const q = query(
@@ -37,13 +40,14 @@ const Chat = ({user, auth, db, storage, mobile, userData, userId2, username2}) =
   }
 
   useEffect(() => {
-      if(userId2 && username2){
-        setOtherId(userId2);
-        setOtherUsername(username2);
-        console.log(userId2,username2);
-      }
       startSubscribe(); 
   }, []);
+
+   useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
 
     const convertTimestamp = (timestamp)=> {
      if(!timestamp)
@@ -84,13 +88,13 @@ const Chat = ({user, auth, db, storage, mobile, userData, userId2, username2}) =
      }
    console.log('allsessions',sessions);
    return sessions.map(msg=>
-    <div style={{border:'1px solid #ccc',borderRadius:'10px',padding:'10px',paddingRight:'50px',maxWidth:'600px',paddingLeft:'20px',width:'fit-content',display:'flex',backgroundColor:'white',cursor:'pointer'}} onClick={e=>{setOtherId(msg['otherId']);setOtherUsername(msg['otherUsername']);console.log('ssasasa',msg['otherUsername'],msg)}} >
-      <div style={{marginRight:'20px',borderRadius:'20px',border:'1px solid #ccc',marginTop:'5px',height:'fit-content',padding:'3px',backgroundColor:'white',alignItems:'center'}}>
-        <PersonIcon/>      
-      </div>
-      <div style={{display:'flex',flexDirection:'column',padding:'2px',margin:'5px',width:'auto'}}> 
-         <span style={{fontSize:'16pt'}}> {msg['otherUsername']} </span> 
-         <span style={{fontSize:'13pt',color:'#bbb'}}>  {msg['message']} </span>
+    <div style={{marginBottom:'15px',border:'2px solid #ccc',borderRadius:'10px',padding:'10px',width:'500px',padding:'20px',margin:'20px',display:'flex',backgroundColor:'white',cursor:'pointer'}} onClick={e=>{setOtherId(msg['otherId']);setOtherUsername(msg['otherUsername'])}} >
+      <div style={{marginRight:'20px',borderRadius:'20px',border:'1px solid #ccc',marginTop:'0px',height:'fit-content',padding:'3px',backgroundColor:'white',alignItems:'center'}}>
+        <PersonIcon style={{marginTop:'-5px'}}/>      
+      </div> 
+         <span style={{fontSize:'16pt'}}> {msg['otherUsername']} </span> <br/>
+      <div style={{marginTop:'40px',width:'auto'}}> 
+            <span style={{fontSize:'13pt',color:'#bbb'}}>  {msg['message']} </span>
       </div>
     </div>);
   }
@@ -119,15 +123,19 @@ const Chat = ({user, auth, db, storage, mobile, userData, userId2, username2}) =
 
   return ( <div style={{marginTop:'15px'}}>
 
-   {otherId  ? <div style={{display:'flex',flexDirection:'column'}}> <div onClick={e=>onBack()}> <ArrowBackIcon/> </div> 
-        <div> <UserBountyAssignmentWidget/></div>
+   {otherId  ? <div style={{display:'flex',flexDirection:'column'}}> <div style={{width:'fit-content',backgroundColor:'#ddd',borderRadius:'20px',border:'1px solid #ccc'}} onClick={e=>onBack()}> <ArrowBackIcon/> </div> 
+        {userData['role'] == 'poster' && 
+          <div>
+             <UserBountyAssignmentWidget/>
+          </div>
+        }
        <div className="chat-container" style={{marginTop:'10px'}}>
        
-      <div id="messages">
-        {messages.map((msg, index) => (
+      <div id="messages" ref={chatContainerRef}>
+        {messages.filter((m,i) => getOtherId(m)==otherId).map((msg, index) => (
           <div key={index} className="message">
             <p style={{'marginBottom':'15px'}}>
-              <span style={{fontSize:'9pt'}}><b> {msg.sender == user.uid ? "Me  " : "Them  "}</b></span>
+              <span style={{fontSize:'9pt'}}><b> {msg.sender == user.uid ? "Me  " : msg.senderUsername}</b></span>
               <span style={{fontSize:'8pt',fontColor:'#727479',marginLeft:'10px'}}> {convertTimestamp(msg.timestamp)}<br/></span>
                {msg.message}
             </p>
@@ -140,9 +148,10 @@ const Chat = ({user, auth, db, storage, mobile, userData, userId2, username2}) =
           type="text"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={(e) =>{if(e.key == "Enter") sendMessage()}}
           placeholder="Type a message"
         />
-        <button class="chatbutton" onClick={sendMessage}> <SendIcon style={{fontSize:'13pt',marginBottom:'2px'}}/> Send</button>
+        {sending ? <Spinner variant="primary"/> : <button class="chatbutton" onClick={sendMessage}> <SendIcon style={{fontSize:'13pt',marginBottom:'2px'}}/> Send</button>}
       </div>
     </div></div> : 
        <div style={{marginTop:'20px'}}> 

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import styled from 'styled-components';
 import Button from 'react-bootstrap/Button'
 import AddBountyWidget from './AddBountyWidget'
@@ -13,13 +12,16 @@ const PosterBounties = ({user, auth, db, storage, mobile, userData, setUserData,
   const cleanError = (error) => {
   }
 
+  const onBack = () => {
+    setAddingBounty(false);
+  }
   return (
    <>
-     {!addingBounty && <BountyList user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} setUserData={setUserData}/> }
-    <div style={{marginTop:'0px',backgroundColor:'#ffffff',width:'fit-content',padding:'30px',borderRadius:'8px'}}>
-      <h4> {addingBounty ? "" : "Add A New Bounty:"} </h4>
-      <AddBountyWidget user={user} auth={auth} db={db} userData={userData} bounties={bounties} setBounties={setBounties} mobile={mobile} setAddingBounty={setAddingBounty} stripe={stripe}/>
+    <div style={{marginTop:'40px'}}>
+      <AddBountyWidget user={user} auth={auth} db={db} userData={userData} bounties={bounties} setBounties={setBounties} mobile={mobile} setAddingBounty={setAddingBounty} stripe={stripe} onBack={onBack}/>
     </div>
+     {!addingBounty && <BountyList user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} setUserData={setUserData}/> }
+
    </>
   );
 };
