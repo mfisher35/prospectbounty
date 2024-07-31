@@ -93,6 +93,8 @@ const Chat = ({user, auth, db, storage, mobile, userData, userId2, username2}) =
            sessions.push({otherUsername,otherId, ... rmessages[i]});
      }
    console.log('allsessions',sessions);
+   if(sessions.length == 0)
+     return <div> No Messages! </div>
    return sessions.map(msg=>
     <div style={{marginBottom:'15px',border:'2px solid #ccc',borderRadius:'10px',padding:'10px',width:'500px',padding:'20px',margin:'20px',display:'flex',backgroundColor:'white',cursor:'pointer'}} onClick={e=>{setOtherId(msg['otherId']);setOtherUsername(msg['otherUsername'])}} >
       <div style={{marginRight:'20px',borderRadius:'20px',border:'1px solid #ccc',marginTop:'0px',height:'fit-content',padding:'3px',backgroundColor:'white',alignItems:'center'}}>
@@ -130,6 +132,7 @@ const Chat = ({user, auth, db, storage, mobile, userData, userId2, username2}) =
   return ( <div style={{marginTop:'15px'}}>
 
    {otherId  ? <div style={{display:'flex',flexDirection:'column'}}> <div style={{width:'fit-content',backgroundColor:'#ddd',borderRadius:'20px',border:'1px solid #ccc'}} onClick={e=>onBack()}> <ArrowBackIcon/> </div> 
+        {userData['role'] == 'hunter' && <div> <b> {otherUsername} </b> </div>}
         {userData['role'] == 'poster' && 
           <div>
              <UserBountyAssignmentWidget user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} otherId={otherId} otherUsername={otherUsername} setManagingUser={setManagingUser} managingUser={managingUser}/>
