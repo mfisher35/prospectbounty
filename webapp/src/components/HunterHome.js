@@ -8,6 +8,8 @@ import styled from 'styled-components';
 import BountyList from './BountyList';
 import BountySearch from './BountySearch';
 import Chat from './Chat';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import SearchIcon from '@mui/icons-material/Search';
 
 const HunterHome = ({user, auth, db, storage, mobile, userData, setUserData}) => {
   const [screen, setScreen] = useState("bountylist");
@@ -32,8 +34,8 @@ const HunterHome = ({user, auth, db, storage, mobile, userData, setUserData}) =>
       <ul>
         <li onClick={e=>setScreen("bountylist")}>Bounty List</li>
         <li onClick={e=>setScreen("mybounties")}>My Bounties</li>
-        <li onClick={e=>setScreen("search")}>Search</li>
-        <li onClick={e=>setScreen("chat")}>Chat</li>
+        <li onClick={e=>setScreen("search")}><SearchIcon style={{marginRight:'2px',fontSize:'15pt'}}/> Search</li>
+        <li onClick={e=>setScreen("chat")}><ChatBubbleIcon style={{marginRight:'5px',fontSize:'13pt'}}/> Chat</li>
       </ul>
       <center>
         <div style={{color:'#ccc',fontSize:'8pt',marginTop:'60px'}}> 

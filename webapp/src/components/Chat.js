@@ -19,7 +19,8 @@ const Chat = ({user, auth, db, storage, mobile, userData, userId2, username2}) =
   const [otherId, setOtherId] = useState(userId2);
   const [otherUsername, setOtherUsername] = useState(username2);
   const [sending, setSending] = useState(false);
-
+  const [managingUser, setManagingUser] = useState(false);
+  
   //get all messages incoming
   const startSubscribe = () => {
      const q = query(
@@ -60,8 +61,13 @@ const Chat = ({user, auth, db, storage, mobile, userData, userId2, username2}) =
     }
 
   const onBack = () => { 
-   setOtherUsername(null);
-   setOtherId(null);
+   if(managingUser){
+     setManagingUser(false)
+   }
+   else {
+      setOtherUsername(null);
+      setOtherId(null);
+   }
   }
 
   const getOtherUsername = (msg) => {
@@ -126,10 +132,10 @@ const Chat = ({user, auth, db, storage, mobile, userData, userId2, username2}) =
    {otherId  ? <div style={{display:'flex',flexDirection:'column'}}> <div style={{width:'fit-content',backgroundColor:'#ddd',borderRadius:'20px',border:'1px solid #ccc'}} onClick={e=>onBack()}> <ArrowBackIcon/> </div> 
         {userData['role'] == 'poster' && 
           <div>
-             <UserBountyAssignmentWidget/>
+             <UserBountyAssignmentWidget user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} otherId={otherId} otherUsername={otherUsername} setManagingUser={setManagingUser} managingUser={managingUser}/>
           </div>
         }
-       <div className="chat-container" style={{marginTop:'10px'}}>
+   { !managingUser &&  <div className="chat-container" style={{marginTop:'10px'}}>
        
       <div id="messages" ref={chatContainerRef}>
         {messages.filter((m,i) => getOtherId(m)==otherId).map((msg, index) => (
@@ -153,7 +159,7 @@ const Chat = ({user, auth, db, storage, mobile, userData, userId2, username2}) =
         />
         {sending ? <Spinner variant="primary"/> : <button class="chatbutton" onClick={sendMessage}> <SendIcon style={{fontSize:'13pt',marginBottom:'2px'}}/> Send</button>}
       </div>
-    </div></div> : 
+    </div>}</div> : 
        <div style={{marginTop:'20px'}}> 
          {getChatSessions()}
        </div>

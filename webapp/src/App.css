@@ -383,5 +383,17 @@ padding:5px;
    }
 }
 
+.assignment-user {
+background-color:#ccc;
+width:fit-content;
+padding:7px;
+border-radius:15px;
+border:1px solid #bbb;
+margin-top:10px;
+margin-bottom:10px;
 
+   &:hover {
+     background-color:#bbb;
+   }
 
+}

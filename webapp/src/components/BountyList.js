@@ -36,8 +36,8 @@ const BountyList = ({user, auth, db, storage, mobile, userData, type, onChat}) =
   return (
     <div style={{padding:"30px 100px"}}>
       <center> 
-       <h2> Bounty List ({type == "all" ? "All" : "My Bounties"}) </h2> </center>
-       <br/><br/>
+       <h2> {type == "all" ? "All Bounties" : "My Bounties"} </h2> </center>
+       <br/>
        {bountyList.map((item,ix)=><div className="card" key={`bounty-${ix}`}>
           <h4> {` ${ix+1}) ${item['bountyName']}`} </h4>
 
