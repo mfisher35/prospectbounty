@@ -60,13 +60,13 @@ const UserBountyAssignmentWidget = ({user, auth, db, userData, otherId, otherUse
 
   return (
     <div style={{cursor:'pointer'}}>
-       <h4>  <b><i> {otherUsername}</i> </b>  </h4>
+       <h4>  Assign User:  <br/><b><i> {otherUsername}</i> </b>  </h4>
      
       {managingUser ?
 
        <div>
           {myBounties.map(bounty=>(
-             <div style={{border:'1px solid black',width:'fit-content',padding:'10px',borderRadius:'10px'}}>
+             <div style={{border:'1px solid black',width:'300px',margin:'20px',padding:'10px',borderRadius:'10px'}}>
                 
              {bounty['hunterId'] == otherId && <> <HowToRegIcon/> <br/> </>}
              <span>   {bounty['bountyName']} </span> <br/>
