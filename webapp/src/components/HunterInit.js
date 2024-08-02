@@ -30,7 +30,7 @@ const HunterInit = ({user, auth, db, storage, mobile, userData, setUserData}) =>
           <input type="text" size="80" onChange={e=>setExperience(e.target.value)}/> 
        </div>
        <div className="card">
-         <h4> Please Give Add at Least 3 Decision Makers <br/> That You Have a Close Connection To: </h4><br/>
+         <h4> Please Add at Least 3 Decision Makers <br/> That You Have a Close Connection To: </h4><br/>
          <AddContactsWidget setContacts={setContacts} contacts={contacts}/> 
        </div> 
        <Button primary onClick={e=>onSubmit()}> Submit </Button>
