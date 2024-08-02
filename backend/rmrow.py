@@ -1,7 +1,7 @@
 import sqlite3
 
 
-delete_query = """DELETE from signups where firstName = 'test' """
+delete_query = """DELETE from signups where email = 'mfisher35@gmail.com' """
 
 try:
     sqliteConnection = sqlite3.connect('userForms.db')
