@@ -16,18 +16,22 @@ const PosterBounties = ({user, auth, db, storage, mobile, userData, setUserData,
 
   const onManageBounty = (bounty) => {
     setManaging(true);
+    setManageBountyData(bounty);
   }
 
   const onBack = () => {
     setAddingBounty(false);
+    setManaging(false);
+    setManageBountyData(null);
   }
+
   return (
    <>
     <div style={{marginTop:'40px'}}>
     </div>
      {(!addingBounty && !managing) && <BountyList user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} setUserData={setUserData} onManageBounty={onManageBounty}/> }
      { !managing && <AddBountyWidget user={user} auth={auth} db={db} userData={userData} bounties={bounties} setBounties={setBounties} mobile={mobile} setAddingBounty={setAddingBounty} stripe={stripe} onBack={onBack}/>}
-     { managing && <ManageBounty bountyData={manageBountyData}/>}
+     {managing && <ManageBounty bountyData={manageBountyData} onBack={onBack}/>}
 
    </>
   );
