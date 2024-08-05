@@ -8,10 +8,12 @@ import PosterBounties from './PosterBounties';
 import { collection, query, where, getDocs } from "firebase/firestore";
 import BountyList from './BountyList';
 import Chat from './Chat';
+import FeedIcon from '@mui/icons-material/Feed';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 
 const PosterHome = ({user, auth, db, storage, mobile, userData, setUserData, stripe}) => {
   //const [userData, setUserData] = useState(null);
-  const [screen, setScreen] = useState("home");
+  const [screen, setScreen] = useState("bounties");
   const [myBounties, setMyBounties] = useState(null);
 
   const cleanError = (error) => {
@@ -37,8 +39,8 @@ const PosterHome = ({user, auth, db, storage, mobile, userData, setUserData, str
         <img src={mobile ? Logosm : Logo} width={mobile ? '50px' : '200px'} /> 
      </center>
       <ul>
-        <li onClick={e=>setScreen("home")}>Home</li>
-        <li onClick={async (e)=>{await setScreen("home"); setScreen("chat")}}>Chat</li>
+        <li onClick={e=>setScreen("bounties")}> <FeedIcon style={{marginRight:'2px',fontSize:'15pt'}}/> My Bounties</li>
+        <li onClick={async (e)=>{await setScreen("bounties"); setScreen("chat")}}><ChatBubbleIcon style={{marginRight:'5px',fontSize:'13pt'}}/> Chat</li>
       </ul>
       <center>
         <div style={{color:'#ccc',fontSize:'8pt',marginTop:'60px'}}> 
@@ -50,7 +52,7 @@ const PosterHome = ({user, auth, db, storage, mobile, userData, setUserData, str
     </div>
        <div style={{marginLeft:mobile ? '100px' : '250px', marginTop:'25px'}}>
        <center>  <img src={Logo} width={mobile ? "250px" : "500px"} /> 
-           {(screen=="home") && <PosterBounties user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} setUserData={setUserData} stripe={stripe}/>}
+           {(screen=="bounties") && <PosterBounties user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} setUserData={setUserData} stripe={stripe}/>}
            {(screen=="chat") && <Chat user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} setUserData={setUserData} stripe={stripe}/>}
        </center>
        </div> 
