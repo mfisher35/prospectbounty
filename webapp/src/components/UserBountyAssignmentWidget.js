@@ -65,6 +65,7 @@ const UserBountyAssignmentWidget = ({user, auth, db, userData, otherId, otherUse
       {managingUser ?
 
        <div>
+          {modifying && <Spinner variant="primary"/>}
           {myBounties.map(bounty=>(
              <div style={{border:'1px solid black',width:'300px',margin:'20px',padding:'10px',borderRadius:'10px'}}>
                 
@@ -72,7 +73,7 @@ const UserBountyAssignmentWidget = ({user, auth, db, userData, otherId, otherUse
              <span>   {bounty['bountyName']} </span> <br/>
              <span style={{fontSize:'10pt',color:'#595959'}}>   {bounty['targetDescr']}</span> <br/>
 
-             {modifying ? <Spinner variant="primary"/> : <div className="assignment-user">
+             {!modifying && <div className="assignment-user">
                  {
                  bounty['hunterId'] == otherId ? 
                  <div onClick={e=>onUnAssign(bounty)}>  <PersonRemoveIcon fontSize="sm"/>  <span style={{fontSize:'10pt'}}>{'Unassign'}  </span> </div>
