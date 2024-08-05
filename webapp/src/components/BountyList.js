@@ -7,7 +7,7 @@ import {collection, getDocs, doc, setDoc, getDoc } from "firebase/firestore";
 import Logo  from '../assets/logofull.png';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 
-const BountyList = ({user, auth, db, storage, mobile, userData, type, onChat}) => {
+const BountyList = ({user, auth, db, storage, mobile, userData, type, onChat, onManageBounty}) => {
    const [bountyList, setBountyList] = useState([]);
 
    useEffect(() => {
@@ -32,13 +32,12 @@ const BountyList = ({user, auth, db, storage, mobile, userData, type, onChat}) =
     console.log(bountyList);
   }
 
-
   return (
-    <div style={{padding:"30px 100px"}}>
+    <div style={{padding:"30px 100px"}}>  
       <center> 
        <h2> {type == "all" ? "All Bounties" : "My Bounties"} </h2> </center>
        <br/>
-       {bountyList.map((item,ix)=><div className="card" key={`bounty-${ix}`}>
+       {bountyList.map((item,ix)=><div className="card" style={{cursor:user.uid == item['posterId'] ? 'pointer' : 'default'}} onClick={e=>{if(user.uid == item['posterId']) onManageBounty(item);}} key={`bounty-${ix}`}>
           <h4> {` ${ix+1}) ${item['bountyName']}`} </h4>
 
           {item['linkedin'] ? (<h6> <a href={item['linkedin']}> LinkedIn Link </a> </h6>) : <></>}
