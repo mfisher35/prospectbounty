@@ -29,7 +29,7 @@ class Header extends React.Component {
              <a href="https://www.prospectbounty.com"> <img src={LogoWhite} width='120px'/> </a>
            </div> 
            <div style={{flex:'1',paddingRight:'20px',textAlign:'right'}}>
-             <div class="download-button" onClick={e=>{this.props.pageChanged("signup")}}> Sign Up </div>
+          <a href="https://prospectbounty.web.app">   <div class="download-button" onClick={e=>{}}> Sign Up / Login</div> </a>
            </div>      
         </div> 
         <div style={{flex:'1',width:'100%'}}> 
@@ -46,7 +46,7 @@ class Header extends React.Component {
                  </span>
               </div>
            </div>
-         <Button variant="success" size="lg" onClick={e=>{this.props.pageChanged("signup")}}> Sign Up </Button> <br/>
+        <a href="https://prospectbounty.web.app"> <Button variant="success" size="lg" onClick={e=>{}}> Sign Up / Login </Button> </a> <br/>
         </div>
         <div style={{flex:'1',marginTop:'70px',paddingBottom:'10px',textAlign:'center'}}>  <span id="shadow"> Sign Up Now To Find or Give Leads For Rewards! </span> </div>
     </div> 
@@ -66,7 +66,7 @@ class Header extends React.Component {
              <a href="https://www.prospectbounty.com"> <img src={LogoWhite} width='120px'/> </a>
            </div> 
            <div style={{flex:'1',paddingRight:'20px',textAlign:'right'}}>
-             <div class="download-button" onClick={e=>{this.props.pageChanged("signup")}}> Sign Up </div>
+         <a href="https://prospectbounty.web.app">    <div class="download-button" onClick={e=>{}}> Sign Up / Login </div></a>
            </div>      
         </div> 
         <div style={{flex:'1',width:'100%'}}> 
@@ -83,7 +83,7 @@ class Header extends React.Component {
                  </span>
               </div>
            </div>
-<Button variant="success" size="lg" onClick={e=>{this.props.pageChanged("signup")}}> Sign Up </Button> <br/>
+<a href="https://prospectbounty.web.app"> <Button variant="success" size="lg" onClick={e=>{this.props.pageChanged("signup")}}> Sign Up </Button> </a> <br/>
         </div>
         <div style={{flex:'1',marginTop:'70px',paddingBottom:'10px',textAlign:'center'}}>  <span id="shadow"> Sign Up Now To Find or Give Leads For Rewards! </span> </div>
     </div> 
