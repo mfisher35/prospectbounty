@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import '../App.css';
 import styled from 'styled-components';
 import Button from 'react-bootstrap/Button'
@@ -100,7 +100,7 @@ const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBo
   return (
     <div style={{width:mobile ? '200px':'500px'}}>
 
-    {page != "home" && <div style={{width:'fit-content',backgroundColor:'#ddd',borderRadius:'20px',border:'1px solid #ccc'}} onClick={e=>{setPage("home"); onBack()}}> <ArrowBackIcon/> </div> }
+    {page != "home" && <div style={{width:'fit-content',backgroundColor:'#ddd',borderRadius:'20px',border:'1px solid #ccc',marginBottom:'20px'}} onClick={e=>{setPage("home"); onBack()}}> <ArrowBackIcon/> </div> }
        {page=="home" && <Button primary onClick={e=>goToDescription()}> + Add Bounty </Button>}
        {page=="description" && <div><br/> 
            <input placeholder="Bounty Name" value={addBountyData['bountyName']} onChange={e=>changeBountyData('bountyName',e.target.value)} type="text" size="25"/> <br/><br/>
@@ -137,7 +137,7 @@ const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBo
  
     </div>} 
      {page=="finished" && <div>
-       <img src={Checkmark} width="150px"/> <br/> <br/>
+       <CheckCircleIcon style={{color:'green',fontSize:'100pt'}}/>  <br/> <br/>
          <span> Bounty Submitted! </span> <br/><br/>
          <Button onClick={e=>{goToDescription()}}> <AddIcon fontSize="small" style={{marginBottom:'3px',marginRight:'2px'}} /> Add Another Bounty </Button> <br/><br/> 
          <Button onClick={e=>{setPage("home");setAddingBounty(false);}}>  <FormatListBulletedIcon style={{marginBottom:'3px',marginRight:'2px'}} fontSize="small"/>  Back To Bounty List  </Button>

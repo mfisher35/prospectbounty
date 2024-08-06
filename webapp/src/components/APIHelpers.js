@@ -149,6 +149,28 @@ export async function modifyBountyAPI(user,bountyData) {
 
        console.log(error.toString());
     }).then(res => { 
+         return res
+    });
+}
+
+
+//create a bountyData Object in the bounty list collection {amount, bountyName, description, organization, email, fname, lname, linkedin, oistDate, posterId, posterUsername, paymentData} 
+export async function deleteBountyAPI(user,bountyData) {
+  let token = await user.getIdToken();
+  let url = `${manageBountyRestServer}`
+  let data = {'reqType': 'deleteBounty', bountyData};
+
+  return await fetch(url, {
+      body: JSON.stringify(data),
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization' : token,
+      }
+    }).then(res => res.json()).catch(function(error) {
+
+       console.log(error.toString());
+    }).then(res => { 
          console.log(res);
          return res
     });

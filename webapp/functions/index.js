@@ -440,6 +440,18 @@ const usernameAvailable = async (username) =>{
   return {'result' : snapshot.empty};
 } 
 
+//modify given bounty with an update, bountyData should include a 'bountyId'
+const deleteBounty = async (uid,bountyId) =>{
+  let docRef = await db.collection("bountyList").doc(bountyId);
+  let doc = await docRef.get();
+  let docData = doc.data();
+  if(uid == docData['posterId']){
+     let result = await docRef.delete();
+     return {'result' : 'success'}
+  }
+  return {'error' : 'User Does Not Have Access!'}
+} 
+
 
 //modify given bounty with an update, bountyData should include a 'bountyId'
 const modifyBounty = async (uid,bountyData) =>{
@@ -483,11 +495,11 @@ exports.manageBounties = onRequest({ cors: true}, (req, res) => {
     admin.auth().verifyIdToken(token)
         .then((decodedToken) => {
             let resultPromise;
-            if (reqType == 'SOMETHING HERE') {
-                 const username = req.body.username; 
-                 if (!username) 
-                  return res.status(400).send('No username provided');
-               resultPromise = usernameAvailable(username);
+            if (reqType == 'deleteBounty') {
+                 const bountyData = req.body.bountyData; 
+                 if (!bountyData) 
+                  return res.status(400).send('No bountyData provided');
+               resultPromise = deleteBounty(decodedToken.uid,bountyData['id']);
             }
             else if (reqType == 'modifyBounty') {
                 const bountyData = req.body.bountyData; 

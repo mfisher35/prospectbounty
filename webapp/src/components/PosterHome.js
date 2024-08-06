@@ -39,7 +39,7 @@ const PosterHome = ({user, auth, db, storage, mobile, userData, setUserData, str
         <img src={mobile ? Logosm : Logo} width={mobile ? '50px' : '200px'} /> 
      </center>
       <ul>
-        <li onClick={e=>setScreen("bounties")}> <FeedIcon style={{marginRight:'2px',fontSize:'15pt'}}/> My Bounties</li>
+        <li onClick={async (e)=>{await setScreen("chat");setScreen("bounties");}}> <FeedIcon style={{marginRight:'2px',fontSize:'15pt'}}/> My Bounties</li>
         <li onClick={async (e)=>{await setScreen("bounties"); setScreen("chat")}}><ChatBubbleIcon style={{marginRight:'5px',fontSize:'13pt'}}/> Chat</li>
       </ul>
       <center>
