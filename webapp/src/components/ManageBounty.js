@@ -7,7 +7,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import {deleteDoc, doc, collection } from "firebase/firestore";
 import ConfirmModal from './ConfirmModal';
 import {modifyBountyAPI, deleteBountyAPI} from './APIHelpers';
-import {lowerAll} from './Helpers';
+import {toTitleCase, lowerAll} from './Helpers';
 
 const ManageBounty = ({user, auth, db, userData, setUserData, bountyData, onBack}) => {
   const [processing,  setProcessing] = useState(false);
@@ -54,7 +54,7 @@ const ManageBounty = ({user, auth, db, userData, setUserData, bountyData, onBack
         field['type'] == 'textarea' ?
         <textarea className="text-area" value={thisBountyData[field['field']]} onChange={e=>modifyBountyField(field['field'],e.target.value)} rows="10" cols="30" /> 
        :
-        <input value={thisBountyData[field['field']]} onChange={e=>modifyBountyField(field['field'],e.target.value)}/>  
+        <input value={toTitleCase(thisBountyData[field['field']])} onChange={e=>modifyBountyField(field['field'],e.target.value)}/>  
       
       } 
     </div>})}
