@@ -10,6 +10,7 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import AddIcon from '@mui/icons-material/Add';
 import Payment from './Payment';
 import {createBountyAPI} from './APIHelpers';
+import {titleAll} from './Helpers';
 const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBounties, mobile, setAddingBounty, stripe, onBack}) => {
   const currentDate = new Date().toDateString();
 
@@ -17,7 +18,7 @@ const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBo
   const [addBountyType, setAddBountyType] = useState(null);
   const [addBountyData, setAddBountyData] = useState({posterId:user.uid, posterUsername :userData['username'], postDate: currentDate});
   const [paymentError, setPaymentError] = useState("");
-
+ 
   const addBounty = async (paymentData) => {
    addBountyData['posterId'] = user['uid'];
    addBountyData['posterUsername'] = userData['username'];
@@ -26,7 +27,7 @@ const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBo
    addBountyData['paymentData'] = paymentData;
    //let newBounty = await addDoc(collection(db, "bountyList"), addBountyData);
    try {
-      let result = await createBountyAPI(user,addBountyData);
+      let result = await createBountyAPI(user,titleAll(addBountyData));
       if(result['result'] == 'success'){
         let lbounties = [...bounties];
         lbounties.push(addBountyData);
@@ -113,11 +114,37 @@ const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBo
          <input type="radio" checked={addBountyType=="broad"} onClick={e=>setAddBountyType("broad")}/> Broad Target 
         </div>}
        {(page =="details" && addBountyType=="specific") && <div>
-         <input size="22" placeholder="First Name" value={addBountyData['fname']} onChange={e=>changeBountyData('fname',e.target.value)} type="text"/> {mobile ? <br/> : <span style={{marginLeft:'5px'}}> </span>}
-         <input size="22" placeholder="Last Name" value={addBountyData['lname']} onChange={e=>changeBountyData('lname',e.target.value)} type="text"/> {mobile ? <br/> : <span style={{marginLeft:'5px'}}> </span>}
+         <input size="22" placeholder="Full Name" value={addBountyData['fullname']} onChange={e=>changeBountyData('fullname',e.target.value)} type="text"/> {mobile ? <br/> : <span style={{marginLeft:'5px'}}> </span>}
 
          <input size="22" placeholder="Organization" type="text"  value={addBountyData['organization']} onChange={e=>changeBountyData('organization',e.target.value)}/> {mobile ? <br/> : <span style={{marginLeft:'5px'}}> </span>}
-
+        
+           <select value={addBountyData['organizationType'] ?? ""} style={{marginBottom:'0px'}} onChange={e=>{changeBountyData('organizationType',e.target.value);}}> 
+             <option value="" disabled hidden> Org Type </option>
+             <option value="enterprise"> Large Enterprise Business </option>
+             <option value="smb"> Small to Medium Business </option>
+             <option value="startup"> Startup </option>
+             <option value="federal"> Federal Govt </option>
+             <option value="sled"> State and Local Govt </option>
+             <option value="healthcare"> Healthcare </option>
+             <option value="aerodef"> Aerospace & Defense </option>
+             <option value="energy"> Energy & Utilities </option>
+             <option value="electrical"> Electrical Equipment </option>
+             <option value="farming"> Farming </option>
+             <option value="shipping"> Shipping </option>
+             <option value="security"> Security </option>
+             <option value="waste"> Waste Management </option>
+             <option value="consulting"> Consulting </option>
+             <option value="re"> Real Estate </option>
+             <option value="tech"> Tech Company </option>
+             <option value="law"> Law </option>
+             <option value="materials"> Basic Materials </option>
+             <option value="manufacturing"> Manufacturing </option>
+             <option value="food"> Food & Restaurants </option>
+             <option value="retail"> Retail </option>
+             <option value="financial"> Financial </option>
+             <option value="ngo"> NGO </option>
+           </select>
+        
          <input size="22" placeholder="Position" type="text" value={addBountyData['position']} onChange={e=>changeBountyData('position',e.target.value)}/> {mobile ? <br/> : <span style={{marginLeft:'5px'}}> </span>}
  
          <input size="22" type="text" placeholder="LinkedIn Link (Optional)" value={addBountyData['linkedin']} onChange={e=>changeBountyData('linkedin',e.target.value)} /> {mobile ? <br/> : <span style={{marginLeft:'5px'}}> </span>}
@@ -139,7 +166,6 @@ const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBo
        <CheckCircleIcon style={{color:'green',fontSize:'100pt'}}/>  <br/> <br/>
          <span> Bounty Submitted! </span> <br/><br/>
          <Button onClick={e=>{goToDescription()}}> <AddIcon fontSize="small" style={{marginBottom:'3px',marginRight:'2px'}} /> Add Another Bounty </Button> <br/><br/> 
-         <Button onClick={e=>{setPage("home");setAddingBounty(false);}}>  <FormatListBulletedIcon style={{marginBottom:'3px',marginRight:'2px'}} fontSize="small"/>  Back To Bounty List  </Button>
     </div>}
    
     </div>

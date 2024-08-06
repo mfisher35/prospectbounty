@@ -48,7 +48,7 @@ const BountySearch = ({user, auth, db, storage, mobile, userData, type}) => {
     console.log(bountyList);
   }
 
-  return (<>
+  return (<div style={{marginTop:'40px'}}>
   <div style={{border:'1px solid #bbb',display:'flex',alignItems:'center',justifyContent:'space-evenly',borderRadius:'10px',padding:'8px',alignContent:'center'}}> <center>
    {criteria.map((crit,i)=>{ return (
     <div style={{display:'flex',justifyContent:'space-around',alignItems:'center',alignContent:'center',padding:'3px'}}>  <div>
@@ -66,7 +66,7 @@ const BountySearch = ({user, auth, db, storage, mobile, userData, type}) => {
         <input placeholder="Search" value={criteria[i][1]} size="40" style={{marginBottom:'0px'}} onChange={e=>changeCriteria(i,criteria[i][0],e.target.value)}/> 
       </div></div>)})} </center></div>
   <center> <div style={{color:'#007aff',marginTop:'15px',cursor:'pointer'}}> <AddIcon style={{border:'1px solid #007aff',borderRadius:'20px',color:'#007aff'}} onClick={e=>changeCriteria(criteria.length+1)}/> Add </div> </center>
- </> 
+ </div> 
 );
 };
 
