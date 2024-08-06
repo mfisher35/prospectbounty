@@ -5,7 +5,6 @@ import '../App.css';
 import styled from 'styled-components';
 import Button from 'react-bootstrap/Button'
 import { where, query, doc, getDocs, getDoc, collection, setDoc, addDoc, getFirestore } from "firebase/firestore";
-import Checkmark from '../assets/checkmark.png'
 import HomeIcon from '@mui/icons-material/Home';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import AddIcon from '@mui/icons-material/Add';
