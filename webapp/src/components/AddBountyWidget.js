@@ -10,7 +10,7 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import AddIcon from '@mui/icons-material/Add';
 import Payment from './Payment';
 import {createBountyAPI} from './APIHelpers';
-import {titleAll} from './Helpers';
+import {states, orgTypes, industryTypes, lowerAll} from './Helpers';
 const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBounties, mobile, setAddingBounty, stripe, onBack}) => {
   const currentDate = new Date().toDateString();
 
@@ -27,7 +27,7 @@ const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBo
    addBountyData['paymentData'] = paymentData;
    //let newBounty = await addDoc(collection(db, "bountyList"), addBountyData);
    try {
-      let result = await createBountyAPI(user,titleAll(addBountyData));
+      let result = await createBountyAPI(user,lowerAll(addBountyData));
       if(result['result'] == 'success'){
         let lbounties = [...bounties];
         lbounties.push(addBountyData);
@@ -118,45 +118,26 @@ const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBo
 
          <input size="22" placeholder="Organization" type="text"  value={addBountyData['organization']} onChange={e=>changeBountyData('organization',e.target.value)}/> {mobile ? <br/> : <span style={{marginLeft:'5px'}}> </span>}
         
-           <select value={addBountyData['organizationType'] ?? ""} style={{marginBottom:'0px'}} onChange={e=>{changeBountyData('organizationType',e.target.value);}}> 
-             <option value="" disabled hidden> Org Type </option>
-             <option value="enterprise"> Large Enterprise Business </option>
-             <option value="smb"> Small to Medium Business </option>
-             <option value="startup"> Startup </option>
-             <option value="federal"> Federal Govt </option>
-             <option value="sled"> State and Local Govt </option>
-             <option value="healthcare"> Healthcare </option>
-             <option value="aerodef"> Aerospace & Defense </option>
-             <option value="energy"> Energy & Utilities </option>
-             <option value="electrical"> Electrical Equipment </option>
-             <option value="farming"> Farming </option>
-             <option value="shipping"> Shipping </option>
-             <option value="security"> Security </option>
-             <option value="waste"> Waste Management </option>
-             <option value="consulting"> Consulting </option>
-             <option value="re"> Real Estate </option>
-             <option value="tech"> Tech Company </option>
-             <option value="law"> Law </option>
-             <option value="materials"> Basic Materials </option>
-             <option value="manufacturing"> Manufacturing </option>
-             <option value="food"> Food & Restaurants </option>
-             <option value="retail"> Retail </option>
-             <option value="financial"> Financial </option>
-             <option value="ngo"> NGO </option>
-           </select>
-        
-         <input size="22" placeholder="Position" type="text" value={addBountyData['position']} onChange={e=>changeBountyData('position',e.target.value)}/> {mobile ? <br/> : <span style={{marginLeft:'5px'}}> </span>}
- 
-         <input size="22" type="text" placeholder="LinkedIn Link (Optional)" value={addBountyData['linkedin']} onChange={e=>changeBountyData('linkedin',e.target.value)} /> {mobile ? <br/> : <span style={{marginLeft:'5px'}}> </span>}
+         {orgTypes(addBountyData['organizationType'],changeBountyData)}  <span style={{marginLeft:'5px'}}> </span>
+
+         {industryTypes(addBountyData['industryType'],changeBountyData)}  <br/><br/>
+         <input size="22" placeholder="Position" type="text" value={addBountyData['position']} onChange={e=>changeBountyData('position',e.target.value)}/> {mobile ? <br/> : <span style={{marginLeft:'5px'}}> </span>} <br/>
+         <input size="22" placeholder="City" type="text" value={addBountyData['city']} onChange={e=>changeBountyData('city',e.target.value)}/> {mobile ? <br/> : <span style={{marginLeft:'5px'}}> </span>}
+          {states(addBountyData['state'],changeBountyData)}<br/>
+         <input size="22" type="text" placeholder="LinkedIn Link (Optional)" value={addBountyData['linkedin']} onChange={e=>changeBountyData('linkedin',e.target.value)} /> {mobile ? <br/> : <span style={{marginLeft:'5px'}}> </span>} 
          <input size="22" type="text" placeholder="Email (Optional)" value={addBountyData['email']} onChange={e=>changeBountyData('email',e.target.value)} />{mobile ? <br/> : <span style={{marginLeft:'5px'}}> </span>} 
          <input size="22" type="text" placeholder="Phone (Optional)" value={addBountyData['phone']} onChange={e=>changeBountyData('phone',e.target.value)}/> {mobile ? <br/> : <span style={{marginLeft:'5px'}}> </span>}
 
          <center><Button variant="primary" onClick={e=>setPage("payment")}> Continue </Button> </center>
         </div>}
        {(page=="details" && addBountyType=="broad") && <div>
+         {orgTypes(addBountyData['organizationType'],changeBountyData)}  <span style={{marginLeft:'5px'}}> </span>
+         {industryTypes(addBountyData['industryType'],changeBountyData)}  <br/><br/>
          <textarea rows="10" cols="30" placeholder="Please Add More Details About the Target Audience" type="text" value={addBountyData['targetDescr']} onChange={e=>changeBountyData('targetDescr',e.target.value)}/><span style={{marginRight:'10px'}}/> <br/>
+
          <center><Button variant="primary" onClick={e=>setPage("payment")}> Continue </Button> </center>
-        </div>}
+        </div>
+       }
        {page=="payment" && <div>
          
             <Payment userData={userData} user={user} auth={auth} setUserData={setUserData} stripe={stripe} onPaymentSuccess={onPaymentSuccess} onPaymentFail={onPaymentFail}/>
