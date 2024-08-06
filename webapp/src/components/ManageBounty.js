@@ -14,7 +14,7 @@ const ManageBounty = ({user, auth, db, userData, setUserData, bountyData, onBack
   const [thisBountyData,  setThisBountyData] = useState(bountyData);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
-  const fields = [{name:'Bounty Name',field:'bountyName',type:"text"},{name:'My Offering',type:'textarea',field:'description'},{'name':'Full Name',field:'fullname',type:"text"},{name:'Target Description',field:'targetDescr',type:'textarea'},{name:'Organization',type:'text',field:'organization'},{'name':'Organization Type','field':'organizationType',type:'select'},{'name':'Industry Type','field':'industryType',type:'select'},{name:'LinkedIN Link',type:'text',field:'linkedin'}];
+  const fields = [{name:'Bounty Name',field:'bountyName',type:"text"},{name:'My Offering',type:'textarea',field:'description'},{'name':'Full Name',field:'fullname',type:"text"},{name:'Target Description',field:'targetDescr',type:'textarea'},{name:'Organization',type:'text',field:'organization'},{'name':'Organization Type','field':'organizationType',type:'select'},{'name':'Industry Type','field':'industryType',type:'select'},{name:'City',type:'text',field:'city'},{name:'State',type:'select',field:'state'},{name:'LinkedIN Link',type:'text',field:'linkedin'}];
 
   
   const modifyBountyField = (field,value)=>{
