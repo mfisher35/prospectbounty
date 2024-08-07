@@ -10,11 +10,14 @@ import BountySearch from './BountySearch';
 import Chat from './Chat';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import SearchIcon from '@mui/icons-material/Search';
+import AutoAwesomeMotionIcon from '@mui/icons-material/AutoAwesomeMotion';
+import FolderSharedIcon from '@mui/icons-material/FolderShared';
 
 const HunterHome = ({user, auth, db, storage, mobile, userData, setUserData}) => {
   const [screen, setScreen] = useState("bountylist");
   const [chatUID, setChatUID] = useState(null);
   const [chatName, setChatName] = useState(null);
+  const iconStyle = {marginRight:'2px',fontSize:'15pt',marginBottom:'3px'}
 
   //start chat with uid, name
   const onChat = (uid,name)=> {
@@ -32,10 +35,10 @@ const HunterHome = ({user, auth, db, storage, mobile, userData, setUserData}) =>
        {userData['closeContacts'] && (<div className="sidebar" style={{width:mobile ? "100px" : "250px"}}>
       <center> <img src={mobile ? Logosm : Logo} width={mobile ? '50px' : '200px'}/> </center>
       <ul>
-        <li onClick={e=>setScreen("bountylist")}>Bounty List</li>
-        <li onClick={e=>setScreen("mybounties")}>My Bounties</li>
-        <li onClick={e=>setScreen("search")}><SearchIcon style={{marginRight:'2px',fontSize:'15pt'}}/> Search</li>
-        <li onClick={e=>setScreen("chat")}><ChatBubbleIcon style={{marginRight:'5px',fontSize:'13pt'}}/> Chat</li>
+        <li onClick={e=>setScreen("bountylist")}> <AutoAwesomeMotionIcon style={iconStyle}/> Bounty List</li>
+        <li onClick={e=>setScreen("mybounties")}> <FolderSharedIcon style={iconStyle}/> My Bounties</li>
+        <li onClick={e=>setScreen("search")}><SearchIcon style={iconStyle}/> Search</li>
+        <li onClick={e=>setScreen("chat")}><ChatBubbleIcon style={iconStyle}/> Chat</li>
       </ul>
       <center>
         <div style={{color:'#ccc',fontSize:'8pt',marginTop:'60px'}}> 
