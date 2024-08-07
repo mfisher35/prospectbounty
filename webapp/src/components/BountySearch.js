@@ -1,73 +1,66 @@
-import React, { useState, useEffect } from 'react';
-import Button from 'react-bootstrap/Button'
+import React, { useState } from 'react';
 import '../App.css';
 import styled from 'styled-components';
-import {collection, getDocs, doc, setDoc, getDoc } from "firebase/firestore"; 
+import Button from 'react-bootstrap/Button'
+import Spinner from 'react-bootstrap/Spinner';
 import AddIcon from '@mui/icons-material/Add';
+import {deleteDoc, doc, collection } from "firebase/firestore";
+import {modifyBountyAPI, deleteBountyAPI} from './APIHelpers';
+import {bountyFields, toTitleCase, lowerAll, states, orgTypes, industryTypes } from './Helpers';
 
-const BountySearch = ({user, auth, db, storage, mobile, userData, type}) => {
-   const [bountyList, setBountySearch] = useState([]);
-   const [criteria, setCriteria] = useState([["",""]]);
+const BountySearch = ({user, auth, db, userData, setUserData}) => {
+  const [processing,  setProcessing] = useState(false);
+  const [searchData,  setSearchData] = useState({});
+
   
-/*
-   useEffect(() => {
-
-
-   }, []);
-*/
+  const modifyBountyField = (field,value)=>{
+    let tempData = {...searchData};
+    tempData[field] = value;
+    setSearchData(tempData);
+  }
   
-  const changeCriteria = (i,cat,value)=>{
-    let newCriteria = [... criteria];
-    if(i > newCriteria.length){
-      if(newCriteria.length == 0)
-        newCriteria.push(['','']);
-      else if(newCriteria[i-2][0] !='')
-        newCriteria.push(['','']);
+    
+   const onSave = async () => {
+    setProcessing(true);
+    let resp = await modifyBountyAPI(user,lowerAll(searchData));
+    setProcessing(false)
+    if(resp['result'] == 'success')
+       onBack();
+  };
+  
+
+  
+  return (
+    <div>
+
+    {bountyFields.filter(field=>Object.keys(searchData).indexOf(field['field']) >= 0).map((field) => {
+    return searchData[field['field']] && <div style={{margin:'10px'}} className="tacontainer"> <label className="talabel"> {field['name']} </label> 
+      {
+        field['type'] == 'textarea' &&
+        <textarea className="text-area" value={searchData[field['field']]} onChange={e=>modifyBountyField(field['field'],e.target.value)} rows="10" cols="30" /> } 
+       
+     { field['type'] == 'text' &&
+        <input value={toTitleCase(searchData[field['field']])} onChange={e=>modifyBountyField(field['field'],e.target.value)}/>  
+      } 
+      { field['selector'] &&
+       field.selector(searchData[field['field']],modifyBountyField)  
+      } 
+
+    </div>})}
+ 
+    
+
+    {processing ? <Spinner variant="primary"/> : 
+    <div style={{marginBottom:'20px'}}>
+         <center> <div style={{color:'#007aff',marginTop:'15px',cursor:'pointer'}}> <AddIcon style={{border:'1px solid #007aff',borderRadius:'20px',color:'#007aff'}} onClick={e=>{setSearchData({'bountyName':'pooper'})}}/> Add </div> </center>
+
+       <Button onClick={e=>onSave()}> Search </Button> <span style={{marginLeft:'5px'}}> </span>
+    </div>
     }
-    else if(cat && value){
-      newCriteria[i] = [cat,value];
-    }
-    else if(cat){
-      newCriteria[i][0] = cat;
-    }
-    setCriteria(newCriteria);
-  }
+    </div>
 
-  const removeCriteria = (i) => {
-   let newCriteria = criteria.filter((item,ix)=> {return i != ix});
-   setCriteria(newCriteria);
-
-  }
-
-  const alreadyPicked = (i,cat) => {
-    if(criteria[i][0] == cat) return false;
-    return criteria.filter(item=>item[0] == cat).length > 0;
-  }
-
-  const onSubmit = async () => {
-    console.log(bountyList);
-  }
-
-  return (<div style={{marginTop:'40px'}}>
-  <div style={{border:'1px solid #bbb',display:'flex',alignItems:'center',justifyContent:'space-evenly',borderRadius:'10px',padding:'8px',alignContent:'center'}}> <center>
-   {criteria.map((crit,i)=>{ return (
-    <div style={{display:'flex',justifyContent:'space-around',alignItems:'center',alignContent:'center',padding:'3px'}}>  <div>
-        <span style={{color:'red',marginRight:'7px',cursor:'pointer'}} onClick={e=>removeCriteria(i)}>ⓧ </span>
-        <select value={criteria[i][0]} style={{marginBottom:'0px'}} onChange={e=>{changeCriteria(i,e.target.value);}}> 
-           <option value="" disabled hidden> Pick Criteria </option>
-           {!alreadyPicked(i,"Full Name") && <option value="Full Name" label="Full Name" />}
-           {!alreadyPicked(i,"Organization") && <option value="Organization" label="Organization" />}
-           {!alreadyPicked(i,"Organization Type") && <option value="Organization Type" label="Org Type" />}
-           {!alreadyPicked(i,"Organization Department") && <option value="Organization Department" label="Org Dept" />}
-        </select>
-      </div>
-      <div style={{width:'10px'}}> </div>
-      <div>
-        <input placeholder="Search" value={criteria[i][1]} size="40" style={{marginBottom:'0px'}} onChange={e=>changeCriteria(i,criteria[i][0],e.target.value)}/> 
-      </div></div>)})} </center></div>
-  <center> <div style={{color:'#007aff',marginTop:'15px',cursor:'pointer'}}> <AddIcon style={{border:'1px solid #007aff',borderRadius:'20px',color:'#007aff'}} onClick={e=>changeCriteria(criteria.length+1)}/> Add </div> </center>
- </div> 
-);
+     
+  );
 };
 
 export default BountySearch;
