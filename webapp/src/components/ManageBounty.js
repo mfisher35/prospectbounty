@@ -7,14 +7,14 @@ import Spinner from 'react-bootstrap/Spinner';
 import {deleteDoc, doc, collection } from "firebase/firestore";
 import ConfirmModal from './ConfirmModal';
 import {modifyBountyAPI, deleteBountyAPI} from './APIHelpers';
-import {toTitleCase, lowerAll} from './Helpers';
+import {toTitleCase, lowerAll, states, orgTypes, industryTypes } from './Helpers';
 
 const ManageBounty = ({user, auth, db, userData, setUserData, bountyData, onBack}) => {
   const [processing,  setProcessing] = useState(false);
   const [thisBountyData,  setThisBountyData] = useState(bountyData);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
-  const fields = [{name:'Bounty Name',field:'bountyName',type:"text"},{name:'My Offering',type:'textarea',field:'description'},{'name':'Full Name',field:'fullname',type:"text"},{name:'Target Description',field:'targetDescr',type:'textarea'},{name:'Organization',type:'text',field:'organization'},{'name':'Organization Type','field':'organizationType',type:'select'},{'name':'Industry Type','field':'industryType',type:'select'},{name:'City',type:'text',field:'city'},{name:'State',type:'select',field:'state'},{name:'LinkedIN Link',type:'text',field:'linkedin'}];
+  const fields = [{name:'Bounty Name',field:'bountyName',type:"text"},{name:'My Offering',type:'textarea',field:'description'},{'name':'Full Name',field:'fullname',type:"text"},{name:'Target Description',field:'targetDescr',type:'textarea'},{name:'Organization',type:'text',field:'organization'},{'name':'Organization Type','field':'organizationType',selector:orgTypes},{'name':'Industry Type','field':'industryType',selector:industryTypes},{name:'City',type:'text',field:'city'},{name:'State',selector:states,field:'state'},{name:'LinkedIN Link',type:'text',field:'linkedin'}];
 
   
   const modifyBountyField = (field,value)=>{
@@ -51,12 +51,16 @@ const ManageBounty = ({user, auth, db, userData, setUserData, bountyData, onBack
    {fields.map((field) => {
     return thisBountyData[field['field']] && <div style={{margin:'10px'}} className="tacontainer"> <label className="talabel"> {field['name']} </label> 
       {
-        field['type'] == 'textarea' ?
-        <textarea className="text-area" value={thisBountyData[field['field']]} onChange={e=>modifyBountyField(field['field'],e.target.value)} rows="10" cols="30" /> 
-       :
+        field['type'] == 'textarea' &&
+        <textarea className="text-area" value={thisBountyData[field['field']]} onChange={e=>modifyBountyField(field['field'],e.target.value)} rows="10" cols="30" /> } 
+       
+     { field['type'] == 'text' &&
         <input value={toTitleCase(thisBountyData[field['field']])} onChange={e=>modifyBountyField(field['field'],e.target.value)}/>  
-      
       } 
+      { field['selector'] &&
+       field.selector(thisBountyData[field['field']],modifyBountyField)  
+      } 
+
     </div>})}
     {processing ? <Spinner variant="primary"/> : 
     <div style={{marginBottom:'20px'}}>
