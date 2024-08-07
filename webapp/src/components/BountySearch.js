@@ -54,13 +54,13 @@ const BountySearch = ({user, auth, db, userData, setUserData}) => {
          </div>
         </center>
      <br/>
-     {adding && <select onChange={e=>{modifySearchField(e.target.value,"");setAdding(false)}}>
+     {adding && <div> Add Search Criteria: <select value="" onChange={e=>{modifySearchField(e.target.value,"");setAdding(false)}}> 
+        <option value="" disabled hidden> Choose Criteria  </option>
         {bountyFields.filter(f=>Object.keys(searchData).indexOf(f['field'])<0).map(field=>{
-           console.log('aaa',field);
          return  <option value={field['field']}> {field['name']} </option>
         })} 
       }
-      </select>}
+      </select></div>}
        <Button onClick={e=>{}}> Search </Button> <span style={{marginLeft:'5px'}}> </span>
     </div>
     </div>
