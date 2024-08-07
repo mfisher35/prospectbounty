@@ -9,13 +9,14 @@ import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import EditIcon from '@mui/icons-material/Edit';
 import {toTitleCase} from './Helpers';
 
-const BountyList = ({user, auth, db, storage, mobile, userData, type, onChat, onManageBounty}) => {
-   const [bountyList, setBountyList] = useState([]);
+const BountyList = ({user, auth, db, storage, mobile, userData, type, onChat, onManageBounty,bounties}) => {
+   const [bountyList, setBountyList] = useState(bounties ?? []);
 
    useEffect(() => {
    let myList = []
    console.log(type);
-   getDocs(collection(db, "bountyList")).then((querySnapshot)=>{
+   if(!bounties)
+     getDocs(collection(db, "bountyList")).then((querySnapshot)=>{
      querySnapshot.forEach((doc)=>{
        let docData = doc.data();
        docData['id'] = doc.id;

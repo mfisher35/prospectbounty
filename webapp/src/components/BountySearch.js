@@ -8,8 +8,9 @@ import {query, getDocs, where, deleteDoc, doc, collection } from "firebase/fires
 import {bountyFields, toTitleCase, lowerAll, states, orgTypes, industryTypes } from './Helpers';
 import SearchIcon from '@mui/icons-material/Search';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import BountyList from './BountyList';
 
-const BountySearch = ({user, auth, db, userData, setUserData}) => {
+const BountySearch = ({user, auth, db, userData, setUserData, onChat}) => {
   const [processing,  setProcessing] = useState(false);
   const [searchData,  setSearchData] = useState({});
   const [adding, setAdding] = useState(true);
@@ -44,19 +45,28 @@ const BountySearch = ({user, auth, db, userData, setUserData}) => {
          //firestoreQuery = query(firestoreQuery, where(key, value.operator, value.value));
           } else { */
     })
-   console.log('searching'); 
+   let results = [];
+
    let querySnapshot = await getDocs(firestoreQuery);
    querySnapshot.forEach((doc)=>{
       let docData = doc.data();
       docData['id'] = doc.id;
-      console.log('SR',docData);
-      //myList.push(docData);
+      results.push(docData);
      });
-   console.log('done');
+   console.log(results);
+   setSearchResults(results);
   }
   
   return (
-    <div>
+  searchResults ? 
+
+   <div> 
+     <BountyList user={user} auth={auth} db={db} userData={userData} setUserData={setUserData} onChat={onChat} bounties={searchResults}/> 
+   </div>
+
+   :
+
+   <div>
 
     {bountyFields.filter(field=>Object.keys(searchData).indexOf(field['field']) >= 0).map((field) => {
     return <div style={{margin:'10px'}} className="tacontainer"> 
@@ -98,7 +108,6 @@ const BountySearch = ({user, auth, db, userData, setUserData}) => {
        <Button onClick={e=>{onSearch()}}> <SearchIcon style={{fontSize:'16pt',marginBottom:'3px'}}/> Search </Button> <span style={{marginLeft:'5px'}}> </span>
     </div>
     </div>
-
      
   );
 };
