@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import AddContactsWidget from "./AddContactsWidget";
 import { doc, setDoc, getDoc } from "firebase/firestore"; 
 import Logo  from '../assets/logofull.png';
+import {lowerAll} from './Helpers';
 
 const HunterInit = ({user, auth, db, storage, mobile, userData, setUserData}) => {
   const [contacts, setContacts] = useState([]);
@@ -12,9 +13,10 @@ const HunterInit = ({user, auth, db, storage, mobile, userData, setUserData}) =>
 
   
   const onSubmit = async () => {
+    let lowerContacts = contacts.map(contact=>lowerAll(contact));
     let newUserData = userData; 
     newUserData['experience'] = experience;
-    newUserData['closeContacts'] = contacts;
+    newUserData['closeContacts'] = lowerContacts;
     await setDoc(doc(db, "userData", user['uid']), newUserData);
     setUserData(newUserData);
   }
