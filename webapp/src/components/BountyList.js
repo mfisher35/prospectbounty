@@ -40,7 +40,7 @@ const BountyList = ({user, auth, db, storage, mobile, userData, type, onChat, on
        <h2> {type == "all" ? "All Bounties" : "My Bounties"} </h2> </center>
        <br/>
        {bountyList.map((item,ix)=><div className="card" style={{cursor:user.uid == item['posterId'] ? 'pointer' : 'default'}} onClick={e=>{if(user.uid == item['posterId']) onManageBounty(item);}} key={`bounty-${ix}`}>
-          <div style={{marginLeft:"0",textAlign:'right'}}><EditIcon style={{color:'#777'}} fontSize="sm"/> </div>
+   {userData['role'] == 'poster' &&  <div style={{marginLeft:"0",textAlign:'right'}}><EditIcon style={{color:'#777'}} fontSize="sm"/> </div>}
           <h4> {` ${ix+1}) ${toTitleCase(item['bountyName'])}`} </h4>
 
           {item['linkedin'] ? (<h6> <a href={item['linkedin']}> LinkedIn Link </a> </h6>) : <></>}
