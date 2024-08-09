@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { Tooltip as ReactTooltip } from "react-tooltip";
 import styled from 'styled-components';
 import Logo from '../assets/logofull.png';
 import Spinner from 'react-bootstrap/Spinner';
@@ -214,8 +214,20 @@ const Login = ({onLogin}) => {
           onChange={(e) => phoneTextChange(e.target.value)}
           required
         />
-         <div style={{display:'inline-block',zoom:1,textAlign:'center'}}> <b>Choose Role: </b> <br/>  <span style={{marginLeft:'10px'}}> <input type="radio" checked={role=="poster"} onClick={e=>{setRole("poster")}}/> {"Bounty Poster"} </span> 
-         <span style={{marginLeft:'15px'}}>  <input type="radio" checked={role=="hunter"} onClick={e=>{setRole("hunter")}}/> Bounty Hunter </span> </div><br/>
+         <div style={{display:'inline-block',zoom:1,textAlign:'center'}}> <b>Choose Role: </b> <br/>  <span style={{marginLeft:'10px'}}> <input type="radio" checked={role=="poster"} onClick={e=>{setRole("poster")}}/> {"Bounty Poster"} </span>  <span style={{backgroundColor:'#ddd',paddingLeft:'4px',borderRadius:'10px'}} data-tooltip-id="tooltip-poster"> ❓ </span> 
+      <ReactTooltip
+        id="tooltip-poster"
+        place="bottom"
+        content="Poster: User that would pay for warm introductions"
+      /> 
+         <span style={{marginLeft:'15px'}}>  <input type="radio" checked={role=="hunter"} onClick={e=>{setRole("hunter")}}/> Bounty Hunter </span> <span style={{backgroundColor:'#ddd',paddingLeft:'4px',paddingRight:'4px',borderRadius:'10px'}} data-tooltip-id="tooltip-hunter"> ❓ </span> 
+      <ReactTooltip
+        id="tooltip-hunter"
+        place="bottom"
+        content="Hunter: User that wants to be paid for making warm introductions"
+      /> 
+ 
+</div><br/>
         
        </> )}
 

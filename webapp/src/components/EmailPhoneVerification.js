@@ -57,6 +57,7 @@ const EmailPhoneVerification = ({ user, auth, storage, db, onLogin, userData, em
   const [error, setError]  = useState("");
   const [captchaInit, setCaptchaInit] = useState(false);
   const [processing, setProcessing] = useState(true);
+  const [finalRegistering, setFinalRegistering] = useState(false);
 
   useEffect(() => {
     setProcessing(true);
@@ -116,6 +117,7 @@ const verifyPhone = () => {
     }
 
 const handleVerifyCode = async ()  => {
+        setFinalRegistering(true);
         let newUserData = userData;
         phoneConfirmationResult.confirm(userPhoneCode)
           .then(async (result) => {
@@ -125,8 +127,10 @@ const handleVerifyCode = async ()  => {
             newUserData['custId'] = customer['id'];
             await setDoc(doc(db, "userData", user['uid']), newUserData);
             setPhoneVerified(true);
+            setFinalRegistering(false);
           })
           .catch((error) => {
+            setFinalRegistering(false);
             console.error("Error during confirmation", error);
             setError(cleanError(error.message));
           });
@@ -145,7 +149,7 @@ const handleVerifyCode = async ()  => {
       {phoneConfirmationResult && (<div style={{borderRadius:'15px',backgroundColor:'#dedede' ,padding:'20px',marginTop:'30px',width:"100%"}}>
         <center> <span> SMS Code Sent To: {userData['phone']}</span> <br/> <span> Enter Phone Verification Code: </span><br/>
         <input type="text" value={userPhoneCode} onChange={e=>{setUserPhoneCode(e.target.value)}}/> <br/><br/>
-        <Button onClick={handleVerifyCode}> Submit </Button> </center>
+        {finalRegistering ? <Spinner variant="primary"/> : <Button onClick={handleVerifyCode}> Submit </Button>} </center>
        </div>)}
       <div id="recaptcha-container"></div>
       <center> <span style={{color:'red'}}> {error} </span> </center>
