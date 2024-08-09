@@ -12,6 +12,7 @@ const Payment = ({user, auth, db, userData, setUserData, bounties, setBounties, 
   const [paymentData, setPaymentData] = useState({});
   const [amount, setAmount] = useState("");
   const [amountFinished, setAmountFinished] = useState(false);
+  const [paying, setPaying] = useState(false);
 
   const onSetupPayment = () => {
    setLoading(true);
@@ -32,6 +33,7 @@ const Payment = ({user, auth, db, userData, setUserData, bounties, setBounties, 
 
 
   const submitPayment = async () => {
+     setPaying(true);
      try{
         //let result = await stripeElements.submit()
         let result = await stripe.confirmPayment({
@@ -42,8 +44,10 @@ const Payment = ({user, auth, db, userData, setUserData, bounties, setBounties, 
         console.log('paymentresult',result['paymentIntent']);
         setPaymentIntent(result['paymentIntent']);
         onPaymentSuccess(result['paymentIntent']);
+        
              
      }catch(e){console.log(e); onPaymentFail(e.toString());}
+     setPaying(false);
   }
 
 
@@ -55,7 +59,8 @@ const Payment = ({user, auth, db, userData, setUserData, bounties, setBounties, 
      <form id="payment-form">
        <div id="payment-element">
        </div> <br/>
-       {amountFinished && <Button onClick={e=>submitPayment()} variant="primary">Submit Payment</Button>}
+       {(amountFinished && !paying) && <Button onClick={e=>submitPayment()} variant="primary">Submit Payment</Button>}
+       {(amountFinished && paying) && <Spinner variant="primary"/>}
        <div id="error-message">
        </div>
      </form>

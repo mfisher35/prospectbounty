@@ -95,29 +95,29 @@ const Login = ({onLogin}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
-  const [loggingIn, setLoggingIn] = useState(null);
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [page, setPage] = useState("home");
   const [userData, setUserData] = useState(null);
+  const [processing, setProcessing] = useState(false);
 
   const tosLink = "https://prospectbounty.com/legal/terms.html";
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-         setLoggingIn(true);
+         setProcessing(true);
          setError(null);
          let creds = await signInWithEmailAndPassword(auth,email, password);
          setUser(creds['user']);
-         setLoggingIn(false);
+         setProcessing(false);
          let userInfo = await getDoc(doc(db, "userData", creds['user']['uid']));
          setUserData(userInfo.data());
        } catch (error) {
          setError(error.message);
-         setLoggingIn(false);
+         setProcessing(false);
        }
   }
 
@@ -144,6 +144,7 @@ const Login = ({onLogin}) => {
   }
 
   const handleRegister = async (e) => {
+    setProcessing(true);
     e.preventDefault();
     try {
       if(phone.length < 10)
@@ -164,6 +165,7 @@ const Login = ({onLogin}) => {
     } catch (error) {
       setError(error.message);
     }
+    setProcessing(false);
   };
 
   const handleForgotPassword = async (e) => {
@@ -240,7 +242,7 @@ const Login = ({onLogin}) => {
         /> I Accept The <a href={tosLink} target="_blank"> Terms & Conditions </a>
         </div>}
         {error && <ErrorMessage>{cleanError(error)}</ErrorMessage>}
-	{loggingIn ?     (<center> <Spinner animation="border" variant="primary" /> </center>)  : <Button type="submit">{registering ? "Register" : "Login"} </Button>}
+	{processing ?     (<center> <Spinner animation="border" variant="primary" /> </center>)  : <Button type="submit">{registering ? "Register" : "Login"} </Button>}
         <LinkButton onClick={handleRegistering}>{registering ? "Login" : "Register"}</LinkButton>
         <LinkButton onClick={handleForgotPassword}>Forgot Password</LinkButton>
       </Form>

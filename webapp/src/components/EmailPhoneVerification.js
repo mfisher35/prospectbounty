@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Spinner from 'react-bootstrap/Spinner';
 import styled from 'styled-components';
 import EmailImg from '../assets/email.png';
 import { signInWithEmailAndPassword, signInWithPhoneNumber, sendEmailVerification, RecaptchaVerifier } from "firebase/auth";
@@ -54,22 +55,29 @@ const EmailPhoneVerification = ({ user, auth, storage, db, onLogin, userData, em
   const [phoneConfirmationResult, setPhoneConfirmationResult] = useState(null);
   const [userPhoneCode, setUserPhoneCode] = useState("");
   const [error, setError]  = useState("");
-  const [captchaInit, setCaptchaInit] = useState(false)
+  const [captchaInit, setCaptchaInit] = useState(false);
+  const [processing, setProcessing] = useState(true);
+
   useEffect(() => {
+    setProcessing(true);
     try {
        if(!captchaInit){
          setCaptchaInit(true);
+         setProcessing(false);
          window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
       'size': 'invisible',
       'callback': (response) => {
+        setProcessing(false);
         // reCAPTCHA solved, allow signInWithPhoneNumber.
       }
-    });}} catch(e) {console.log(e)}
+    });}} catch(e) {console.log(e); setProcessing(false);}
   }, []);
 
   useEffect(() => {
+    setProcessing(true)
     const checkEmailVerification = setInterval(async () => {
       await user.reload();
+      setProcessing(true);
       const currentUser = auth.currentUser;
       if (currentUser.emailVerified) {
         setEmailVerified(true);
@@ -96,10 +104,12 @@ const EmailPhoneVerification = ({ user, auth, storage, db, onLogin, userData, em
 
 
 const verifyPhone = () => {
+    setProcessing(true);
     const appVerifier = window.recaptchaVerifier;
     try{
     signInWithPhoneNumber(auth,`+1${userData['phone']}`, appVerifier).then((confirmationResult) => {
         setPhoneConfirmationResult(confirmationResult);
+        setProcessing(false);
       })
     }
      catch(error) { setError(cleanError(error.message))}
@@ -126,9 +136,12 @@ const handleVerifyCode = async ()  => {
     <Container style={{padding:'40px'}}>
       <center> <img src={Logo} width="300px" /></center> <br/><br/>
       {!emailVerified && <>  <center> <img src={EmailImg} width="180px" /> </center> <br/><br/>
-           <Message> Please Check Your E-Mail And Click The Link To Verify Your Account </Message>
+      <center>     Please Check Your E-Mail And Click The Link To Verify Your Account
+      <br/> You will be logged in here automatically afterwords! </center>
+      {processing && <div style={{marginTop:'10px',marginBottom:'30px'}}> <center> <Spinner style={{height:'60px',width:'60px'}} variant="primary"/> </center> </div>}
         <center> <Button onClick={sendVerificationEmail}>Resend Verification Email</Button> </center> </> }
       {emailVerified && <div style={{borderRadius:'15px',backgroundColor:'#dedede' ,padding:'50px'}}>  <center>✅ ✉️  E-Mail Verified. </center> </div> }
+      {(processing && emailVerified) && <div style={{marginTop:'40px',marginBottom:'30px'}}> <center> Sending SMS to Your Phone... <br/><br/>  <Spinner style={{height:'60px',width:'60px'}} variant="primary"/> </center> </div>}
       {phoneConfirmationResult && (<div style={{borderRadius:'15px',backgroundColor:'#dedede' ,padding:'20px',marginTop:'30px',width:"100%"}}>
         <center> <span> SMS Code Sent To: {userData['phone']}</span> <br/> <span> Enter Phone Verification Code: </span><br/>
         <input type="text" value={userPhoneCode} onChange={e=>{setUserPhoneCode(e.target.value)}}/> <br/><br/>

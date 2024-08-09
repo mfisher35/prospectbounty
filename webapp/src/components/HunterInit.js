@@ -28,10 +28,12 @@ const HunterInit = ({user, auth, db, storage, mobile, userData, setUserData}) =>
        <h2> Bounty Hunter Set Up </h2> </center>
        <br/><br/>
        <div className="card">
+          <div style={{textAlign:'left',color:'blue',marginBottom:'15px'}}> <h7> <b> Optional </b> </h7> </div>
           <h4> Please Give a Quick Description of Your Experience/Qualifications: </h4>
           <input type="text" size="80" onChange={e=>setExperience(e.target.value)}/> 
        </div>
        <div className="card">
+          <div style={{textAlign:'left',color:'blue',marginBottom:'15px'}}> <h7> <b> Optional </b> </h7> </div>
          <h4> Please Add at Least 3 Decision Makers <br/> That You Have a Close Connection To: </h4><br/>
          <AddContactsWidget setContacts={setContacts} contacts={contacts}/> 
        </div> 
