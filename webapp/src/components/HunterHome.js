@@ -46,7 +46,7 @@ const HunterHome = ({user, auth, db, storage, mobile, userData, setUserData}) =>
     <div style={{fontFamily:'Plus Jakarta Sans',fontSize:'12pt'}}>
        {userData['closeContacts'] && (<div className="sidebar" style={{width:mobile ? "100px" : "250px"}}>
       <center> <img src={mobile ? Logosm : Logo} width={mobile ? '50px' : '200px'}/> </center>
-        <div style={{paddingBottom:'20px'}}>hi </div>
+        <div style={{paddingBottom:'20px'}}> </div>
       <ul> 
         <div className="sbsection" style={sbColor("bountylist")}>
            {selectedItem("bountylist")} 

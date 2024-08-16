@@ -256,7 +256,7 @@ text-shadow: 1px 1px 2px #505050;
 }
 
 .sbsection {
-  margin: 0px 25px;
+  margin: 10px 25px;
   padding: 0px;
   height: 40px;
   line-height:40px;
@@ -267,7 +267,6 @@ text-shadow: 1px 1px 2px #505050;
 .sidebar ul li {
   text-align: left;
   /*border-bottom: 1px solid #555;*/
-  color: white;
   text-decoration: none;
   display: block;
   border-radius: 12px 0px 0px 12px;

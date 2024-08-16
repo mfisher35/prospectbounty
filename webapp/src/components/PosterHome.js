@@ -8,8 +8,8 @@ import PosterBounties from './PosterBounties';
 import { collection, query, where, getDocs } from "firebase/firestore";
 import BountyList from './BountyList';
 import Chat from './Chat';
-import FeedIcon from '@mui/icons-material/Feed';
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
+import CoPresentOutlinedIcon from '@mui/icons-material/CoPresentOutlined';
 
 const PosterHome = ({user, auth, db, storage, mobile, userData, setUserData, stripe}) => {
   //const [userData, setUserData] = useState(null);
@@ -32,15 +32,35 @@ const PosterHome = ({user, auth, db, storage, mobile, userData, setUserData, str
    })
   }, []);
 
+  const sbColor = (section) => {
+    return section == screen ?
+       {color:'#DFBB81',backgroundColor: "#1d2931"} : {backgroundColor : "#021526",color:'white'}
+  }
+
+  const selectedItem = (section) => {
+    if(section == screen)
+      return <span style={{marginRight:'10px',textAlign:'left',backgroundColor:'#DFBB81',width: '6px',borderRadius: '12px 0px 0px 12px'}}> &nbsp; </span> 
+    else return <span style={{marginRight:'10px',textAlign:'left',backgroundColor:'#021526',width: '6px',borderRadius: '12px 0px 0px 12px'}}> &nbsp; </span> 
+  }
+
+  const iconStyle = {marginRight:'5px',fontSize:'13pt',color:'white',marginBottom:'2px'};
+
   return (
     <div style={{fontFamily:'Plus Jakarta Sans',fontSize:'12pt'}}>
        <div className="sidebar" style={{width:mobile ? "100px" : "250px"}}>
       <center> 
         <img src={mobile ? Logosm : Logo} width={mobile ? '50px' : '200px'} /> 
+        <div style={{paddingBottom:'20px'}}>hi </div>
      </center>
       <ul>
-        <li onClick={async (e)=>{await setScreen("chat");setScreen("bounties");}}> <FeedIcon style={{marginRight:'2px',fontSize:'15pt'}}/> My Bounties</li>
-        <li onClick={async (e)=>{await setScreen("bounties"); setScreen("chat")}}><ChatOutlinedIcon style={{marginRight:'5px',fontSize:'13pt'}}/> Chat</li>
+        <div className="sbsection" style={sbColor("bounties")}>
+           {selectedItem("bounties")}
+           <li onClick={async (e)=>{await setScreen("chat");setScreen("bounties");}}> <CoPresentOutlinedIcon style={iconStyle}/> My Bounties</li>
+        </div>
+        <div className="sbsection" style={sbColor("chat")}>
+           {selectedItem("chat")}
+           <li onClick={async (e)=>{await setScreen("bounties"); setScreen("chat")}}><ChatOutlinedIcon style={iconStyle}/> Chat</li>
+        </div>
       </ul>
       <center>
         <div style={{color:'#ccc',fontSize:'8pt',marginTop:'60px'}}> 
