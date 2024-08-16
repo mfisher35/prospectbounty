@@ -18,7 +18,8 @@ const HunterHome = ({user, auth, db, storage, mobile, userData, setUserData}) =>
   const [screen, setScreen] = useState("bountylist");
   const [chatUID, setChatUID] = useState(null);
   const [chatName, setChatName] = useState(null);
-  const iconStyle = {marginRight:'2px',fontSize:'15pt',marginBottom:'3px'}
+
+  const iconStyle = {marginRight:'2px',fontSize:'15pt',marginBottom:'2px',color:'white'}
 
   //start chat with uid, name
   const onChat = (uid,name)=> {
@@ -29,7 +30,7 @@ const HunterHome = ({user, auth, db, storage, mobile, userData, setUserData}) =>
 
   const sbColor = (section) => {
     return section == screen ?
-       {backgroundColor: "#1d2931"} : {backgroundColor : "#021526"}
+       {color:'#DFBB81',backgroundColor: "#1d2931"} : {backgroundColor : "#021526",color:'white'}
   }
 
   const selectedItem = (section) => {
