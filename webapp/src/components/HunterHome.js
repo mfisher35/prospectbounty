@@ -9,9 +9,10 @@ import BountyList from './BountyList';
 import BountySearch from './BountySearch';
 import Chat from './Chat';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
 import SearchIcon from '@mui/icons-material/Search';
-import AutoAwesomeMotionIcon from '@mui/icons-material/AutoAwesomeMotion';
-import FolderSharedIcon from '@mui/icons-material/FolderShared';
+import AutoAwesomeMotionOutlinedIcon from '@mui/icons-material/AutoAwesomeMotionOutlined';
+import CoPresentOutlinedIcon from '@mui/icons-material/CoPresentOutlined';
 
 const HunterHome = ({user, auth, db, storage, mobile, userData, setUserData}) => {
   const [screen, setScreen] = useState("bountylist");
@@ -26,6 +27,17 @@ const HunterHome = ({user, auth, db, storage, mobile, userData, setUserData}) =>
      setScreen('chat');
   }
 
+  const sbColor = (section) => {
+    return section == screen ?
+       {backgroundColor: "#1d2931"} : {backgroundColor : "#021526"}
+  }
+
+  const selectedItem = (section) => {
+    if(section == screen)
+      return <span style={{marginRight:'10px',textAlign:'left',backgroundColor:'#DFBB81',width: '6px',borderRadius: '12px 0px 0px 12px'}}> &nbsp; </span> 
+    else return <span style={{marginRight:'10px',textAlign:'left',backgroundColor:'#021526',width: '6px',borderRadius: '12px 0px 0px 12px'}}> &nbsp; </span> 
+  }
+
   const cleanError = (error) => {
   }
   console.log('www',userData)
@@ -34,11 +46,24 @@ const HunterHome = ({user, auth, db, storage, mobile, userData, setUserData}) =>
     <div style={{fontFamily:'Plus Jakarta Sans',fontSize:'12pt'}}>
        {userData['closeContacts'] && (<div className="sidebar" style={{width:mobile ? "100px" : "250px"}}>
       <center> <img src={mobile ? Logosm : Logo} width={mobile ? '50px' : '200px'}/> </center>
-      <ul>
-        <li onClick={e=>setScreen("bountylist")}> <AutoAwesomeMotionIcon style={iconStyle}/> Bounty List</li>
-        <li onClick={e=>setScreen("mybounties")}> <FolderSharedIcon style={iconStyle}/> My Bounties</li>
-        <li onClick={e=>setScreen("search")}><SearchIcon style={iconStyle}/> Search</li>
-        <li onClick={e=>setScreen("chat")}><ChatBubbleIcon style={iconStyle}/> Chat</li>
+        <div style={{paddingBottom:'20px'}}>hi </div>
+      <ul> 
+        <div className="sbsection" style={sbColor("bountylist")}>
+           {selectedItem("bountylist")} 
+           <li onClick={e=>setScreen("bountylist")}>  <AutoAwesomeMotionOutlinedIcon style={iconStyle}/>  Bounty List</li>
+        </div>
+        <div className="sbsection" style={sbColor("mybounties")}> 
+           {selectedItem("mybounties")}
+           <li onClick={e=>setScreen("mybounties")}> <CoPresentOutlinedIcon style={iconStyle}/>  My Bounties</li>
+        </div>
+        <div className="sbsection" style={sbColor("search")}> 
+           {selectedItem("search")}
+           <li onClick={e=>setScreen("search")}><SearchIcon style={iconStyle}/>             Search</li>
+        </div>
+        <div className="sbsection" style={sbColor("chat")}>
+          {selectedItem("chat")}
+          <li onClick={e=>setScreen("chat")}> <ChatOutlinedIcon style={iconStyle}/> Chat </li>
+        </div>
       </ul>
       <center>
         <div style={{color:'#ccc',fontSize:'8pt',marginTop:'60px'}}> 

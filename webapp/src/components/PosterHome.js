@@ -9,7 +9,7 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import BountyList from './BountyList';
 import Chat from './Chat';
 import FeedIcon from '@mui/icons-material/Feed';
-import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
 
 const PosterHome = ({user, auth, db, storage, mobile, userData, setUserData, stripe}) => {
   //const [userData, setUserData] = useState(null);
@@ -40,7 +40,7 @@ const PosterHome = ({user, auth, db, storage, mobile, userData, setUserData, str
      </center>
       <ul>
         <li onClick={async (e)=>{await setScreen("chat");setScreen("bounties");}}> <FeedIcon style={{marginRight:'2px',fontSize:'15pt'}}/> My Bounties</li>
-        <li onClick={async (e)=>{await setScreen("bounties"); setScreen("chat")}}><ChatBubbleIcon style={{marginRight:'5px',fontSize:'13pt'}}/> Chat</li>
+        <li onClick={async (e)=>{await setScreen("bounties"); setScreen("chat")}}><ChatOutlinedIcon style={{marginRight:'5px',fontSize:'13pt'}}/> Chat</li>
       </ul>
       <center>
         <div style={{color:'#ccc',fontSize:'8pt',marginTop:'60px'}}> 

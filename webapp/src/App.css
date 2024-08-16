@@ -6,6 +6,12 @@
 }
 
 @font-face {
+  font-family: 'General Sans';
+  src: local('GeneralSans-Regular'), url(./assets/fonts/GeneralSans-Regular.otf) format('opentype');
+  /* other formats include: 'woff2', 'truetype, 'opentype',
+                            'embedded-opentype', and 'svg' */
+}
+@font-face {
   font-family: 'Lato';
   src: local('Lato-Regular'), url(./assets/fonts/Lato-Regular.ttf) format('truetype');
   /* other formats include: 'woff2', 'truetype, 'opentype',
@@ -14,6 +20,7 @@
 
 
 body {
+  font-family:'General Sans';
   margin:0;
   padding:0;
   background-color:#FBFBFB;
@@ -228,9 +235,13 @@ text-shadow: 1px 1px 2px #505050;
   position: fixed;
   top: 0;
   left: 0;
-  background-color: #111;
+  background-color: #021526;
   padding-top: 20px;
   overflow-x: hidden;
+}
+
+.sidebar-section {
+
 }
 
 .sidebar h2 {
@@ -241,16 +252,25 @@ text-shadow: 1px 1px 2px #505050;
 
 .sidebar ul {
   list-style-type: none;
-  padding: 0;
+  padding: 0;	
+}
+
+.sbsection {
+  margin: 0px 25px;
+  padding: 0px;
+  height: 40px;
+  line-height:40px;
+  display:flex;
+  flex-direction:row;
 }
 
 .sidebar ul li {
-  padding: 8px;
-  text-align: center;
-  border-bottom: 1px solid #555;
+  text-align: left;
+  /*border-bottom: 1px solid #555;*/
   color: white;
   text-decoration: none;
   display: block;
+  border-radius: 12px 0px 0px 12px;
   cursor: pointer;
 }
 
@@ -265,7 +285,9 @@ text-shadow: 1px 1px 2px #505050;
 
 
 .sidebar ul li:hover {
-  background-color: #575757;
+  /*background-color: #575757;*/
+  background-color:#1d2931;
+  width:100%;
 }
 
 .cardcontainer {
