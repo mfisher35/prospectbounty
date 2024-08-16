@@ -15,6 +15,7 @@ const PosterHome = ({user, auth, db, storage, mobile, userData, setUserData, str
   //const [userData, setUserData] = useState(null);
   const [screen, setScreen] = useState("bounties");
   const [myBounties, setMyBounties] = useState(null);
+  const [hover,setHover] = useState(null);
 
   const cleanError = (error) => {
   }
@@ -34,7 +35,7 @@ const PosterHome = ({user, auth, db, storage, mobile, userData, setUserData, str
 
   const sbColor = (section) => {
     return section == screen ?
-       {color:'#DFBB81',backgroundColor: "#1d2931"} : {backgroundColor : "#021526",color:'white'}
+       {color:'#DFBB81',backgroundColor: "#1d2931"} : {backgroundColor : hover==section ? "#1d2931" : "#021526",color:'white'}
   }
 
   const selectedItem = (section) => {
@@ -53,11 +54,11 @@ const PosterHome = ({user, auth, db, storage, mobile, userData, setUserData, str
         <div style={{paddingBottom:'20px'}}>hi </div>
      </center>
       <ul>
-        <div className="sbsection" style={sbColor("bounties")}>
+        <div className="sbsection" style={sbColor("bounties")} onMouseEnter={e=>setHover("bounties")} onMouseLeave={e=>setHover(null)}>
            {selectedItem("bounties")}
            <li onClick={async (e)=>{await setScreen("chat");setScreen("bounties");}}> <CoPresentOutlinedIcon style={iconStyle}/> My Bounties</li>
         </div>
-        <div className="sbsection" style={sbColor("chat")}>
+        <div className="sbsection" style={sbColor("chat")} onMouseEnter={e=>setHover("chat")} onMouseLeave={e=>setHover(null)}>
            {selectedItem("chat")}
            <li onClick={async (e)=>{await setScreen("bounties"); setScreen("chat")}}><ChatOutlinedIcon style={iconStyle}/> Chat</li>
         </div>

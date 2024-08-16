@@ -18,6 +18,7 @@ const HunterHome = ({user, auth, db, storage, mobile, userData, setUserData}) =>
   const [screen, setScreen] = useState("bountylist");
   const [chatUID, setChatUID] = useState(null);
   const [chatName, setChatName] = useState(null);
+  const [hover, setHover] = useState(null);
 
   const iconStyle = {marginRight:'2px',fontSize:'15pt',marginBottom:'2px',color:'white'}
 
@@ -30,7 +31,7 @@ const HunterHome = ({user, auth, db, storage, mobile, userData, setUserData}) =>
 
   const sbColor = (section) => {
     return section == screen ?
-       {color:'#DFBB81',backgroundColor: "#1d2931"} : {backgroundColor : "#021526",color:'white'}
+       {color:'#DFBB81',backgroundColor: "#1d2931"} : {backgroundColor : hover == section ? "#1d2931":"#021526",color:'white'}
   }
 
   const selectedItem = (section) => {
@@ -49,19 +50,19 @@ const HunterHome = ({user, auth, db, storage, mobile, userData, setUserData}) =>
       <center> <img src={mobile ? Logosm : Logo} width={mobile ? '50px' : '200px'}/> </center>
         <div style={{paddingBottom:'20px'}}> </div>
       <ul> 
-        <div className="sbsection" style={sbColor("bountylist")}>
+        <div className="sbsection" style={sbColor("bountylist")} onMouseEnter={e=>setHover("bountylist")} onMouseLeave={e=>setHover(null)}>
            {selectedItem("bountylist")} 
            <li onClick={e=>setScreen("bountylist")}>  <AutoAwesomeMotionOutlinedIcon style={iconStyle}/>  Bounty List</li>
         </div>
-        <div className="sbsection" style={sbColor("mybounties")}> 
+        <div className="sbsection" style={sbColor("mybounties")} onMouseEnter={e=>setHover("mybounties")} onMouseLeave={e=>setHover(null)}> 
            {selectedItem("mybounties")}
            <li onClick={e=>setScreen("mybounties")}> <CoPresentOutlinedIcon style={iconStyle}/>  My Bounties</li>
         </div>
-        <div className="sbsection" style={sbColor("search")}> 
+        <div className="sbsection" style={sbColor("search")} onMouseEnter={e=>setHover("search")} onMouseLeave={e=>setHover(null)}> 
            {selectedItem("search")}
            <li onClick={e=>setScreen("search")}><SearchIcon style={iconStyle}/>             Search</li>
         </div>
-        <div className="sbsection" style={sbColor("chat")}>
+        <div className="sbsection" style={sbColor("chat")} onMouseEnter={e=>setHover("chat")} onMouseLeave={e=>setHover(null)}>
           {selectedItem("chat")}
           <li onClick={e=>setScreen("chat")}> <ChatOutlinedIcon style={iconStyle}/> Chat </li>
         </div>
