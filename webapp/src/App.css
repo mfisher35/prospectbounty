@@ -99,6 +99,16 @@ background: rgba(0, 0, 0, 0.20);
 cursor:pointer;
 }
 
+.add-item {
+ font-weight:600;
+ cursor:pointer;
+ width:fit-content;
+ padding:10px;
+ border-radius:15px;
+ &:hover {
+   background-color:#dfbb81;
+ }
+} 
 .download-button:hover {
 color: #000;
 font-family: Helvetica;
@@ -431,11 +441,11 @@ margin-bottom:10px;
      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
      border-radius: 8px;
  }
+
  .talabel {
      display: block;
-     font-weight: bold;
-     margin-bottom: 10px;
-     font-size: 1.1em;
+     color:#45535f;
+     font-size:12pt;
      color: #333;
  }
 .text-area {

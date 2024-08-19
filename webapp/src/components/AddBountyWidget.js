@@ -101,7 +101,8 @@ const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBo
     <div style={{width:mobile ? '200px':'500px'}}>
 
     {page != "home" && <div style={{width:'fit-content',backgroundColor:'#ddd',borderRadius:'20px',border:'1px solid #ccc',marginBottom:'20px'}} onClick={e=>{setPage("home"); onBack()}}> <ArrowBackIcon/> </div> }
-       {page=="home" && <Button primary onClick={e=>goToDescription()}> + Add Bounty </Button>}
+       {page=="home" && 
+         <div className="add-item" onClick={e=>goToDescription()}> <AddIcon style={{border:'1px solid black',borderRadius:'20px',color:'black',marginRight:'4px',marginBottom:'3px'}}/> Add Bounty  </div>}
        {page=="description" && <div><br/> 
            <input placeholder="Bounty Name" value={addBountyData['bountyName']} onChange={e=>changeBountyData('bountyName',e.target.value)} type="text" size="25"/> <br/><br/>
            Enter Description of Your Product/Service: <br/><br/>

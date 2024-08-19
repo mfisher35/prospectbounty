@@ -65,13 +65,15 @@ const BountySearch = ({user, auth, db, userData, setUserData, onChat}) => {
    </div>
 
    :
-
-   <div>
+   <div style={{textAlign:'left',padding:"10px 30px"}}>
+     <span style={{fontSize:'30px',fontWeight:'600'}}> Search Bounties </span>
+   <div style={{backgroundColor:'white',marginTop:'20px',padding:'20px',borderRadius:'15px',textAlign:'left'}}>
 
     {bountyFields.filter(field=>Object.keys(searchData).indexOf(field['field']) >= 0).map((field) => {
-    return <div style={{margin:'10px'}} className="tacontainer"> 
-    <div style={{width:'100%',textAlign:'left'}}> <HighlightOffIcon style={{color:'red',fontSize:'14pt',cursor:'pointer'}} onClick={e=>deleteCriteria(field['field'])}/> </div>
-   <label className="talabel"> {field['name']} </label> 
+    return <div style={{margin:'10px',display:'inline-block',verticalAlign:'middle'}}>
+        <div style={{display:'flex'}}> <HighlightOffIcon style={{color:'red',fontSize:'10pt',cursor:'pointer',marginRight:'10px'}} onClick={e=>deleteCriteria(field['field'])}/>  
+
+        <label className="talabel"> {field['name']} </label> </div>
       {
         field['type'] == 'textarea' &&
         <textarea className="text-area" value={searchData[field['field']]} onChange={e=>modifySearchField(field['field'],e.target.value)} rows="10" cols="30" /> } 
@@ -87,28 +89,25 @@ const BountySearch = ({user, auth, db, userData, setUserData, onChat}) => {
  
     
 
-    <div style={{marginBottom:'20px',marginTop:'40px'}}>
-     {adding && <div> Add Search Criteria: <select value="" onChange={e=>{modifySearchField(e.target.value,"");setAdding(false)}}> 
+    <div style={{marginBottom:'20px',marginTop:'40px',display:'flex',justifyContent:'flex-start'}}>
+           <div style={{cursor:'pointer',fontWeight:'600',marginRight:'20px',marginTop:'8px'}} onClick={e=>setAdding(true)} > 
+              <AddIcon style={{border:'1px solid black',borderRadius:'20px',marginRight:'4px',marginBottom:'3px'}}/> Add Search Criteria 
+           </div>
+           <div>
+           {adding &&  <select value="" onChange={e=>{modifySearchField(e.target.value,"");setAdding(false)}}> 
         <option value="" disabled hidden> Choose Criteria  </option>
         {bountyFields.filter(f=>Object.keys(searchData).indexOf(f['field'])<0).map(field=>{
-         return  <option value={field['field']}> {field['name']} </option>
+            return  <option value={field['field']}> {field['name']} </option>
         })} 
-      }
-      </select></div>}
-       <center> 
-        <div 
-          onClick={e=>setAdding(true)} 
-          style={{color:'#007aff',
-                 cursor:'pointer'}}> 
-             <AddIcon style={{border:'1px solid #007aff',borderRadius:'20px',color:'#007aff',marginRight:'4px',marginBottom:'3px'}}/> Add Search Criteria 
+           }
+      </select>}
          </div>
-        </center>
      <br/>
 
-       <Button onClick={e=>{onSearch()}}> <SearchIcon style={{fontSize:'16pt',marginBottom:'3px'}}/> Search </Button> <span style={{marginLeft:'5px'}}> </span>
     </div>
+       <Button style={{border:'none',backgroundColor:'#dfbb81',color:'black'}} onClick={e=>{onSearch()}}> <SearchIcon style={{fontSize:'16pt',marginBottom:'3px'}}/> Search </Button> <span style={{marginLeft:'5px'}}> </span>
     </div>
-     
+  </div>     
   );
 };
 
