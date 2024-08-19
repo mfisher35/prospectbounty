@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PersonIcon from '@mui/icons-material/Person';
 import Logo  from '../assets/logofull.png';
 import Logosm  from '../assets/logowhite.png';
 import { doc, setDoc, getDoc } from "firebase/firestore"; 
@@ -13,6 +12,7 @@ import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
 import SearchIcon from '@mui/icons-material/Search';
 import AutoAwesomeMotionOutlinedIcon from '@mui/icons-material/AutoAwesomeMotionOutlined';
 import CoPresentOutlinedIcon from '@mui/icons-material/CoPresentOutlined';
+import UserBar from './UserBar';
 
 const HunterHome = ({user, auth, db, storage, mobile, userData, setUserData}) => {
   const [screen, setScreen] = useState("bountylist");
@@ -45,7 +45,7 @@ const HunterHome = ({user, auth, db, storage, mobile, userData, setUserData}) =>
   console.log('www',userData)
 
   return (
-    <div style={{fontFamily:'Plus Jakarta Sans',fontSize:'12pt'}}>
+    <div style={{fontFamily:'General Sans',fontSize:'12pt',width:'100vw'}}>
        {userData['closeContacts'] && (<div className="sidebar" style={{width:mobile ? "100px" : "250px"}}>
       <center> <img src={mobile ? Logosm : Logo} width={mobile ? '50px' : '200px'}/> </center>
         <div style={{paddingBottom:'20px'}}> </div>
@@ -67,17 +67,11 @@ const HunterHome = ({user, auth, db, storage, mobile, userData, setUserData}) =>
           <li onClick={e=>setScreen("chat")}> <ChatOutlinedIcon style={iconStyle}/> Chat </li>
         </div>
       </ul>
-      <center>
-        <div style={{color:'#ccc',fontSize:'8pt',marginTop:'60px'}}> 
-           <PersonIcon fontSize="sm"/> {userData['username']} <br/> 
-           {userData['role'].toUpperCase()}
-        </div>
-
-       </center>
 
     </div>)}
+         <UserBar user={user} mobile={mobile} userData={userData} />
        <div style={{marginTop:'25px',marginLeft : mobile ? "100px" : "250px"}}>
-         <center>  <img src={Logo} width={mobile ? "250px" : "500px"} /> 
+         <center>   
            {(!userData['closeContacts'] && screen == "bountylist") && <HunterInit user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} setUserData={setUserData}/>}
            {(userData['closeContacts'] && screen=="bountylist") && <BountyList key={'blist'+screen} user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} type={screen=="bountylist" ? 'all' : 'assignedToMe'} onChat={onChat}/>}
            {screen == "search" && <BountySearch user={user} db={db} auth={auth} userData={userData} setUserData={setUserData} onChat={onChat}/>}

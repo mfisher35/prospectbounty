@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import UserBar from './UserBar';
 import PersonIcon from '@mui/icons-material/Person';
 import Logo  from '../assets/logofull.png';
 import Logosm  from '../assets/logowhite.png';
@@ -63,16 +64,10 @@ const PosterHome = ({user, auth, db, storage, mobile, userData, setUserData, str
            <li onClick={async (e)=>{await setScreen("bounties"); setScreen("chat")}}><ChatOutlinedIcon style={iconStyle}/> Chat</li>
         </div>
       </ul>
-      <center>
-        <div style={{color:'#ccc',fontSize:'8pt',marginTop:'60px'}}> 
-           <PersonIcon fontSize="sm"/> {userData['username']} <br/> 
-           {userData['role'].toUpperCase()}
-        </div>
-
-       </center>
     </div>
-       <div style={{marginLeft:mobile ? '100px' : '250px', marginTop:'25px'}}>
-       <center>  <img src={Logo} width={mobile ? "250px" : "500px"} /> 
+       <div style={{marginLeft:mobile ? '100px' : '250px'}}>
+       <center>  
+         <UserBar user={user} mobile={mobile} userData={userData} />
            {(screen=="bounties") && <PosterBounties user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} setUserData={setUserData} stripe={stripe}/>}
            {(screen=="chat") && <Chat user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} setUserData={setUserData} stripe={stripe}/>}
        </center>

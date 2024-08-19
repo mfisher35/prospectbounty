@@ -5,9 +5,8 @@ import styled from 'styled-components';
 import AddContactsWidget from "./AddContactsWidget";
 import {collection, getDocs, doc, setDoc, getDoc } from "firebase/firestore"; 
 import Logo  from '../assets/logofull.png';
-import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
-import EditIcon from '@mui/icons-material/Edit';
 import {toTitleCase} from './Helpers';
+import BountyCard from './BountyCard';
 
 const BountyList = ({user, auth, db, storage, mobile, userData, type, onChat, onManageBounty,bounties}) => {
    const [bountyList, setBountyList] = useState(bounties ?? []);
@@ -36,22 +35,14 @@ const BountyList = ({user, auth, db, storage, mobile, userData, type, onChat, on
   }
 
   return (
-    <div style={{padding:"30px 100px"}}>  
-      <center> 
-       <h2> {type == "all" ? "All Bounties" : "Bounties"} </h2> </center>
-       <br/>
-       {bountyList.map((item,ix)=><div className="card" style={{cursor:user.uid == item['posterId'] ? 'pointer' : 'default'}} onClick={e=>{if(user.uid == item['posterId']) onManageBounty(item);}} key={`bounty-${ix}`}>
-   {userData['role'] == 'poster' &&  <div style={{marginLeft:"0",textAlign:'right'}}><EditIcon style={{color:'#777'}} fontSize="sm"/> </div>}
-          <h4> {` ${ix+1}) ${toTitleCase(item['bountyName'])}`} </h4>
-
-          {item['linkedin'] ? (<h6> <a href={item['linkedin']}> LinkedIn Link </a> </h6>) : <></>}
-          <h5> {` Reward: $${item['amount']}`} </h5>
-
-          {item['organization'] ? (<h6> <u> Organization</u>:  {toTitleCase(item['organization'])} </h6>) : <></>}
-          <h6> {`${item['description']}`} </h6>
-          {userData['role'] != "poster" && <div className="contact-button" onClick={e=>onChat(bountyList[ix]['posterId'],bountyList[ix]['posterUsername'])} > <ChatBubbleIcon style={{fontSize:'10pt',marginRight:'5px',color:'#607bd1'}}/> Contact </div>   }
-       </div>)}
+   <>
+    <div style={{padding:"10px 30px",textAlign:'left'}}>  
+       <div style={{fontSize:'30px',fontWeight:'600'}}> {type == "all" ? "All Bounties" : "Bounties"} </div> 
+       <div style={{display:'flex'}}>
+         {bountyList.map((item,ix)=><BountyCard user={user} userData={userData} bountyData={item} ix={ix} onManageBounty={onManageBounty}/>)}
+      </div>
     </div>
+  </>
   );
 };
 
