@@ -34,8 +34,11 @@ const BountyCard = ({user,userData,ix,bountyData,onManageBounty}) => {
           </div>
           {bountyData['linkedin'] ? (<h6> <a href={bountyData['linkedin']}> LinkedIn</a> </h6>) : <></>}
           {`${bountyData['targetDescr'] ?? ""}`}<div style={{height:'10px'}}/>
-          <span style={{fontWeight:600}}> OFFERING: </span>  {`${bountyData['description']}`} 
-          {userData['role'] != "poster" && <div className="contact-button" onClick={e=>onChat(bountyList[ix]['posterId'],bountyList[ix]['posterUsername'])} > <ChatBubbleIcon style={{fontSize:'10pt',marginRight:'5px',color:'#607bd1'}}/> Contact </div>   }
+          <span style={{fontWeight:600}}> OFFERING: </span>  {`${bountyData['description']}`} {`${ix == 1 ? "dfsjhfdjkfdhsjkahfjkfsdhjkdahfjkhdfsajkdfhsajkfbhdsjakfbdjksahfjkdsahfjkdsahfjkasdhfjkfdshjkdshjkfhasdjkfhjkdshfjkdashkjfhjksdbchbchjcbhcbhjs" : ""}`} 
+          {userData['role'] != "poster" && 
+
+           <div className="contact-button" onClick={e=>onChat(bountyList[ix]['posterId'],bountyList[ix]['posterUsername'])} >  CONTACT </div>   
+        }
       </div>
        </div>)
 };

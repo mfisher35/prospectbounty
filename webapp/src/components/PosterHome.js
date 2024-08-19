@@ -48,7 +48,7 @@ const PosterHome = ({user, auth, db, storage, mobile, userData, setUserData, str
   const iconStyle = {marginRight:'5px',fontSize:'13pt',color:'white',marginBottom:'2px'};
 
   return (
-    <div style={{fontFamily:'Plus Jakarta Sans',fontSize:'12pt'}}>
+    <div style={{fontFamily:'General Sans',fontSize:'12pt',width:'100vw'}}>
        <div className="sidebar" style={{width:mobile ? "100px" : "250px"}}>
       <center> 
         <img src={mobile ? Logosm : Logo} width={mobile ? '50px' : '200px'} /> 

@@ -315,6 +315,8 @@ text-shadow: 1px 1px 2px #505050;
   margin: 20px 5px;
   padding: 20px;
   width: 376px;
+  height: 450px;
+  overflow-y:scroll;
   transition: transform 0.3s ease-in-out;
   
   &:hover {
@@ -389,18 +391,20 @@ label {
 }
 
 .contact-button {
-color:blue;
+color:black;
+margin-top:15px;
+background-color:#dfbb81;
+font-weight:bold;
+font-size:20pt;
 cursor:pointer;
 border:1px solid #bbb;
 border-radius:10px;
 font-size:8pt;
-margin-left:auto;
-margin-right:0px;
 width:fit-content;
-padding:5px;
+padding:10px 15px;
 
    &:hover {
-     background-color:#ccc;
+     background-color:#947d57;
    }
 }
 
