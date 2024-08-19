@@ -14,20 +14,27 @@ const BountyCard = ({user,userData,ix,bountyData,onManageBounty}) => {
    <img style={{marginBottom:'15px',borderRadius:'15px'}} src={bountyImg} height="200px"/> 
    {userData['role'] == 'poster' &&  <div style={{marginLeft:"0",textAlign:'right'}}><EditIcon style={{color:'#777'}} fontSize="sm"/> </div>}
        <div style={{display:'flex',flexDirection:'column'}}>    
-          <div style={{display:'flex',flexDirection:'row',width:'100%'}}>
+          <div style={{display:'flex',flexDirection:'row',width:'100%',marginBottom:'12px'}}>
               <div style={{flex:1}}>
-                 <span style={{}}> {`${toTitleCase(bountyData['bountyName'])}`} </span> <br/>
-           {` Reward: $${bountyData['amount']}`} 
+                 <span style={{fontSize:'14pt',fontWeight:'600'}}> 
+                    {`${toTitleCase(bountyData['bountyName'])}`}
+                 </span> <br/>
+                <span style={{fontSize:'11pt'}}>           
+                    {`Reward: $${bountyData['amount']}`} 
+                </span>
               </div>
               <div style={{flex:1,textAlign:'right'}}>
-        Organization <br/>
-        kloop
+                <span style={{color:'#ccc'}}>
+                    ORGANIZATION 
+                </span> <br/>
+                <span>
+                    {bountyData['organization'] ? toTitleCase(bountyData['organization']) : "N/A"}
+                </span>
               </div>
           </div>
-          {bountyData['linkedin'] ? (<h6> <a href={bountyData['linkedin']}> LinkedIn Link </a> </h6>) : <></>}
-
-          {bountyData['organization'] ? (<h6> <u> Organization</u>:  {toTitleCase(bountyData['organization'])} </h6>) : <></>}
-          <h6> {`${bountyData['description']}`} </h6>
+          {bountyData['linkedin'] ? (<h6> <a href={bountyData['linkedin']}> LinkedIn</a> </h6>) : <></>}
+          {`${bountyData['targetDescr'] ?? ""}`}<div style={{height:'10px'}}/>
+          <span style={{fontWeight:600}}> OFFERING: </span>  {`${bountyData['description']}`} 
           {userData['role'] != "poster" && <div className="contact-button" onClick={e=>onChat(bountyList[ix]['posterId'],bountyList[ix]['posterUsername'])} > <ChatBubbleIcon style={{fontSize:'10pt',marginRight:'5px',color:'#607bd1'}}/> Contact </div>   }
       </div>
        </div>)
