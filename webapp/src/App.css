@@ -361,12 +361,29 @@ text-shadow: 1px 1px 2px #505050;
   color: #333;
 }
 
-.message p {
-  background-color: #f1f1f1;
+.headerSent {
+  margin-top:15px;
+  text-align:right;
+}
+
+.messageSent {
+  border: 1px solid #e3e3e3;
+  text-align:right;
   padding: 10px;
   border-radius: 5px;
-  margin: 5px 0 0;
 }
+
+.headerReceived {
+  margin-top:15px;
+  text-align:left;
+}
+.messageReceived {
+  border: 1px solid #e3e3e3;
+  text-align:left;
+  padding: 10px;
+  border-radius: 5px;
+}
+
 
 .input-container {
   display: flex;
@@ -384,8 +401,8 @@ text-shadow: 1px 1px 2px #505050;
 .chatbutton {
   padding: 15px 20px;
   border: none;
-  background-color: #007bff;
-  color: white;
+  background-color:#dfbb81;
+  color: black;
   cursor: pointer;
   border-radius: 0;
 }
@@ -400,6 +417,17 @@ label {
   margin: 0;
 }
 
+.bounty-assign-btn {
+ width:fit-content;
+ background-color:#dfbb81;
+ padding:8px;
+ border-radius:15px;
+ 
+   &:hover {
+     background-color:#947d57;
+   }
+
+}
 .contact-button {
 color:black;
 margin-top:15px;

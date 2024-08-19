@@ -7,7 +7,7 @@ import {toTitleCase} from './Helpers';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import bountyImg from '../assets/bounty.png';
 
-const BountyCard = ({user,userData,ix,bountyData,onManageBounty}) => {
+const BountyCard = ({user,userData,ix,bountyData,onManageBounty, onChat}) => {
 
   return (
   <div className="card" style={{cursor:user.uid == bountyData['posterId'] ? 'pointer' : 'default'}} onClick={e=>{if(user.uid == bountyData['posterId']) onManageBounty(bountyData);}} key={`bounty-${ix}`}>
@@ -37,7 +37,7 @@ const BountyCard = ({user,userData,ix,bountyData,onManageBounty}) => {
           <span style={{fontWeight:600}}> OFFERING: </span>  {`${bountyData['description']}`} {`${ix == 1 ? "dfsjhfdjkfdhsjkahfjkfsdhjkdahfjkhdfsajkdfhsajkfbhdsjakfbdjksahfjkdsahfjkdsahfjkasdhfjkfdshjkdshjkfhasdjkfhjkdshfjkdashkjfhjksdbchbchjcbhcbhjs" : ""}`} 
           {userData['role'] != "poster" && 
 
-           <div className="contact-button" onClick={e=>onChat(bountyList[ix]['posterId'],bountyList[ix]['posterUsername'])} >  CONTACT </div>   
+           <div className="contact-button" onClick={e=>onChat(bountyData['posterId'],bountyData['posterUsername'])} >  CONTACT </div>   
         }
       </div>
        </div>)

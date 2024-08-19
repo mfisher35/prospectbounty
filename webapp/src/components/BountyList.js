@@ -39,7 +39,7 @@ const BountyList = ({user, auth, db, storage, mobile, userData, type, onChat, on
     <div style={{padding:"10px 30px",textAlign:'left'}}>  
        <div style={{fontSize:'30px',fontWeight:'600'}}> {type == "all" ? "All Bounties" : "Bounties"} </div> 
        <div style={{display:'flex'}}>
-         {bountyList.map((item,ix)=><BountyCard user={user} userData={userData} bountyData={item} ix={ix} onManageBounty={onManageBounty}/>)}
+         {bountyList.map((item,ix)=><BountyCard user={user} userData={userData} bountyData={item} ix={ix} onManageBounty={onManageBounty} onChat={onChat}/>)}
       </div>
     </div>
   </>

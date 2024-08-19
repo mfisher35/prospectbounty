@@ -95,7 +95,7 @@ const Chat = ({user, auth, db, storage, mobile, userData, userId2, username2}) =
    console.log('allsessions',sessions);
    if(sessions.length == 0)
      return <div> No Messages! </div>
-   return sessions.map(msg=>
+   return  sessions.map(msg=>
     <div style={{marginBottom:'15px',border:'2px solid #ccc',borderRadius:'10px',padding:'10px',width:'500px',padding:'20px',margin:'20px',display:'flex',backgroundColor:'white',cursor:'pointer'}} onClick={e=>{setOtherId(msg['otherId']);setOtherUsername(msg['otherUsername'])}} >
       <div style={{marginRight:'20px',borderRadius:'20px',border:'1px solid #ccc',marginTop:'0px',height:'fit-content',padding:'3px',backgroundColor:'white',alignItems:'center'}}>
         <PersonIcon style={{marginTop:'-5px'}}/>      
@@ -129,25 +129,28 @@ const Chat = ({user, auth, db, storage, mobile, userData, userId2, username2}) =
     }
   
 
-  return ( <div style={{marginTop:'15px'}}>
+  return ( <div style={{padding:'10px 30px',textAlign:'left'}}>
 
-   {otherId  ? <div style={{display:'flex',flexDirection:'column'}}> <div style={{width:'fit-content',backgroundColor:'#ddd',borderRadius:'20px',border:'1px solid #ccc'}} onClick={e=>onBack()}> <ArrowBackIcon/> </div> 
-        {userData['role'] == 'hunter' && <div> <b> {otherUsername} </b> </div>}
+   {otherId  ? <div style={{display:'flex',flexDirection:'column',alignItems:'center'}}>
+        <div style={{textAlign:'left',width:'100%'}}>
+           <div style={{textAlign:'left',width:'fit-content',backgroundColor:'#ddd',borderRadius:'20px',border:'1px solid #ccc'}} onClick={e=>onBack()}> <ArrowBackIcon/> 
+           </div>
+        <div style={{fontSize:'30px',fontWeight:'600'}}>  {`Chat with ${otherUsername}`} </div>
         {userData['role'] == 'poster' && 
           <div>
              <UserBountyAssignmentWidget user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} otherId={otherId} otherUsername={otherUsername} setManagingUser={setManagingUser} managingUser={managingUser}/>
           </div>
         }
+        </div> 
    { !managingUser &&  <div className="chat-container" style={{marginTop:'10px'}}>
        
       <div id="messages" ref={chatContainerRef}>
         {messages.filter((m,i) => getOtherId(m)==otherId).map((msg, index) => (
-          <div key={index} className="message">
-            <p style={{'marginBottom':'15px'}}>
+          <div key={index}>
+           <div className={msg.sender == user.uid ? "headerSent" : "headerReceived"}>
               <span style={{fontSize:'9pt'}}><b> {msg.sender == user.uid ? "Me  " : msg.senderUsername}</b></span>
-              <span style={{fontSize:'8pt',fontColor:'#727479',marginLeft:'10px'}}> {convertTimestamp(msg.timestamp)}<br/></span>
-               {msg.message}
-            </p>
+              <span style={{fontSize:'8pt',color:'#868fa8',marginLeft:'10px'}}> {convertTimestamp(msg.timestamp)}<br/></span></div>
+            <div className={msg.sender == user.uid ? "messageSent" : "messageReceived"}>              {msg.message} </div>
           </div>
         ))}
       </div>
@@ -164,12 +167,12 @@ const Chat = ({user, auth, db, storage, mobile, userData, userId2, username2}) =
       </div>
     </div>}</div> : 
        <div style={{marginTop:'20px'}}> 
-         {getChatSessions()}
+         <center> {getChatSessions()} </center>
        </div>
    }
 
    </div>
-  );
+ );
 
 }
 export default Chat;

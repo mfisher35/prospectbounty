@@ -60,25 +60,26 @@ const UserBountyAssignmentWidget = ({user, auth, db, userData, otherId, otherUse
 
   return (
     <div style={{cursor:'pointer'}}>
-       <h4>  Assign User:  <br/><b><i> {otherUsername}</i> </b>  </h4>
      
       {managingUser ?
 
        <div>
+        <h3>  <b>   Bounty Assignments </b></h3>
           {modifying && <Spinner variant="primary"/>}
           {myBounties.map(bounty=>(
              <div style={{border:'1px solid black',width:'300px',margin:'20px',padding:'10px',borderRadius:'10px'}}>
                 
-             {bounty['hunterId'] == otherId && <> <HowToRegIcon/> <br/> </>}
-             <span>   {bounty['bountyName']} </span> <br/>
+             <span style={{fontSize:'14pt',fontWeight:'600'}}>   {bounty['bountyName']} </span> <br/>
+             {bounty['hunterId'] == otherId && <> <HowToRegIcon/>{` ${otherUsername} is assigned`} <br/> </>}
+
              <span style={{fontSize:'10pt',color:'#595959'}}>   {bounty['targetDescr']}</span> <br/>
 
              {!modifying && <div className="assignment-user">
                  {
                  bounty['hunterId'] == otherId ? 
-                 <div onClick={e=>onUnAssign(bounty)}>  <PersonRemoveIcon fontSize="sm"/>  <span style={{fontSize:'10pt'}}>{'Unassign'}  </span> </div>
+                 <div onClick={e=>onUnAssign(bounty)}>  <PersonRemoveIcon fontSize="sm"/>  <span style={{fontSize:'10pt'}}>{`Unassign ${otherUsername}`}  </span> </div>
                  : 
-                 <div onClick={e=>onAssign(bounty)} >   <PersonAddIcon fontSize="sm"/> <span style={{fontSize:'10pt'}}>{'Assign'}  </span> </div>
+                 <div onClick={e=>onAssign(bounty)} >   <PersonAddIcon fontSize="sm"/> <span style={{fontSize:'10pt'}}>{`Assign ${otherUsername}`}  </span> </div>
                  }
               </div>}
              </div> 
@@ -86,9 +87,9 @@ const UserBountyAssignmentWidget = ({user, auth, db, userData, otherId, otherUse
            ))} 
        </div>
        : 
-       <div onClick={e=>onManageUser()}>
+       <div className="bounty-assign-btn" onClick={e=>onManageUser()}>
          <ManageAccountsIcon style={{fontSize:'10pt',color:'blue',marginRight:'4px'}}/>
-         <span style={{fontSize:'10pt',color:'blue'}}> Bounty Assignments </span>     </div>}
+         <span style={{fontSize:'10pt',color:'blue'}}> Assign Bounty </span>     </div>}
      
     </div>
   );
