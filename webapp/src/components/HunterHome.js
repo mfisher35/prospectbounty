@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Logo  from '../assets/logofull.png';
 import Logosm  from '../assets/logowhite.png';
-import { doc, setDoc, getDoc, onSnapshot } from "firebase/firestore"; 
+import { updateDoc, doc, setDoc, getDoc, onSnapshot } from "firebase/firestore"; 
 import HunterInit from './HunterInit';
 import styled from 'styled-components';
 import BountyList from './BountyList';
@@ -62,6 +62,15 @@ const HunterHome = ({user, auth, db, storage, mobile, userData, setUserData}) =>
   const cleanError = (error) => {
   }
 
+  const goToChat = async () => {
+     const docRef = doc(db, 'userData', user.uid);
+     let tUserData = {... userData}
+     tUserData['newMessages'] = 0;
+     await updateDoc(docRef,tUserData);
+     await setScreen("bounties"); 
+     setScreen("chat")
+  }
+ 
   return (
     <div style={{fontFamily:'General Sans',fontSize:'12pt',width:'100vw'}}>
        {userData['closeContacts'] && (<div className="sidebar" style={{width:mobile ? "100px" : "250px"}}>
@@ -82,7 +91,7 @@ const HunterHome = ({user, auth, db, storage, mobile, userData, setUserData}) =>
         </div>
         <div className="sbsection" style={sbColor("chat")} onMouseEnter={e=>setHover("chat")} onMouseLeave={e=>setHover(null)}>
           {selectedItem("chat")}
-          <div className="notification-icon" onClick={e=>setScreen("chat")}> <ChatOutlinedIcon style={{... iconStyle,marginRight:'6px', marginBottom:'0px'}}/> Chat  {userData['newMessages'] > 0 && <div className="badge"> {userData['newMessages']} </div>} </div>
+          <div className="notification-icon"  style={{cursor:'pointer'}} onClick={e=>goToChat()}> <ChatOutlinedIcon style={{... iconStyle,marginRight:'6px', marginBottom:'0px'}}/> Chat  {userData['newMessages'] > 0 && <div className="badge"> {userData['newMessages']} </div>} </div>
         </div>
       </ul>
 

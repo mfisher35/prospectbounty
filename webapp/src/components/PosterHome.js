@@ -3,7 +3,7 @@ import UserBar from './UserBar';
 import PersonIcon from '@mui/icons-material/Person';
 import Logo  from '../assets/logofull.png';
 import Logosm  from '../assets/logowhite.png';
-import {onSnapshot, doc, setDoc, getDoc } from "firebase/firestore"; 
+import {onSnapshot, doc, setDoc, getDoc, updateDoc } from "firebase/firestore"; 
 import styled from 'styled-components';
 import PosterBounties from './PosterBounties';
 import { collection, query, where, getDocs } from "firebase/firestore";
@@ -64,6 +64,16 @@ const PosterHome = ({user, auth, db, storage, mobile, userData, setUserData, str
 
   const iconStyle = {marginRight:'5px',fontSize:'13pt',color:'white',marginBottom:'2px'};
 
+
+  const goToChat = async () => {
+     const docRef = doc(db, 'userData', user.uid);
+     let tUserData = {... userData}
+     tUserData['newMessages'] = 0;
+     await updateDoc(docRef,tUserData);
+     await setScreen("bounties"); 
+     setScreen("chat")
+  }
+ 
   return (
     <div style={{fontFamily:'General Sans',fontSize:'12pt',width:'100vw'}}>
        <div className="sidebar" style={{width:mobile ? "100px" : "250px"}}>
@@ -78,7 +88,7 @@ const PosterHome = ({user, auth, db, storage, mobile, userData, setUserData, str
         </div>
         <div className="sbsection" style={sbColor("chat")} onMouseEnter={e=>setHover("chat")} onMouseLeave={e=>setHover(null)}>
            {selectedItem("chat")}
-           <div className="notification-icon" onClick={async (e)=>{await setScreen("bounties"); setScreen("chat")}}><ChatOutlinedIcon style={{... iconStyle, marginBottom:'0px',marginRight:'6px'}}/>  Chat {userData['newMessages'] > 0 && <div className="badge"> {userData['newMessages']} </div>}  </div>
+           <div className="notification-icon" style={{cursor:'pointer'}} onClick={e=>goToChat()}><ChatOutlinedIcon style={{... iconStyle, marginBottom:'0px',marginRight:'6px'}}/>  Chat {userData['newMessages'] > 0 && <div className="badge"> {userData['newMessages']} </div>}  </div>
         </div>
       </ul>
     </div>
