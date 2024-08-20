@@ -11,6 +11,7 @@ import UserBountyAssignmentWidget from './UserBountyAssignmentWidget';
 import PersonIcon from '@mui/icons-material/Person';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Spinner from 'react-bootstrap/Spinner';
+import {messageReceivedAPI} from './APIHelpers';
 
 const Chat = ({user, auth, db, storage, mobile, userData, userId2, username2}) => {
   const chatContainerRef = useRef(null);
@@ -28,12 +29,9 @@ const Chat = ({user, auth, db, storage, mobile, userData, userId2, username2}) =
       );
 
       const unsubscribe = onSnapshot(q, (snapshot) => {
-        console.log('snaps',snapshot);
         let messages = snapshot.docs.map(doc => doc.data()).reverse();
         if(otherId || userId2)
           messages = messages.filter(msg=>getOtherId(msg)== (otherId ?? userId2));
-        console.log('SETTING MESSGES',messages);
-        console.log('OTHERID',otherId ?? userId2);  
         setMessages(messages);
       });
 
@@ -75,7 +73,6 @@ const Chat = ({user, auth, db, storage, mobile, userData, userId2, username2}) =
   }
 
   const getOtherId = (msg) => {
-    console.log('ppp',msg,otherId);
     return  msg['sender'] == user.uid ? msg['receiver'] : msg['sender'];
   }
 
@@ -92,7 +89,6 @@ const Chat = ({user, auth, db, storage, mobile, userData, userId2, username2}) =
         if(sessions.filter(msg=>msg['otherUsername'] == otherUsername).length < 1)
            sessions.push({otherUsername,otherId, ... rmessages[i]});
      }
-   console.log('allsessions',sessions);
    if(sessions.length == 0)
      return <div> No Messages! </div>
    return  sessions.map(msg=>
@@ -108,7 +104,6 @@ const Chat = ({user, auth, db, storage, mobile, userData, userId2, username2}) =
   }
 
   const sendMessage = async () => {
-    console.log(messages.length);
     
     let doc = {
       
@@ -121,10 +116,10 @@ const Chat = ({user, auth, db, storage, mobile, userData, userId2, username2}) =
           timestamp: serverTimestamp(),
         };
        
-    console.log('adding doc',doc)
     if (message.trim()) {
       await addDoc(collection(db,'messages'),doc);
        }
+      await messageReceivedAPI(user,doc);
       setMessage('');
     }
   

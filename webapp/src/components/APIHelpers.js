@@ -1,5 +1,6 @@
 const paymentRestServer = "https://payments-zjssq4bgza-uc.a.run.app";
 const manageBountyRestServer = "https://managebounties-zjssq4bgza-uc.a.run.app";
+const notificationsRestServer = "https://notifications-zjssq4bgza-uc.a.run.app";
 
 //create a stripe customer object with the given customer data {name,email}
 export async function createCustomerAPI(user,customerData) {
@@ -159,6 +160,29 @@ export async function deleteBountyAPI(user,bountyData) {
   let token = await user.getIdToken();
   let url = `${manageBountyRestServer}`
   let data = {'reqType': 'deleteBounty', bountyData};
+
+  return await fetch(url, {
+      body: JSON.stringify(data),
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization' : token,
+      }
+    }).then(res => res.json()).catch(function(error) {
+
+       console.log(error.toString());
+    }).then(res => { 
+         console.log(res);
+         return res
+    });
+}
+
+//notify a user of a new message messageData needs {receiver, message} 
+export async function messageReceivedAPI(user,messageData) {
+
+  let token = await user.getIdToken();
+  let url = `${notificationsRestServer}`
+  let data = {'reqType': 'messageReceived', messageData};
 
   return await fetch(url, {
       body: JSON.stringify(data),

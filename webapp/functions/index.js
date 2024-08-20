@@ -10,6 +10,39 @@
 const admin = require('firebase-admin');
 const {onRequest} = require("firebase-functions/v2/https");
 const logger = require("firebase-functions/logger");
+const nodemailer = require('nodemailer');
+
+
+let transporter = nodemailer.createTransport({
+    host: 'prospectbounty.com',
+    port: 465, // SMTP port (587 for secure, 25 or 465 for insecure)
+    secure: true, // true for 465, false for other ports
+    auth: {
+        user: 'no-reply@prospectbounty.com',
+        pass: process.env.EMAIL_PASSWORD
+    }
+});
+
+//send email to user 
+function sendEmail(toEmail,subject,text,html)  { 
+   let mailOptions = { 
+       from: '"Prospect Bounty" <no-reply@prospectbounty.com>', // Sender address 
+       to: toEmail, // List of receivers 
+       subject: subject, // Subject line 
+       text: text, // Plain text body 
+       html: html // HTML body content 
+   }; 
+   // Send mail with defined transport object 
+   transporter.sendMail(mailOptions, (error, info) => { 
+       if (error) { 
+           return console.log(error); 
+       } 
+       //console.log('Message sent: %s', info.messageId); 
+       // Preview only available when sending through an Ethereal account 
+       //console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info)); 
+   }); 
+} 
+
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -500,6 +533,95 @@ exports.manageBounties = onRequest({ cors: true}, (req, res) => {
                  if (!bountyData) 
                   return res.status(400).send('No bountyData provided');
                resultPromise = deleteBounty(decodedToken.uid,bountyData['id']);
+            }
+            else if (reqType == 'modifyBounty') {
+                const bountyData = req.body.bountyData; 
+                if (!bountyData)
+                  return res.status(400).send('No bountyData provided');
+                resultPromise = modifyBounty(decodedToken.uid,bountyData);
+            }
+            else {
+                // Handle the case where reqType is not supported
+                return Promise.reject(new Error('Invalid reqType'));
+            }
+
+            return resultPromise;
+        })
+        .then(result => {
+            res.status(200).send(result);
+        })
+        .catch(error => {
+            console.error(error);
+            res.status(403).send('Unauthorized');
+        });
+
+});
+ 
+
+
+const notifyMessageReceived = async (uid,messageData,twilioClient) => {
+
+
+   let recUser = await admin.auth().getUser(messageData['receiver']);
+   let recEmail = await recUser.toJSON().email
+   let tstamp = Date.now();
+  
+   let recDataRef = await db.collection("userData").doc(messageData['receiver']);
+   let recData = await recDataRef.get();
+   recData = recData.data();
+   let notifications = recData['notifications'] ?? {};
+   let lastNotificationTime = notifications[messageData['receiver']] ?? 0;
+   
+   let newMessages = recData['newMessages'] ?? 0; 
+
+   //if the last notification has been more than hour ago
+   if(tstamp - lastNotificationTime > 3600000){
+     let textMsg = `You Have Received a Message from ${messageData['senderUsername']} on Prospect Bounty: \n\n ${messageData['message']} \n\nTo Reply Please Log in at https://prospectbounty.web.app\n\nFurther Notifications From This Conversation Will be Muted For 1 Hour`;
+
+     let htmlMsg = `You Have Received a Message from ${messageData['senderUsername']} on Prospect Bounty: <br/><br/>${messageData['message']}<br/><br/>To Reply Please Log in at <a href="https://prospectbounty.web.app"> https://prospectbounty.web.app </a> <br/><br/> Further Notifications From This Conversation Will be Muted For 1 Hour`
+
+     sendEmail(recEmail,`New Message from ${messageData['senderUsername']}!`,textMsg,htmlMsg);
+
+     await twilioClient.messages.create({
+        body: textMsg,
+        to: `+1${recData['phone']}`,    // The phone number to send the SMS to
+        from: process.env.TWILIO_PHONE // Your Twilio phone number
+     })
+
+     notifications[messageData['receiver']] =  tstamp;
+     recData['notifications'] = notifications;
+   }
+
+     recData['newMessages'] = newMessages + 1;
+     let result = await recDataRef.update(recData);
+     return {'result':'success'}
+}
+
+exports.notifications = onRequest({ cors: true}, (req, res) => {
+    const twilio = require('twilio');
+    const twilioClient = new twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+
+    const token = req.get('Authorization');
+    const reqType = req.body.reqType;
+    const ip = req.ip;
+
+
+    if (!token) {
+        return res.status(401).send('No token provided');
+    }
+
+    if (!reqType) {
+        return res.status(400).send('No reqType provided');
+    }
+
+    admin.auth().verifyIdToken(token)
+        .then((decodedToken) => {
+            let resultPromise;
+            if (reqType == 'messageReceived') {
+                 const messageData = req.body.messageData; 
+                 if (!messageData) 
+                  return res.status(400).send('No messageData provided');
+               resultPromise = notifyMessageReceived(decodedToken.uid,messageData,twilioClient);
             }
             else if (reqType == 'modifyBounty') {
                 const bountyData = req.body.bountyData; 

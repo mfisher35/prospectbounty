@@ -42,7 +42,6 @@ const HunterHome = ({user, auth, db, storage, mobile, userData, setUserData}) =>
 
   const cleanError = (error) => {
   }
-  console.log('www',userData)
 
   return (
     <div style={{fontFamily:'General Sans',fontSize:'12pt',width:'100vw'}}>

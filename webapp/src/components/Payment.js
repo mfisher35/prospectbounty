@@ -16,7 +16,7 @@ const Payment = ({user, auth, db, userData, setUserData, bounties, setBounties, 
 
   const onSetupPayment = () => {
    setLoading(true);
-   console.log('userData',userData);
+   //console.log('userData',userData);
    createPaymentIntentAPI(user,{currency: 'USD', methods:['card'], customer: userData['custId'], email: user.email,amount:parseInt(parseFloat(amount)*100)}).then(result=>{
       setPaymentIntent(result);
       const appearance = {
@@ -41,7 +41,7 @@ const Payment = ({user, auth, db, userData, setUserData, bounties, setBounties, 
           redirect: 'if_required'
         });
         
-        console.log('paymentresult',result['paymentIntent']);
+        //console.log('paymentresult',result['paymentIntent']);
         setPaymentIntent(result['paymentIntent']);
         onPaymentSuccess(result['paymentIntent']);
         

@@ -28,7 +28,6 @@ const UserBountyAssignmentWidget = ({user, auth, db, userData, otherId, otherUse
     
 
     setMyBounties(myList);
-    console.log(myList);
     setManagingUser(true);
   }
 
