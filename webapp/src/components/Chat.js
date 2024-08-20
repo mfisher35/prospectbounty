@@ -129,8 +129,8 @@ const Chat = ({user, auth, db, storage, mobile, userData, userId2, username2}) =
     }
   
 
-  return ( <div style={{padding:'10px 30px',textAlign:'left'}}>
-
+  return ( <div style={{marginTop:'35px',padding:'10px 30px',textAlign:'left'}}>
+   {!otherId &&  <span style={{fontSize:'30px',fontWeight:'600'}}> Messages </span>} 
    {otherId  ? <div style={{display:'flex',flexDirection:'column',alignItems:'center'}}>
         <div style={{textAlign:'left',width:'100%'}}>
            <div style={{textAlign:'left',width:'fit-content',backgroundColor:'#ddd',borderRadius:'20px',border:'1px solid #ccc'}} onClick={e=>onBack()}> <ArrowBackIcon/> 
