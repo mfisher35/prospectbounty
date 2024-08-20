@@ -32,6 +32,7 @@ const storage = getStorage();
  
 const Container = styled.div`
   display: flex;
+  border-radius:15px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -188,8 +189,9 @@ const Login = ({onLogin}) => {
       onLogin(user,auth,db,storage)
   }
   return (
+   <div style={{marginTop:'100px'}}>
     <Container>
-      <div style={{marginBottom:'30px',marginTop:'50px'}}> <center> <img src={Logo} width='290px'/> </center></div>
+      <div style={{marginBottom:'30px',marginTop:'50px'}}> <center> <img src={Logo} width='370px'/> </center></div>
       <Form onSubmit={registering ? handleRegister : handleLogin}>
         <h2>{registering ? "Register" : "Login"}</h2>
        <div style={{margin:'10px'}}></div>
@@ -259,6 +261,7 @@ const Login = ({onLogin}) => {
         <LinkButton onClick={handleForgotPassword}>Forgot Password</LinkButton>
       </Form>
     </Container>
+  </div>
   );
 };
 

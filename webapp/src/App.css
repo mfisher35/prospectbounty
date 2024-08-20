@@ -319,14 +319,14 @@ text-shadow: 1px 1px 2px #505050;
 }
 
 .card {
+  border:1px solid #967f5a;
+  overflow:hidden;
   background: #ffffff;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
   border-radius: 15px;
   margin: 20px 5px;
-  padding: 20px;
   width: 376px;
   height: 450px;
-  overflow-y:scroll;
   transition: transform 0.3s ease-in-out;
   
   &:hover {

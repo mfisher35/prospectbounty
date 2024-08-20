@@ -11,7 +11,8 @@ const BountyCard = ({user,userData,ix,bountyData,onManageBounty, onChat}) => {
 
   return (
   <div className="card" style={{cursor:user.uid == bountyData['posterId'] ? 'pointer' : 'default'}} onClick={e=>{if(user.uid == bountyData['posterId']) onManageBounty(bountyData);}} key={`bounty-${ix}`}>
-   <img style={{marginBottom:'15px',borderRadius:'15px'}} src={bountyImg} height="200px"/> 
+   <div style={{overflowY:'scroll',padding:'20px 30px'}}>
+   <center> <img style={{marginBottom:'15px',borderRadius:'15px'}} src={bountyImg} height="180px"/> </center>
    {userData['role'] == 'poster' &&  <div style={{marginLeft:"0",textAlign:'right'}}><EditIcon style={{color:'#777'}} fontSize="sm"/> </div>}
        <div style={{display:'flex',flexDirection:'column'}}>    
           <div style={{display:'flex',flexDirection:'row',width:'100%',marginBottom:'12px'}}>
@@ -39,6 +40,7 @@ const BountyCard = ({user,userData,ix,bountyData,onManageBounty, onChat}) => {
 
            <div className="contact-button" onClick={e=>onChat(bountyData['posterId'],bountyData['posterUsername'])} >  CONTACT </div>   
         }
+      </div>
       </div>
        </div>)
 };
