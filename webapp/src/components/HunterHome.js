@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Logo  from '../assets/logofull.png';
 import Logosm  from '../assets/logowhite.png';
-import { doc, setDoc, getDoc } from "firebase/firestore"; 
+import { doc, setDoc, getDoc, onSnapshot } from "firebase/firestore"; 
 import HunterInit from './HunterInit';
 import styled from 'styled-components';
 import BountyList from './BountyList';
@@ -19,6 +19,25 @@ const HunterHome = ({user, auth, db, storage, mobile, userData, setUserData}) =>
   const [chatUID, setChatUID] = useState(null);
   const [chatName, setChatName] = useState(null);
   const [hover, setHover] = useState(null);
+
+  //get new notifications
+  const startSubscribe = () => {
+      const docRef = doc(db, 'userData', user.uid);
+
+      const unsubscribe = onSnapshot(docRef, (doc) => {
+        setUserData(doc.data());
+      });
+
+      return () => unsubscribe();
+  }
+
+  useEffect(() => {
+      startSubscribe(); 
+  }, []);
+
+
+
+
 
   const iconStyle = {marginRight:'2px',fontSize:'15pt',marginBottom:'2px',color:'white'}
 
@@ -63,7 +82,7 @@ const HunterHome = ({user, auth, db, storage, mobile, userData, setUserData}) =>
         </div>
         <div className="sbsection" style={sbColor("chat")} onMouseEnter={e=>setHover("chat")} onMouseLeave={e=>setHover(null)}>
           {selectedItem("chat")}
-          <li onClick={e=>setScreen("chat")}> <ChatOutlinedIcon style={iconStyle}/> Chat </li>
+          <div className="notification-icon" onClick={e=>setScreen("chat")}> <ChatOutlinedIcon style={{... iconStyle,marginRight:'6px', marginBottom:'0px'}}/> Chat  {userData['newMessages'] > 0 && <div className="badge"> {userData['newMessages']} </div>} </div>
         </div>
       </ul>
 
