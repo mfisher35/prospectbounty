@@ -15,7 +15,7 @@ const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBo
   const currentDate = new Date().toDateString();
 
   const [page, setPage] = useState('home')
-  const [addBountyType, setAddBountyType] = useState(null);
+  const [addBountyType, setAddBountyType] = useState("specific");
   const [addBountyData, setAddBountyData] = useState({posterId:user.uid, posterUsername :userData['username'], postDate: currentDate});
   const [paymentError, setPaymentError] = useState("");
  
@@ -102,6 +102,11 @@ const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBo
       return ": Target Details"
     return "";
   }
+
+  const required = () => {
+    return <span style={{color:'red'}}> *</span>
+  }
+
   return (<div style={{padding:"10px 30px",textAlign:'left'}}>
 
     {page != "home" && <div>
@@ -114,10 +119,18 @@ const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBo
        {page=="home" && 
          <div className="bounty-assign-btn" onClick={e=>goToDescription()}> <AddIcon style={{border:'1px solid black',borderRadius:'20px',color:'black',marginRight:'4px',marginBottom:'3px'}}/> Add Bounty  </div>}
        {page=="description" && <div className="cardcontainer" style={{textAlign:'left'}}><br/> 
-           Bounty Name:<div style={{marginTop:'7px'}}> </div> 
-           <input placeholder="Bounty Name" value={addBountyData['bountyName']} onChange={e=>changeBountyData('bountyName',e.target.value)} type="text" size="25"/> <br/><br/>
-           Description of Your Product/Service: <div style={{marginTop:'7px'}}> </div> 
-           <textarea rows="10" cols="30" placeholder="Brief Background of You, Your Service/Offering" value={addBountyData['description']} onChange={e=>changeBountyData('description',e.target.value)} type="text" size="500"/> <br/><br/>
+
+           <div style={{... splitStyle, width:'80%'}}>
+            Bounty Name: <br/>
+            <input placeholder="Bounty Name" value={addBountyData['bountyName']} onChange={e=>changeBountyData('bountyName',e.target.value)} type="text" size="25"/> 
+           </div>
+
+           <div style={{... splitStyle, width:'80%'}}>
+            Description of Your Product/Service: <br/>
+           <textarea style={{padding:'7px',height:'250px'}} placeholder="Brief Background of You, Your Service/Offering" value={addBountyData['description']} onChange={e=>changeBountyData('description',e.target.value)} type="text" size="500"/> <br/><br/>
+           </div>
+
+
            <Button className="bounty-assign-btn" onClick={e=>setPage("details")}> Continue </Button> </div>}
        {page=="details" && <div className="cardcontainer" style={{margin:'0px',padding:'10px',maxWidth:'none',width:'fit-content'}} > 
            
@@ -130,9 +143,9 @@ const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBo
               </div>
        </div> 
        {(addBountyType=="specific") && <div style={{padding:'8px 25px 25px 25px',textAlign:'left',fontSize:'11pt',fontWeight:'bold'}}>
-          Full Name:<br/>
+          Full Name<br/>
          <input style={{width:'100%'}} placeholder="Full Name" value={addBountyData['fullname']} onChange={e=>changeBountyData('fullname',e.target.value)} type="text"/> {mobile ? <br/> : <span style={{marginLeft:'5px'}}> </span>}
-          Organization:<br/>
+          Organization<br/>
          <input style={{width:'100%'}} placeholder="Organization" type="text"  value={addBountyData['organization']} onChange={e=>changeBountyData('organization',e.target.value)}/> {mobile ? <br/> : <span style={{marginLeft:'5px'}}> </span>}
         <div style={{display:'flex',flexDirection:'row'}}> 
            <div style={splitStyle}>
@@ -147,47 +160,56 @@ const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBo
 
         <div style={{display:'flex',flexDirection:'row'}}> 
            <div style={splitStyle}>
-             Position:<br/>
+             Position<br/>
              <input placeholder="Position" type="text" value={addBountyData['position']} onChange={e=>changeBountyData('position',e.target.value)}/> 
            </div>
            <div style={{width:'20px'}}/> 
            <div style={splitStyle}>
-              LinkedIN Link:<br/>
-             <input type="text" placeholder="LinkedIn Link" value={addBountyData['linkedin']} onChange={e=>changeBountyData('linkedin',e.target.value)} />  
+              Linkedin Link<br/>
+             <input type="text" placeholder="Linkedin Link" value={addBountyData['linkedin']} onChange={e=>changeBountyData('linkedin',e.target.value)} />  
            </div>
           </div>
         
          <div style={{display:'flex',flexDirection:'row'}}> 
            <div style={splitStyle}>
-              City:<br/>
+              City<br/>
               <input placeholder="City" type="text" value={addBountyData['city']} onChange={e=>changeBountyData('city',e.target.value)}/> 
            </div>
            <div style={{width:'20px'}}/> 
            <div style={splitStyle}>
-             State:<br/>
+             State<br/>
              {states(addBountyData['state'],changeBountyData)}<br/>
          </div>
         </div>
 
         <div style={{display:'flex',flexDirection:'row'}}> 
            <div style={splitStyle}>
-              EMail:<br/>
+              EMail<br/>
               <input type="text" placeholder="Email" value={addBountyData['email']} onChange={e=>changeBountyData('email',e.target.value)} />
            </div>
            <div style={{width:'20px'}}/> 
            <div style={splitStyle}>
-             Phone:<br/>
+             Phone<br/>
              <input type="text" placeholder="Phone" value={addBountyData['phone']} onChange={e=>changeBountyData('phone',e.target.value)}/> 
           </div>
         </div>
       <br/><div style={{width:'100%',textAlign:'right'}}>  <Button style={{padding:'12px'}} className="bounty-assign-btn" onClick={e=>setPage("payment")}> <b> Continue </b> </Button> </div>
         </div>}
-       {(addBountyType=="broad") && <div>
-         {orgTypes(addBountyData['organizationType'],changeBountyData)}  <span style={{marginLeft:'5px'}}> </span>
-         {industryTypes(addBountyData['industryType'],changeBountyData)}  <br/><br/>
-         <textarea rows="10" cols="30" placeholder="Please Add More Details About the Target Audience" type="text" value={addBountyData['targetDescr']} onChange={e=>changeBountyData('targetDescr',e.target.value)}/><span style={{marginRight:'10px'}}/> <br/>
+       {(addBountyType=="broad") && <div style={{padding:'8px 25px 25px 25px',textAlign:'left',fontSize:'11pt',fontWeight:'bold'}}>
+ 
+        <div style={{display:'flex',flexDirection:'row'}}> 
+           <div style={splitStyle}>
+             Organization Type
+             {orgTypes(addBountyData['organizationType'],changeBountyData)}  
+           </div>
+             <div style={{width:'20px'}}/> 
+           <div style={splitStyle}>
+            Industry Type
+           {industryTypes(addBountyData['industryType'],changeBountyData)}  <br/><br/>     </div>
+       </div>
+         <textarea style={{width:'100%',height:'250px',padding:'7px'}} placeholder="Please Add More Details About the Target Audience" type="text" value={addBountyData['targetDescr']} onChange={e=>changeBountyData('targetDescr',e.target.value)}/><span style={{marginRight:'10px'}}/> <br/>
 
-         <center><Button className="bounty-assign-btn" onClick={e=>setPage("payment")}> Continue </Button> </center>
+         <div style={{width:'100%',textAlign:'right'}}> <Button className="bounty-assign-btn" style={{padding:'12px',fontWeight:'bold'}} onClick={e=>setPage("payment")}> Continue </Button> </div>
         </div>
        }
        </div>}
