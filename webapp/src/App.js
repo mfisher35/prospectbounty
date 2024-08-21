@@ -6,8 +6,8 @@ import Logo  from './assets/logofull.png';
 import Logosm  from './assets/logowhite.png';
 import { doc, setDoc, getDoc } from "firebase/firestore"; 
 import styled, { createGlobalStyle } from 'styled-components';
-import HunterHome from './components/HunterHome';
-import PosterHome from './components/PosterHome';
+import Home from './components/Home';
+import HunterInit from './components/HunterInit';
  
 const GlobalStyle = createGlobalStyle`
   body {
@@ -67,20 +67,17 @@ class App extends React.Component {
  
   }
 
-  getRole = () => {
-    if(this.state.userData)
-      return this.state.userData['role']
-    return null;
-  }
+  
 
   render() {
     return (<div style={{width:"100%"}}>
       {this.state['user'] == null && <Login onLogin={this.onLogin} logout={this.logout}/>}
       <GlobalStyle/>
-      {this.getRole() == 'hunter'  && (
-        <HunterHome user={this.state.user} auth={this.state.auth} db={this.state.db} storage={this.state.storage}  mobile={this.state.mobile} userData={this.state.userData} setUserData={this.setUserData}/> )}
-      {this.getRole() == 'poster' && ( <PosterHome user={this.state.user} auth={this.state.auth} db={this.state.db} storage={this.state.storage}  mobile={this.state.mobile} userData={this.state.userData} setUserData={this.setUserData} stripe={this.state.stripe}/> )}
- 
+
+      {(!this.state.userData?.closeContacts && this.state.userData?.role == 'hunter') && <HunterInit user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} setUserData={setUserData}/>}
+
+      {(this.state.userData?.role == 'poster' || this.state.userData?.closeContacts) && 
+        <Home user={this.state.user} auth={this.state.auth} db={this.state.db} storage={this.state.storage}  mobile={this.state.mobile} userData={this.state.userData} setUserData={this.setUserData}/> }
     </div>
     )
   }
