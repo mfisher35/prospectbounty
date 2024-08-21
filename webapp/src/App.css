@@ -421,7 +421,10 @@ label {
  width:fit-content;
  background-color:#dfbb81;
  padding:8px;
+ border:none;
+ color:black;
  border-radius:15px;
+ cursor:pointer;
  
    &:hover {
      background-color:#947d57;
