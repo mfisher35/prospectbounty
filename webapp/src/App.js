@@ -74,7 +74,7 @@ class App extends React.Component {
       {this.state['user'] == null && <Login onLogin={this.onLogin} logout={this.logout}/>}
       <GlobalStyle/>
 
-      {(!this.state.userData?.closeContacts && this.state.userData?.role == 'hunter') && <HunterInit user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} setUserData={setUserData}/>}
+      {(!this.state.userData?.closeContacts && this.state.userData?.role == 'hunter') && <HunterInit user={this.state.user} auth={this.state.auth} db={this.state.db} storage={this.state.storage}  mobile={this.state.mobile} userData={this.state.userData} setUserData={this.setUserData}/>}
 
       {(this.state.userData?.role == 'poster' || this.state.userData?.closeContacts) && 
         <Home user={this.state.user} auth={this.state.auth} db={this.state.db} storage={this.state.storage}  mobile={this.state.mobile} userData={this.state.userData} setUserData={this.setUserData}/> }

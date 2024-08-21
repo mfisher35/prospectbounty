@@ -22,23 +22,28 @@ const HunterInit = ({user, auth, db, storage, mobile, userData, setUserData}) =>
   }
 
   return (
-   <> <img src={Logo} width="500px"/>
+   <div style={{marginTop:'40px'}}> <center> <img src={Logo} width="500px"/> </center>
     <div style={{padding:"30px 100px"}}>
       <center> 
        <h2> Bounty Hunter Set Up </h2> </center>
        <br/><br/>
-       <div className="card">
+       <div style={{borderRadius:'15px',backgroundColor:'white',padding:'20px'}}>
           <div style={{textAlign:'left',color:'blue',marginBottom:'15px'}}> <h7> <b> Optional </b> </h7> </div>
-          <h4> Please Give a Quick Description of Your Experience/Qualifications: </h4>
+          <span style={{fontSize:'13pt',fontWeight:'bold'}}> Please Give a Quick Description of Your Experience/Qualifications: </span><br/>
           <input type="text" size="80" onChange={e=>setExperience(e.target.value)}/> 
        </div>
-       <div className="card">
+       <br/><br/>
+       <div style={{borderRadius:'15px',backgroundColor:'white',padding:'20px'}}>
           <div style={{textAlign:'left',color:'blue',marginBottom:'15px'}}> <h7> <b> Optional </b> </h7> </div>
-         <h4> Please Add at Least 3 Decision Makers <br/> That You Have a Close Connection To: </h4><br/>
-         <AddContactsWidget setContacts={setContacts} contacts={contacts}/> 
+         <span style={{fontSize:'13pt',fontWeight:'bold'}}> Please Add at Least 3 Decision Makers You Have a Close Connection To: </span><br/><br/>
+         <div style={{width:'100%',textAlign:'left'}}>
+           <AddContactsWidget setContacts={setContacts} contacts={contacts}/> 
+         </div>
        </div> 
-       <Button primary onClick={e=>onSubmit()}> Submit </Button>
-    </div></>
+       <div style={{width:'100%',textAlign:'right',marginTop:'18px'}}>
+         <Button className='bounty-assign-btn' style={{padding:'16px',fontWeight:'bold'}} primary onClick={e=>onSubmit()}> Submit </Button>
+       </div>
+    </div></div>
   );
 };
 
