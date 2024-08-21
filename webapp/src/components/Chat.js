@@ -43,10 +43,11 @@ const Chat = ({user, auth, db, storage, mobile, userData, userId2, username2}) =
   }, []);
 
    useEffect(() => {
+    console.log('0909090',chatContainerRef.current);
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [otherId,messages]);
 
     const convertTimestamp = (timestamp)=> {
      if(!timestamp)
@@ -104,7 +105,7 @@ const Chat = ({user, auth, db, storage, mobile, userData, userId2, username2}) =
   }
 
   const sendMessage = async () => {
-    
+    setSending(true); 
     let doc = {
       
           message,
@@ -121,6 +122,7 @@ const Chat = ({user, auth, db, storage, mobile, userData, userId2, username2}) =
        }
       await messageReceivedAPI(user,doc);
       setMessage('');
+   setSending(false);
     }
   
 
@@ -158,7 +160,7 @@ const Chat = ({user, auth, db, storage, mobile, userData, userId2, username2}) =
           onKeyDown={(e) =>{if(e.key == "Enter") sendMessage()}}
           placeholder="Type a message"
         />
-        {sending ? <Spinner variant="primary"/> : <button class="chatbutton" onClick={sendMessage}> <SendIcon style={{fontSize:'13pt',marginBottom:'2px'}}/> Send</button>}
+        {sending ? <div style={{textAlign:'center',paddingTop:'14px',paddingRight:'30px'}}> <Spinner style={{color:'#dfbb81'}}/> </div> : <button class="chatbutton" onClick={sendMessage}> <SendIcon style={{fontSize:'13pt',marginBottom:'2px'}}/> Send</button>}
       </div>
     </div>}</div> : 
        <div style={{marginTop:'20px'}}> 

@@ -8,7 +8,7 @@ import Logo  from '../assets/logofull.png';
 import {toTitleCase} from './Helpers';
 import BountyCard from './BountyCard';
 
-const BountyList = ({user, auth, db, storage, mobile, userData, type, onChat, onManageBounty,bounties}) => {
+const BountyList = ({user, auth, db, storage, mobile, userData, type, onChat, onManageBounty, bounties}) => {
    const [bountyList, setBountyList] = useState(bounties ?? []);
 
    useEffect(() => {
