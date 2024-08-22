@@ -136,7 +136,7 @@ const Home = ({user, auth, db, storage, mobile, userData, setUserData, stripe, l
        <center>  
          <UserBar user={user} auth={auth} mobile={mobile} userData={userData} logout={logout}/>
            {(screen=="bounties") && <PosterBounties user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} setUserData={setUserData} stripe={stripe}/>}
-           {(screen=="chat") && <Chat user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} setUserData={setUserData} stripe={stripe}/>}
+           {(screen=="chat") && <Chat user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} setUserData={setUserData} stripe={stripe} userId2={chatUID} username2={chatName}/>}
            {(["bountylist","mybounties"].indexOf(screen) >= 0) && <BountyList key={'blist'+screen} user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} type={screen=="bountylist" ? 'all' : 'assignedToMe'} onChat={onChat}/>}
            {screen == "search" && <BountySearch user={user} db={db} auth={auth} userData={userData} setUserData={setUserData} onChat={onChat}/>}
 
