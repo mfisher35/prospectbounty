@@ -16,7 +16,7 @@ const UserBar = ({user, auth, mobile, userData, type, logout}) => {
                 <span style={{fontSize:'11pt'}}>  {userData['username']} </span> <br/>
                 <span style={{fontSize:'8pt',fontWeight:'bold',color:'#ccc'}}> {userData['role'].toUpperCase()}   </span>
               </div>
-               <div> <LogoutIcon style={{fontSize:'14pt',margin:'8px 0px 10px 19px'}} onClick={e=>{logout()}}/>   </div>
+               <div> <LogoutIcon style={{cursor:'pointer',fontSize:'14pt',margin:'8px 0px 10px 19px'}} onClick={e=>{logout()}}/>   </div>
            </div>
 
     </div>
