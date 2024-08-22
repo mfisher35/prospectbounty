@@ -45,7 +45,7 @@ const Form = styled.form`
   flex-direction: column;
   background: white;
   padding: 2rem;
-  width:400px;
+  width:450px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 `;
@@ -216,13 +216,13 @@ const Login = ({onLogin}) => {
           onChange={(e) => phoneTextChange(e.target.value)}
           required
         />
-         <div style={{display:'inline-block',zoom:1,textAlign:'center'}}> <b>Choose Role: </b> <br/>  <span style={{marginLeft:'10px'}}> <input type="radio" checked={role=="poster"} onClick={e=>{setRole("poster")}}/> {"Bounty Poster"} </span>  <span style={{backgroundColor:'#ddd',paddingLeft:'4px',borderRadius:'10px'}} data-tooltip-id="tooltip-poster"> ❓ </span> 
+         <div style={{display:'inline-block',zoom:1,textAlign:'center'}}> <b>Choose Role: </b> <br/>  <span style={{marginLeft:'10px'}}> <input type="radio" checked={role=="poster"} onClick={e=>{setRole("poster")}}/> {"Bounty Poster"} </span>  <span style={{backgroundColor:'#eee',paddingLeft:'4px',borderRadius:'10px'}} data-tooltip-id="tooltip-poster"> ❓ </span> 
       <ReactTooltip
         id="tooltip-poster"
         place="bottom"
-        content="Poster: User that would pay for warm introductions"
+        content="Poster: User that would pay for warm introductions to targets"
       /> 
-         <span style={{marginLeft:'15px'}}>  <input type="radio" checked={role=="hunter"} onClick={e=>{setRole("hunter")}}/> Bounty Hunter </span> <span style={{backgroundColor:'#ddd',paddingLeft:'4px',paddingRight:'4px',borderRadius:'10px'}} data-tooltip-id="tooltip-hunter"> ❓ </span> 
+         <span style={{marginLeft:'15px'}}>  <input type="radio" checked={role=="hunter"} onClick={e=>{setRole("hunter")}}/> Bounty Hunter </span> <span style={{backgroundColor:'#eee',paddingLeft:'4px',paddingRight:'4px',borderRadius:'10px'}} data-tooltip-id="tooltip-hunter"> ❓ </span> 
       <ReactTooltip
         id="tooltip-hunter"
         place="bottom"

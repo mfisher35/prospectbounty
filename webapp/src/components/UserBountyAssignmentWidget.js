@@ -74,7 +74,7 @@ const UserBountyAssignmentWidget = ({user, auth, db, userData, otherId, otherUse
 
              <span style={{fontSize:'10pt',color:'#595959'}}>   {bounty['targetDescr']}</span> <br/>
 
-             {!modifying && <div className="bounty-assign-btn" style={{marginTop:'7px'}}>
+             {!modifying && <div className="bounty-btn" style={{marginTop:'7px'}}>
                  {
                  bounty['hunterId'] == otherId ? 
                  <div onClick={e=>onUnAssign(bounty)}>  <PersonRemoveIcon style={{color:'#850505'}} fontSize="sm"/>  <span style={{fontSize:'10pt',color:'#850505'}}>{`Unassign ${otherUsername}`}  </span> </div>
@@ -87,7 +87,7 @@ const UserBountyAssignmentWidget = ({user, auth, db, userData, otherId, otherUse
            ))}</center> 
        </div>
        : 
-       <div className="bounty-assign-btn" onClick={e=>onManageUser()}>
+       <div className="bounty-btn" onClick={e=>onManageUser()}>
          <ManageAccountsIcon style={{fontSize:'10pt',color:'black',marginRight:'4px'}}/>
          <span style={{fontSize:'10pt',color:'black'}}> Assign Bounty </span>     </div>}
      

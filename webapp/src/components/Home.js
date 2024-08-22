@@ -15,7 +15,7 @@ import CoPresentOutlinedIcon from '@mui/icons-material/CoPresentOutlined';
 import AutoAwesomeMotionOutlinedIcon from '@mui/icons-material/AutoAwesomeMotionOutlined';
 import SearchIcon from '@mui/icons-material/Search';
 
-const Home = ({user, auth, db, storage, mobile, userData, setUserData, stripe}) => {
+const Home = ({user, auth, db, storage, mobile, userData, setUserData, stripe, logout}) => {
   //const [userData, setUserData] = useState(null);
   const [screen, setScreen] = useState(userData?.role == 'poster' ? 'bounties' : 'bountylist');
   const [myBounties, setMyBounties] = useState(null);
@@ -134,7 +134,7 @@ const Home = ({user, auth, db, storage, mobile, userData, setUserData, stripe}) 
     </div> 
        <div style={{marginTop:'0px',marginLeft:mobile ? '100px' : '250px'}}>
        <center>  
-         <UserBar user={user} mobile={mobile} userData={userData} />
+         <UserBar user={user} auth={auth} mobile={mobile} userData={userData} logout={logout}/>
            {(screen=="bounties") && <PosterBounties user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} setUserData={setUserData} stripe={stripe}/>}
            {(screen=="chat") && <Chat user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} setUserData={setUserData} stripe={stripe}/>}
            {(["bountylist","mybounties"].indexOf(screen) >= 0) && <BountyList key={'blist'+screen} user={user} auth={auth} db={db} storage={storage}  mobile={mobile} userData={userData} type={screen=="bountylist" ? 'all' : 'assignedToMe'} onChat={onChat}/>}

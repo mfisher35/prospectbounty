@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import '../App.css';
 import styled from 'styled-components';
 import Button from 'react-bootstrap/Button'
-import { lowerAll, states, orgTypes, industryTypes }  from './Helpers';
+import { splitStyle, lowerAll, states, orgTypes, industryTypes }  from './Helpers';
 
 const AddContactsWidget = ({setContacts, contacts}) => {
   const [addingContact, setAddingContact] = useState(null);
   const [addContactData, setAddContactData] = useState({});
 
   
-  const splitStyle = {display:'flex',flexGrow:'1',flexDirection:'column',width:'45%'};
 
   const changeAddContactData = (field,value) => {
     let newAddContactData = {... addContactData};
@@ -37,7 +36,7 @@ const AddContactsWidget = ({setContacts, contacts}) => {
          contacts.map((item,index) => (<> <span style={{padding:'10px',borderRadius:'15px',backgroundColor:'#c3c2c6'}}> {item['fullname'] + " - " + item['position'] + " - " + item['organization']} </span><div style={{marginBottom:'30px'}}/></>))
        }
 
-       {!addingContact && <Button className="bounty-assign-btn" onClick={e=>setAddingContact(true)}> + Add Contact </Button>}
+       {!addingContact && <Button className="bounty-btn" onClick={e=>setAddingContact(true)}> + Add Contact </Button>}
        {addingContact && <div>
         Full Name:<br/>
         <input style={{width:'100%'}} placeholder="Full Name" value={addContactData['fullname']} onChange={e=>changeAddContactData('fullname',e.target.value)} type="text"/> <br/>
@@ -85,7 +84,7 @@ const AddContactsWidget = ({setContacts, contacts}) => {
  
 
 
-         <div style={{width:'100%',textAlign:'right',marginTop:'10px'}}><Button className="bounty-assign-btn" style={{padding:'10px'}} onClick={e=>addContact()}> Save Contact </Button> </div>
+         <div style={{width:'100%',textAlign:'right',marginTop:'10px'}}><Button className="bounty-btn" style={{padding:'10px'}} onClick={e=>addContact()}> Save Contact </Button> </div>
         </div>}
         
     </div>

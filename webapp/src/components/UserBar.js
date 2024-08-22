@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button'
 import '../App.css';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-const UserBar = ({user, auth, mobile, userData, type}) => {
+import LogoutIcon from '@mui/icons-material/Logout';
+const UserBar = ({user, auth, mobile, userData, type, logout}) => {
  //  const [bountyList, setUserBar] = useState(bounties ?? []);
 
 
@@ -15,6 +16,7 @@ const UserBar = ({user, auth, mobile, userData, type}) => {
                 <span style={{fontSize:'11pt'}}>  {userData['username']} </span> <br/>
                 <span style={{fontSize:'8pt',fontWeight:'bold',color:'#ccc'}}> {userData['role'].toUpperCase()}   </span>
               </div>
+               <div> <LogoutIcon style={{fontSize:'14pt',margin:'8px 0px 10px 19px'}} onClick={e=>{logout()}}/>   </div>
            </div>
 
     </div>

@@ -417,7 +417,7 @@ label {
   margin: 0;
 }
 
-.bounty-assign-btn {
+.bounty-btn {
  width:fit-content;
  background-color:#dfbb81;
  padding:8px;
@@ -467,10 +467,12 @@ margin-bottom:10px;
 .tacontainer {
      max-width: 500px;
      margin: 0 auto;
-     padding: 20px;
+     padding: 15px 20px;
      background-color: #fff;
      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
      border-radius: 8px;
+     text-align:left;
+     font-weight:600;
  }
 
  .talabel {

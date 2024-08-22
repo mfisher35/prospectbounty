@@ -140,12 +140,12 @@ const handleVerifyCode = async ()  => {
     <Container style={{padding:'40px'}}>
       <center> <img src={Logo} width="300px" /></center> <br/><br/>
       {!emailVerified && <>  <center> <img src={EmailImg} width="180px" /> </center> <br/><br/>
-      <center>     Please Check Your E-Mail And Click The Link To Verify Your Account
+      <center>     Please Check Your EMail And Click The Link To Verify Your Account
       <br/> You will be logged in here automatically afterwords! </center>
       {processing && <div style={{marginTop:'10px',marginBottom:'30px'}}> <center> <Spinner style={{height:'60px',width:'60px'}} variant="primary"/> </center> </div>}
         <center> <Button onClick={sendVerificationEmail}>Resend Verification Email</Button> </center> </> }
-      {emailVerified && <div style={{borderRadius:'15px',backgroundColor:'#dedede' ,padding:'50px'}}>  <center>✅ ✉️  E-Mail Verified. </center> </div> }
-      {(processing && emailVerified) && <div style={{marginTop:'40px',marginBottom:'30px'}}> <center> Sending SMS to Your Phone... <br/><br/>  <Spinner style={{height:'60px',width:'60px'}} variant="primary"/> </center> </div>}
+      {emailVerified && <div style={{padding:'50px'}}>  <center>✅ ✉️  EMail Verified. </center> </div> }
+      {(processing && emailVerified) && <div style={{marginTop:'30px',marginBottom:'30px'}}> <center> Sending SMS to Your Phone... <br/><br/>  <Spinner style={{height:'60px',width:'60px'}} variant="primary"/> </center> </div>}
       {phoneConfirmationResult && (<div style={{borderRadius:'15px',backgroundColor:'#dedede' ,padding:'20px',marginTop:'30px',width:"100%"}}>
         <center> <span> SMS Code Sent To: {userData['phone']}</span> <br/> <span> Enter Phone Verification Code: </span><br/>
         <input type="text" value={userPhoneCode} onChange={e=>{setUserPhoneCode(e.target.value)}}/> <br/><br/>

@@ -10,7 +10,8 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import AddIcon from '@mui/icons-material/Add';
 import Payment from './Payment';
 import {createBountyAPI} from './APIHelpers';
-import {states, orgTypes, industryTypes, lowerAll} from './Helpers';
+import {states, orgTypes, industryTypes, splitStyle, lowerAll} from './Helpers';
+
 const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBounties, mobile, setAddingBounty, stripe, onBack}) => {
   const currentDate = new Date().toDateString();
 
@@ -89,7 +90,6 @@ const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBo
      console.log(newBData)
      setAddBountyData(newBData);
   }
-  const splitStyle = {display:'flex',flexGrow:'1',flexDirection:'column',width:'45%'};
 
   const unroll = (item) => {
    let result = "";
@@ -117,7 +117,7 @@ const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBo
    <center> <div style={{width:mobile ? '200px':'500px'}}>
 
        {page=="home" && 
-         <div className="bounty-assign-btn" onClick={e=>goToDescription()}> <AddIcon style={{border:'1px solid black',borderRadius:'20px',color:'black',marginRight:'4px',marginBottom:'3px'}}/> Add Bounty  </div>}
+         <div className="bounty-btn" onClick={e=>goToDescription()}> <AddIcon style={{border:'1px solid black',borderRadius:'20px',color:'black',marginRight:'4px',marginBottom:'3px'}}/> Add Bounty  </div>}
        {page=="description" && <div className="cardcontainer" style={{textAlign:'left'}}><br/> 
 
            <div style={{... splitStyle, width:'80%'}}>
@@ -127,11 +127,11 @@ const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBo
 
            <div style={{... splitStyle, width:'80%'}}>
             Description of Your Product/Service: <br/>
-           <textarea style={{padding:'7px',height:'250px'}} placeholder="Brief Background of You, Your Service/Offering" value={addBountyData['description']} onChange={e=>changeBountyData('description',e.target.value)} type="text" size="500"/> <br/><br/>
+           <textarea style={{padding:'7px',height:'250px'}} placeholder="Brief Background of You, Your Service/Offering" value={addBountyData['description']} onChange={e=>changeBountyData('description',e.target.value)} type="text" size="500"/> 
            </div>
+  
 
-
-           <Button className="bounty-assign-btn" onClick={e=>setPage("details")}> Continue </Button> </div>}
+           <Button className="bounty-btn" style={{marginTop:'30px'}} onClick={e=>setPage("details")}> Continue </Button> </div>}
        {page=="details" && <div className="cardcontainer" style={{margin:'0px',padding:'10px',maxWidth:'none',width:'fit-content'}} > 
            
             <div style={{display:'flex',width:'100%',margin:'0px',padding:'10px',flexDirection:'row',justifyContent:'space-between'}}>
@@ -193,7 +193,7 @@ const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBo
              <input type="text" placeholder="Phone" value={addBountyData['phone']} onChange={e=>changeBountyData('phone',e.target.value)}/> 
           </div>
         </div>
-      <br/><div style={{width:'100%',textAlign:'right'}}>  <Button style={{padding:'12px'}} className="bounty-assign-btn" onClick={e=>setPage("payment")}> <b> Continue </b> </Button> </div>
+      <br/><div style={{width:'100%',textAlign:'right'}}>  <Button style={{padding:'12px'}} className="bounty-btn" onClick={e=>setPage("payment")}> <b> Continue </b> </Button> </div>
         </div>}
        {(addBountyType=="broad") && <div style={{padding:'8px 25px 25px 25px',textAlign:'left',fontSize:'11pt',fontWeight:'bold'}}>
  
@@ -209,7 +209,7 @@ const AddBountyWidget = ({user, auth, db, userData, setUserData, bounties, setBo
        </div>
          <textarea style={{width:'100%',height:'250px',padding:'7px'}} placeholder="Please Add More Details About the Target Audience" type="text" value={addBountyData['targetDescr']} onChange={e=>changeBountyData('targetDescr',e.target.value)}/><span style={{marginRight:'10px'}}/> <br/>
 
-         <div style={{width:'100%',textAlign:'right'}}> <Button className="bounty-assign-btn" style={{padding:'12px',fontWeight:'bold'}} onClick={e=>setPage("payment")}> Continue </Button> </div>
+         <div style={{width:'100%',textAlign:'right'}}> <Button className="bounty-btn" style={{padding:'12px',fontWeight:'bold'}} onClick={e=>setPage("payment")}> Continue </Button> </div>
         </div>
        }
        </div>}

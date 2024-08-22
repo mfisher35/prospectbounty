@@ -46,18 +46,17 @@ const ManageBounty = ({user, auth, db, userData, setUserData, bountyData, onBack
       <div style={{width:'fit-content',backgroundColor:'#ddd',borderRadius:'20px',border:'1px solid #ccc'}} onClick={e=>onBack()}> <ArrowBackIcon/> </div> 
     <div style={{fontSize:'10pt',marginTop:'30px'}}> {bountyData['hunterUsername'] ? "Assigned To: " + bountyData['hunterUsername'] : "Bounty is Currently Unassigned"}</div>
    {bountyFields.map((field) => {
-    return thisBountyData[field['field']] && <div style={{margin:'10px'}} className="tacontainer"> <label className="talabel"> {field['name']} </label> 
+    return thisBountyData[field['field']] && <div style={{margin:'10px'}} className="tacontainer">  <label className="talabel"> {field['name']} </label> 
       {
         field['type'] == 'textarea' &&
-        <textarea className="text-area" value={thisBountyData[field['field']]} onChange={e=>modifyBountyField(field['field'],e.target.value)} rows="10" cols="30" /> } 
+        <textarea style={{width:'100%'}} className="text-area" value={thisBountyData[field['field']]} onChange={e=>modifyBountyField(field['field'],e.target.value)} rows="10" cols="30" /> } 
        
      { field['type'] == 'text' &&
-        <input value={toTitleCase(thisBountyData[field['field']])} onChange={e=>modifyBountyField(field['field'],e.target.value)}/>  
+        <input style={{width:'100%'}} value={toTitleCase(thisBountyData[field['field']])} onChange={e=>modifyBountyField(field['field'],e.target.value)}/>  
       } 
       { field['selector'] &&
        field.selector(thisBountyData[field['field']],modifyBountyField)  
       } 
-
     </div>})}
     {processing ? <Spinner variant="primary"/> : 
     <div style={{marginBottom:'20px'}}>

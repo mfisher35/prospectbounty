@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { where, query, doc, getDocs, getDoc, collection, setDoc, addDoc, getFirestore } from "firebase/firestore";
 import Button from 'react-bootstrap/Button'
 import {createPaymentIntentAPI} from './APIHelpers';
+import {splitStyle} from './Helpers';
 import Spinner from 'react-bootstrap/Spinner';
 
 const Payment = ({user, auth, db, userData, setUserData, bounties, setBounties, mobile, setAddingCard, stripe, onPaymentSuccess, onPaymentFail}) => {
@@ -52,14 +53,19 @@ const Payment = ({user, auth, db, userData, setUserData, bounties, setBounties, 
 
 
   return (
-  <div>
+  <div className="cardcontainer">
      {loading &&  <> <center> <Spinner variant="primary"/> </center></>}
-     {(!amountFinished && !loading) && <> $ <input type="text" placeholder="Bounty Amount" type="text" value={amount} onChange={e=>setAmount(e.target.value)}/><span style={{marginRight:'10px'}}/> <Button onClick={e=>onSetupPayment()}> Continue To Payment </Button> <br/> </> }
-     {amountFinished && <center> <h3> {`$${amount}`} </h3></center>}
+     {(!amountFinished && !loading) && <div> 
+       <div style={{display:'flex',flexDirection:'column',textAlign:'left',fontWeight:'bold'}}>
+           Bounty Amount
+           <div style={{display:'block'}}> $ <input  type="text" placeholder="Bounty Amount" type="text" value={amount} onChange={e=>setAmount(e.target.value)}/> <center> <button className="bounty-btn" style={{marginTop:'15px'}}  onClick={e=>onSetupPayment()}> Continue To Payment </button> </center> <br/> </div> </div>
+       </div>
+    }
+     {amountFinished &&  <center> <h3> {`$${amount}`} </h3></center>}
      <form id="payment-form">
        <div id="payment-element">
        </div> <br/>
-       {(amountFinished && !paying) && <Button onClick={e=>submitPayment()} variant="primary">Submit Payment</Button>}
+       {(amountFinished && !paying) && <Button onClick={e=>submitPayment()} className="bounty-btn">Submit Payment</Button>}
        {(amountFinished && paying) && <Spinner variant="primary"/>}
        <div id="error-message">
        </div>

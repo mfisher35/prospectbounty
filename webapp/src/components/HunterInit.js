@@ -41,7 +41,7 @@ const HunterInit = ({user, auth, db, storage, mobile, userData, setUserData}) =>
          </div>
        </div> 
        <div style={{width:'100%',textAlign:'right',marginTop:'18px'}}>
-         <Button className='bounty-assign-btn' style={{padding:'16px',fontWeight:'bold'}} primary onClick={e=>onSubmit()}> Submit </Button>
+         <Button className='bounty-btn' style={{padding:'16px',fontWeight:'bold'}} primary onClick={e=>onSubmit()}> Submit </Button>
        </div>
     </div></div>
   );

@@ -1,3 +1,5 @@
+export const splitStyle = {display:'flex',flexGrow:'1',flexDirection:'column',width:'45%'};
+
 export function getIntersection(set1, set2) {  
     const ans = new Set();  
     for (let i of set2) {  

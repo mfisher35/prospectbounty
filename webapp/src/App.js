@@ -31,6 +31,7 @@ class App extends React.Component {
     this.state = {mobile:window.innerWidth <= 768,page:'main', user:null, storedResponses:{}};
     this.pageChanged = this.pageChanged.bind(this);
     this.setUserData = this.setUserData.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
   componentDidMount() {
@@ -57,9 +58,10 @@ class App extends React.Component {
   setUserData = (userData) => {
      this.setState({'userData' : userData})
   }
+
   logout = () => {
-    signOut(this.state['auth']).then(function() {
-      this.setState({user:null})
+   signOut(this.state['auth']).then(e=>{
+      this.setState({user:null,userData:null})
       console.log('Signed Out');
     }, function(error) {
        console.error('Sign Out Error', error);
@@ -77,7 +79,7 @@ class App extends React.Component {
       {(!this.state.userData?.closeContacts && this.state.userData?.role == 'hunter') && <HunterInit user={this.state.user} auth={this.state.auth} db={this.state.db} storage={this.state.storage}  mobile={this.state.mobile} userData={this.state.userData} setUserData={this.setUserData}/>}
 
       {(this.state.userData?.role == 'poster' || this.state.userData?.closeContacts) && 
-        <Home user={this.state.user} auth={this.state.auth} db={this.state.db} storage={this.state.storage}  mobile={this.state.mobile} userData={this.state.userData} setUserData={this.setUserData}/> }
+        <Home user={this.state.user} auth={this.state.auth} db={this.state.db} storage={this.state.storage}  mobile={this.state.mobile} userData={this.state.userData} setUserData={this.setUserData} stripe={this.state.stripe} logout={this.logout}/> }
     </div>
     )
   }
